@@ -1,0 +1,174 @@
+﻿@page "/products/update/{ProductId}"
+@using Blazored.FluentValidation
+@using InventoryManagementSystem.Application.DTOs.Ingredient;
+@using InventoryManagementSystem.Application.DTOs.Product;
+@using InventoryManagementSystem.Application.DTOs.ProductType;
+@using InventoryManagementSystem.Application.DTOs.Supplier;
+@using InventoryManagementSystem.Domain.StaticData;
+
+@if(Product != null)
+{
+    <EditForm Model="@Product" OnValidSubmit="OnValidSubmit">
+        <FluentValidationValidator />
+        <MudGrid>
+            <MudItem xs="12" sm="7">
+                <MudCard>
+                    <MudCardContent>
+                        <MudText Class="mt-5 mb-md-5" Typo="Typo.h6">Update Product</MudText>
+
+                        <MudTextField Label="Name"
+                                      Class="mb-5"
+                        @bind-Value="Product.Name"
+                                      Variant="Variant.Outlined"
+                                      For="@(() => Product.Name)" />
+
+                        <MudTextField Label="Description"
+                                      Variant="Variant.Outlined"
+                                      Class="mb-5"
+                                      Lines="3"
+                        @bind-Value="Product.Description"
+                                      For="@(() => Product.Description)" />
+
+                        <MudTextField Label="Price"
+                                      Class="mb-5"
+                                      Variant="Variant.Outlined"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Euro"
+                                      Culture="System.Globalization.CultureInfo.CurrentCulture"
+                                      IconSize="Size.Small"
+                                      Format="F2"
+                        @bind-Value="Product.Price"
+                                      For="@(() => Product.Price)" />
+
+                        <!-- ProductType -->
+                        @if (ProductTypes != null && ProductTypes.Count != 0)
+                        {
+                            <MudSelect T="ProductTypeDTO"
+                                       Variant="Variant.Outlined"
+                                       Label="Product Types"
+                                       Placeholder="Please Select"
+                                       @bind-Value="ProductType">
+                                @foreach (ProductTypeDTO type in ProductTypes)
+                                {
+                                    <MudSelectItem T="ProductTypeDTO" Value="@type">@type.Type</MudSelectItem>
+                                }
+                            </MudSelect>
+                        }
+                        <MudStack>
+                            @foreach (var type in Product.ProductTypes)
+                            {
+                                <MudPaper Class="pa-3">
+                                    <MudGrid>
+                                        <MudItem xs="12" md="10">
+                                            <MudText>
+                                                @type.Type
+                                            </MudText>
+                                        </MudItem>
+                                        <MudItem xs="12" md="2" Class="text-right">
+                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" Size="Size.Medium" @onclick="(() => Remove(type))" />
+                                        </MudItem>
+                                    </MudGrid>
+                                </MudPaper>
+                            }
+                        </MudStack>
+                        <!-- End ProductType -->
+                        <!-- Supplier -->
+                        @if (Product.ProductTypes.Any(x => x.Type == ProductTypeData.PurchasedInventory))
+                        {
+                            <MudText Typo="Typo.h6" Class="mt-5 mb-md-5">Supplier</MudText>
+
+                            <MudSelect T="SupplierDTO"
+                                       Class="mb-5"
+                                       Label="Supplier"
+                                       Variant="Variant.Outlined"
+                                       @bind-Value="Product.Supplier"
+                                       For="@(() => Product.Supplier)"
+                                       ToStringFunc="supplierConverter">
+
+                                @foreach (var supplier in Suppliers)
+                                {
+                                    <MudSelectItem T="SupplierDTO" Value="@supplier">@supplier.CompanyName</MudSelectItem>
+                                }
+                            </MudSelect>
+                        }
+                        <!-- End Supplier -->
+                        @if (Product.ProductTypes.Any(x => x.Type == ProductTypeData.SalesInventory))
+                        {
+                            <MudTextField Label="Amount"
+                                          Class="mt-5 mb-5"
+                                          Variant="Variant.Outlined"
+                                          InputType="InputType.Number"
+                            @bind-Value="Product.Amount"
+                                          For="@(() => Product.Amount)" />
+
+                            <MudText Typo="Typo.h6" Class="mt-5 mb-md-5">Ingredients</MudText>
+
+                            @if (Ingredients.Count != 0)
+                            {
+                                <MudSelect T="IngredientListDTO"
+                                           Class="mb-5"
+                                           Label="Ingredients"
+                                           Variant="Variant.Outlined"
+                                @bind-Value="Ingredient">
+
+                                    @foreach (var ingredient in Ingredients)
+                                    {
+                                        <MudSelectItem T="IngredientListDTO" Value="@ingredient">@ingredient.Name (Usage: @ingredient.MlUsage ml)</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            }
+
+
+                            <MudStack>
+                                @foreach (var ingredient in Product.Ingredients)
+                                {
+                                    <MudPaper Class="pa-3">
+                                        <MudGrid>
+                                            <MudItem xs="12" md="10">
+                                                <MudText>
+                                                    @ingredient.Name (Usage: @ingredient.MlUsage ml)
+                                                </MudText>
+                                            </MudItem>
+                                            <MudItem xs="12" md="2" Class="text-right">
+                                                <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" Size="Size.Medium" @onclick="(() => Remove(ingredient))" />
+                                            </MudItem>
+                                        </MudGrid>
+                                    </MudPaper>
+                                }
+                            </MudStack>
+
+                            <MudFileUpload Class="mt-5" Context="fileInput" T="IBrowserFile" Accept=".png, .jpg" FilesChanged="UploadFileAsync" AppendMultipleFiles="false">
+                                <ButtonTemplate>
+                                    <MudButton HtmlTag="label"
+                                               Variant="Variant.Filled"
+                                               Color="Color.Primary"
+                                               StartIcon="@Icons.Material.Filled.CloudUpload"
+                                               for="@fileInput">
+                                        Only image files
+                                    </MudButton>
+                                </ButtonTemplate>
+                            </MudFileUpload>
+                            @if (files != null)
+                            {
+                                <MudList>
+                                    @foreach (var file in files)
+                                    {
+                                        <MudListItem Icon="@Icons.Material.Filled.AttachFile">
+                                            @file.Name <code>@file.Size bytes</code>
+                                        </MudListItem>
+                                    }
+                                </MudList>
+                            }
+                        }
+
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Save</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+}
+
+

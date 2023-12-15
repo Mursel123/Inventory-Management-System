@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
+		<PackageReference Include="MudBlazor" Version="6.11.0" />
+	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InventoryManagementSystem.Application\InventoryManagementSystem.Application.csproj" />
+    <ProjectReference Include="..\InventoryManagementSystem.Infrastructure\InventoryManagementSystem.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

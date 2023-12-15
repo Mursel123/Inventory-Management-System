@@ -1,0 +1,28 @@
+﻿<MudButton  StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error" Variant="Variant.Filled" Class="mb-2" OnClick="Delete">
+    Delete
+</MudButton>
+
+@code {
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+    [Inject]
+    public IDialogService DialogService { get; set; }
+    [Parameter]
+    public string Value { get; set; }
+    [Parameter]
+    public string Id { get; set; }
+
+    private async Task Delete()
+    {
+        var parameters = new DialogParameters<DeleteConfirmationDialog>();
+        parameters.Add(x => x.ContentText, $"Do you really want to delete this {Value}?");
+        parameters.Add(x => x.ButtonText, "Delete");
+        parameters.Add(x => x.Type, Value);
+        parameters.Add(x => x.Color, Color.Error);
+        parameters.Add(x => x.Id, Id);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        DialogService.Show<DeleteConfirmationDialog>("Delete", parameters, options);
+    }
+}

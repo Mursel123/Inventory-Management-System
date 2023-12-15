@@ -1,0 +1,51 @@
+﻿@using InventoryManagementSystem.Application.Commands.Ingredients.Delete;
+@using InventoryManagementSystem.Application.Commands.Products.DeleteProduct;
+@using MediatR;
+<MudDialog>
+    <DialogContent>
+        <MudText>@ContentText</MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="@Color" Variant="Variant.Filled" OnClick="Submit">@ButtonText</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public string ContentText { get; set; }
+    [Parameter] public string Type { get; set; }
+
+    [Parameter] public string ButtonText { get; set; }
+
+    [Parameter] public string Id { get; set; }
+
+    [Parameter] public Color Color { get; set; }
+
+    [Inject] public IMediator Mediator {get; set;}
+    [Inject] public IJSRuntime JSRuntime { get; set; }
+    [Inject] private ISnackbar Snackbar { get; set; }
+    async Task Submit()
+    {
+        try
+        {
+            if (Type == "product")
+            {
+                await Mediator.Send(new DeleteProductCommand() { Id = Guid.Parse(Id) });
+            }
+            else if (Type == "ingredient")
+            {
+                await Mediator.Send(new DeleteIngredientCommand() { Id = Guid.Parse(Id) });
+            }
+            
+            await JSRuntime.InvokeVoidAsync("history.back");
+            Snackbar.Add($"The {Type} is deleted succesfully", Severity.Success);
+        }
+        catch (Exception)
+        {
+            MudDialog.Close(DialogResult.Ok(true));
+            Snackbar.Add($"The {Type} could not be deleted", Severity.Error);
+        }
+    }
+    void Cancel() => MudDialog.Cancel();
+}

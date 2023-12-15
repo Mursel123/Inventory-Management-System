@@ -1,0 +1,62 @@
+﻿@page "/product/{ProductId}"
+
+@if(@Product != null)
+{
+    <MudContainer Class="my-5">
+        <div class="d-flex gap-2">
+            <InventoryManagementSystem.Components.BackButton />
+            <InventoryManagementSystem.Components.UpdateButton Value="product" Id="@Product.Id.ToString()" />
+            <InventoryManagementSystem.Components.DeleteButton Value="product" Id="@Product.Id.ToString()" />
+        </div>
+        <MudPaper Elevation="3" Class="p-4">
+            <MudGrid>
+                <MudItem xs="12" md="6" lg="8">
+                    <h2 class="mb-4">@Product.Name</h2>
+                    <div class="mb-4">
+                        <strong>Description:</strong>
+                        <span class="ml-2">@Product.Description</span>
+                    </div>
+                    <div class="mb-4">
+                        <strong>Price:</strong>
+                        <span class="ml-2">€ @Product.Price Euro</span>
+                    </div>
+                    <div class="mb-4">
+                        <strong>Amount:</strong>
+                        <span class="ml-2">@Product.Amount</span>
+                    </div>
+
+                    @if (Product.Ingredients != null || Product.Ingredients.Any())
+                    {
+                        <div class="mb-4">
+                            <MudSpacer />
+                            <MudTable Items="@Product.Ingredients" Class="mb-2">
+                                <ToolBarContent>
+                                    <MudText Typo="Typo.h6">Ingredients</MudText>
+                                    <MudSpacer />
+                                </ToolBarContent>
+                                <HeaderContent>
+                                    <MudTh>Name</MudTh>
+                                    <MudTh>Usage (ml)</MudTh>
+                                </HeaderContent>
+                                <RowTemplate Context="ingredient">
+                                    <MudTd>@ingredient.Name</MudTd>
+                                    <MudTd>@ingredient.MlUsage</MudTd>
+                                </RowTemplate>
+                            </MudTable>
+                        </div>
+                    }
+
+                   
+                </MudItem>
+                <MudItem xs="12" md="6" lg="4">
+                    @if (Product.Document != null)
+                    {
+                        <img src="data:image/png;base64,@Convert.ToBase64String(Product.Document.FileData)" alt="@Product.Name" class="img-fluid rounded" />
+                    }
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </MudContainer>
+
+
+}
