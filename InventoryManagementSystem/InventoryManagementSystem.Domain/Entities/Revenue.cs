@@ -1,5 +1,6 @@
 ﻿using InventoryManagementSystem.Domain.Contracts;
 using InventoryManagementSystem.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -10,38 +11,43 @@ namespace InventoryManagementSystem.Domain.Entities
     [NotMapped]
     public class Revenue
     {
-        public virtual List<Order> Orders { get; } = new();
-        public double PurchasedPercentage { get; private set; }
-        public double SalesPercentage { get; private set; }
-        public double PurchasedTotal { get; private set; }
-        public double SalesTotal { get; private set; }
-        public double RevenueTotal { get; private set; }
+        public virtual List<Order> Orders { get; }
+        public double PurchasedPercentage { get; private set; } = 0;
+        public double SalesPercentage { get; private set; } = 0;
+        public double ProfitPercentage { get; private set; } = 0;
+        public decimal PurchasedTotal { get; private set; } = 0;
+        public decimal SalesTotal { get; private set; } = 0;
+        public decimal ProfitTotal { get; private set; } = 0;
+        public Revenue(List<Order> orders)
+        {
+            Orders = orders ?? throw new ArgumentNullException(nameof(orders));
+            CalculateOmzet();
+        }
 
         private void CalculateOmzet()
         {
+            if (Orders.Count == 0)
+            {
+                return;
+            }
+
             int totalOrders = Orders.Count;
             int purchasedCount = Orders.Count(o => o.Type == OrderType.Purchased || o.Type == OrderType.Ingredient);
             int salesCount = Orders.Count(o => o.Type == OrderType.Sales);
 
-            PurchasedPercentage = (double)purchasedCount / totalOrders * 100;
-            SalesPercentage = (double)salesCount / totalOrders * 100;
-
-
             PurchasedTotal = Orders
                 .Where(o => o.Type == OrderType.Purchased || o.Type == OrderType.Ingredient)
-                .Sum(o => Convert.ToDouble(o.TotalCost));
+                .Sum(o => o.TotalCost);
 
             SalesTotal = Orders
                 .Where(o => o.Type == OrderType.Sales)
-                .Sum(o => Convert.ToDouble(o.TotalCost));
+                .Sum(o => o.TotalCost);
 
-            RevenueTotal = SalesTotal - PurchasedTotal;
-        }
+            ProfitTotal = SalesTotal - PurchasedTotal;
 
-        public Revenue(List<Order> orders)
-        {
-            Orders = orders;
-            CalculateOmzet();
+            PurchasedPercentage = (double)PurchasedTotal / (double)(PurchasedTotal + SalesTotal) * 100;
+            SalesPercentage = (double)SalesTotal / (double)(PurchasedTotal + SalesTotal) * 100;
+            ProfitPercentage = (double)ProfitTotal / (double)(PurchasedTotal + SalesTotal) * 100;
         }
     }
 }

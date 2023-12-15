@@ -4,30 +4,21 @@ namespace InventoryManagementSystem.Pages.Analytics
 {
     public  partial class LineChart
     {
-        private int Index = -1; //default value cannot be 0 -> first selectedindex is 0.
-
-        public List<ChartSeries> Series = new List<ChartSeries>()
-    {
-        new ChartSeries() { Name = "Series 1", Data = new double[] { 90, 79, 72, 69, 62, 62, 55, 65, 70 } },
-        new ChartSeries() { Name = "Series 2", Data = new double[] { 10, 41, 35, 51, 49, 62, 69, 91, 148 } },
-    };
-        public string[] XAxisLabels = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep" };
-
-        Random random = new Random();
-        public void RandomizeData()
+        private int SelectedYear { get; set; } = DateTime.Now.Year;
+        private List<int> Years { get; set; } = new() { 2023, 2024 };
+        private List<ChartSeries> Series = new List<ChartSeries>()
         {
-            var new_series = new List<ChartSeries>()
-        {
-            new ChartSeries() { Name = "Series 1", Data = new double[9] },
-            new ChartSeries() { Name = "Series 2", Data = new double[9] },
+            new ChartSeries() { Name = "Series 1", Data = new double[] { 90, 79, 72, 69, 62, 62, 55, 65, 70 } },
+            new ChartSeries() { Name = "Series 2", Data = new double[] { 10, 41, 35, 51, 49, 62, 69, 91, 148 } },
         };
-            for (int i = 0; i < 9; i++)
-            {
-                new_series[0].Data[i] = random.NextDouble() * 100;
-                new_series[1].Data[i] = random.NextDouble() * 100;
-            }
-            Series = new_series;
-            StateHasChanged();
+        private string[] XAxisLabels = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep" };
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
         }
+
+
+
     }
 }

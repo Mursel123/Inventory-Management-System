@@ -8,11 +8,11 @@
     [Inject]
     public IDialogService DialogService { get; set; }
     [Parameter]
-    public string Value { get; set; }
+    public string Value { get; set; } = string.Empty;
     [Parameter]
-    public string Id { get; set; }
+    public string Id { get; set; } = string.Empty;
 
-    private async Task Delete()
+    private void Delete()
     {
         var parameters = new DialogParameters<DeleteConfirmationDialog>();
         parameters.Add(x => x.ContentText, $"Do you really want to delete this {Value}?");

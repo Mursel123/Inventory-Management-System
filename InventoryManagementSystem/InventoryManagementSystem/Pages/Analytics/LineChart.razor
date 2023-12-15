@@ -1,5 +1,22 @@
-﻿<MudPaper Class="mt-4">
-    <MudChart ChartType="ChartType.Line" ChartSeries="@Series" @bind-SelectedIndex="Index" XAxisLabels="@XAxisLabels" Width="100%" Height="340px"></MudChart>
+﻿<MudPaper Class="mt-4 d-flex">
+    <div class="col-3 pa-4">
+        <!-- Set the desired width percentage (e.g., col-3 for 25%) -->
+        <MudSelect T="int"
+                   Variant="Variant.Outlined"
+                   Label="Year"
+                   Placeholder="Please Select"
+        @bind-Value="SelectedYear">
 
+            @foreach (int date in Years)
+            {
+                <MudSelectItem T="int" Value="@date">@date</MudSelectItem>
+            }
+        </MudSelect>
+    </div>
+    <div class="col">
+        <!-- The rest of the width -->
+        <MudChart ChartType="ChartType.Line" ChartSeries="@Series" XAxisLabels="@XAxisLabels" Width="100%" Height="310px"></MudChart>
+    </div>
 </MudPaper>
+
 

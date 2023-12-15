@@ -25,7 +25,7 @@ namespace InventoryManagementSystem.Pages.Analytics
             string[] colors = { "#ff574d", "#84fa84", "#5353ec" };
             options.ChartPalette = colors;
             Revenue = await _mediator.Send(new ReadOmzetQuery());
-            diagramData = new double[3] {Revenue.PurchasedPercentage, Revenue.SalesPercentage, 30};
+            diagramData = new double[3] {Revenue.PurchasedPercentage, Revenue.SalesPercentage, Revenue.ProfitPercentage};
 
         }
     }

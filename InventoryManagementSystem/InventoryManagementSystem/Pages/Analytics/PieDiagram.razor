@@ -1,27 +1,34 @@
 ﻿@if (diagramData != null)
 {
     <div class="d-flex w-50">
-        <MudPaper Class="pa-4">
+        <MudPaper Class="pa-4 mr-4">
             <MudChart ChartType="ChartType.Pie" InputData="@diagramData" InputLabels="@labels" Width="150px" Height="150px" ChartOptions="options" />
         </MudPaper>
 
 
-        <MudPaper Class="ml-2 w-30">
+        <MudPaper Class="w-30 mr-4">
             <div class="d-flex flex-column align-items-center">
                 <div class="d-flex justify-content-center">
-                    <MudText Typo="Typo.h6" Class="pa-3">Aankoop</MudText>
-                    <MudText Typo="Typo.h6" Class="pa-3">Winst</MudText>
                     <MudText Typo="Typo.h6" Class="pa-3">Verkoop</MudText>
+                    <MudText Typo="Typo.h6" Class="pa-3">Winst</MudText>
+                    <MudText Typo="Typo.h6" Class="pa-3">Aankoop</MudText>
                 </div>
                 <div class="d-flex pa-4 justify-content-center">
-                    <MudText Typo="Typo.h6" Class="pa-3">€@Revenue.PurchasedTotal</MudText>
-                    <MudText Typo="Typo.h6" Class="pa-3">€@Revenue.RevenueTotal</MudText>
                     <MudText Typo="Typo.h6" Class="pa-3">€@Revenue.SalesTotal</MudText>
+                    <MudText Typo="Typo.h6" Class="pa-3">€@Revenue.ProfitTotal</MudText>
+                    <MudText Typo="Typo.h6" Class="pa-3">€@Revenue.PurchasedTotal</MudText>                     
                 </div>
                 <div class="d-flex pa-4 justify-content-center">
-                    <MudText Typo="Typo.h6" Class="pa-3">@Math.Round(Revenue.PurchasedPercentage)%</MudText>
-                    <MudText Typo="Typo.h6" Class="pa-3">@Math.Round(Revenue.SalesPercentage)%</MudText>
-                    <MudText Typo="Typo.h6" Class="pa-3">@Math.Round(Revenue.SalesPercentage)%</MudText>
+                    <MudPaper Style="background-color:#84fa84; color: white" Class="pa-3 m-3">
+                        <MudText Typo="Typo.h6">@Math.Round(Revenue.SalesPercentage)%</MudText>
+                    </MudPaper>
+                    <MudPaper Style="background-color:#5353ec; color: white" Class="pa-3 m-3">
+                        <MudText Typo="Typo.h6">@Math.Round(Revenue.ProfitPercentage)%</MudText>
+                    </MudPaper>
+                    <MudPaper Style="background-color:#ff574d; color: white" Class="pa-3 m-3">
+                        <MudText Typo="Typo.h6">@Math.Round(Revenue.PurchasedPercentage)%</MudText>
+                    </MudPaper>
+                    
                 </div>
             </div>
         </MudPaper>
