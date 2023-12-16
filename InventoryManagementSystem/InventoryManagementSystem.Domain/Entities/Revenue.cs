@@ -18,6 +18,36 @@ namespace InventoryManagementSystem.Domain.Entities
         public decimal PurchasedTotal { get; private set; } = 0;
         public decimal SalesTotal { get; private set; } = 0;
         public decimal ProfitTotal { get; private set; } = 0;
+        public string MostSoldProduct
+        {
+            get
+            {
+                
+                return Orders
+                    .Where(o => o.Type == OrderType.Sales)
+                    .SelectMany(o => o.OrderLines)
+                    .GroupBy(ol => ol.Product)
+                    .OrderByDescending(g => g.Count())
+                    .Select(g => g.Key.Name) 
+                    .FirstOrDefault();
+
+            }
+        }
+
+        public string LeastSoldProduct
+        {
+            get
+            {
+
+                return Orders
+                    .Where(o => o.Type == OrderType.Sales)
+                    .SelectMany(o => o.OrderLines)
+                    .GroupBy(ol => ol.Product)
+                    .OrderBy(g => g.Count())
+                    .Select(g => g.Key.Name) 
+                    .FirstOrDefault();
+            }
+        }
         public Revenue(List<Order> orders)
         {
             Orders = orders ?? throw new ArgumentNullException(nameof(orders));
@@ -48,6 +78,7 @@ namespace InventoryManagementSystem.Domain.Entities
             PurchasedPercentage = (double)PurchasedTotal / (double)(PurchasedTotal + SalesTotal) * 100;
             SalesPercentage = (double)SalesTotal / (double)(PurchasedTotal + SalesTotal) * 100;
             ProfitPercentage = (double)ProfitTotal / (double)(PurchasedTotal + SalesTotal) * 100;
+
         }
     }
 }

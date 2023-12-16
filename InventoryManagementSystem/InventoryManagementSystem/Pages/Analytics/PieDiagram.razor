@@ -1,4 +1,4 @@
-﻿@if (diagramData != null)
+﻿@if (diagramData != null && diagramData.Any())
 {
     <div class="d-flex w-50">
         <MudPaper Class="pa-4 mr-4">
@@ -35,6 +35,10 @@
 
         
     </div>
+    <MudPaper class="w-50 pa-2">
+        <MudAlert Severity="Severity.Success">@Revenue.MostSoldProduct</MudAlert>
+        <MudAlert Severity="Severity.Warning">@Revenue.LeastSoldProduct</MudAlert>
+    </MudPaper>
 }
 
 

@@ -28,7 +28,7 @@ namespace InventoryManagementSystem.Application.Commands.Analytics.ReadOmzetLine
             List<ChartSeries> result = new()
             {
                 await ReadTotalCostPerYear(request.Year, "Aankoop", new(){OrderType.Purchased,OrderType.Ingredient }, cancellationToken),
-                await ReadTotalCostPerYear(request.Year, "Verkoop", new(){OrderType.Ingredient }, cancellationToken)
+                await ReadTotalCostPerYear(request.Year, "Verkoop", new(){OrderType.Sales }, cancellationToken)
             };
             return result;
         }

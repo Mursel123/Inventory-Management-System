@@ -10,6 +10,8 @@ namespace InventoryManagementSystem.Pages.Analytics
         [Inject]
         private IMediator _mediator { get; set; }
 
+        private ChartOptions options = new();
+
         private int selectedYear = DateTime.Now.Year;
 
         public int SelectedYear
@@ -30,6 +32,9 @@ namespace InventoryManagementSystem.Pages.Analytics
 
         protected override async Task OnInitializedAsync()
         {
+            options.InterpolationOption = InterpolationOption.Straight;
+            options.YAxisFormat = "c2";
+            options.ChartPalette = new string[2]{ "#ff574d", "#84fa84"};
             await ReadChartSeries();
         }
 

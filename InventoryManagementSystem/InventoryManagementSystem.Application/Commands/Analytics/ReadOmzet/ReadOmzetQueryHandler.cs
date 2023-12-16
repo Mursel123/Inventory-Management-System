@@ -23,7 +23,7 @@ namespace InventoryManagementSystem.Application.Commands.Analytics.ReadOmzet
 
         public async Task<Revenue> Handle(ReadOmzetQuery request, CancellationToken cancellationToken)
         {
-            var orders = await _context.Set<Order>().ToListAsync(cancellationToken);
+            var orders = await _context.Set<Order>().Include(x =>  x.OrderLines).ThenInclude(x => x.Product).ToListAsync(cancellationToken);
             return new Revenue(orders);
         }
     }
