@@ -1,17 +1,20 @@
 ﻿@inherits LayoutComponentBase
+@using InventoryManagementSystem.Application.Queries.Settings;
+
+@using MediatR;
 @using MudBlazor.Utilities
 
-<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="MyCustomTheme" @ref="@_mudThemeProvider" />
+<MudThemeProvider @bind-IsDarkMode="_isDarkMode" Theme="MyCustomTheme" @ref="@_mudThemeProvider" />
 <MudDialogProvider />
 <MudSnackbarProvider />
+
 
 <MudLayout>
     <MudAppBar Elevation="1">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudText Typo="Typo.h6" Class="ml-3">Inventory Management System</MudText>
         <MudSpacer />
-        <MudSwitch @bind-Checked="@_isDarkMode" Color="Color.Primary" Class="ma-4" T="bool" Label="Dark" />
-        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
         <NavMenu />
@@ -19,52 +22,51 @@
     <MudMainContent Class="pt-25 px-10 mt-5">
         @Body
     </MudMainContent>
+    
 </MudLayout>
 
 
 @code {
     bool _drawerOpen = true;
-    private bool _isDarkMode;
+    bool _isDarkMode = true;
+
     private MudThemeProvider _mudThemeProvider;
+
+    [Inject]
+    private IMediator Mediator { get; set; }
+
 
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
-            StateHasChanged();
-        }
-    }
-
     MudTheme MyCustomTheme = new MudTheme()
         {
             Palette = new PaletteLight()
             {
-                Primary = new MudColor("#2196F3"), 
-                Secondary = new MudColor("#FFC107"), 
-                Background = new MudColor("#FFFFFF"), 
-                AppbarBackground = new MudColor("#2196F3"), 
-                DrawerBackground = new MudColor("#FFFFFF"), 
-                DrawerText = new MudColor("#333333"), 
-                DrawerIcon = new MudColor("#333333"), 
-                TextPrimary = new MudColor("#333333"), 
-                TextSecondary = new MudColor("#666666"), 
-                ActionDefault = new MudColor("#2196F3"), 
-                ActionDisabled = new MudColor("#BDBDBD"), 
+                Primary = new MudColor("#2196F3"),
+                Secondary = new MudColor("#FFC107"),
+                Background = new MudColor("#FFFFFF"),
+                AppbarBackground = new MudColor("#2196F3"),
+                DrawerBackground = new MudColor("#FFFFFF"),
+                DrawerText = new MudColor("#333333"),
+                DrawerIcon = new MudColor("#333333"),
+                TextPrimary = new MudColor("#333333"),
+                TextSecondary = new MudColor("#666666"),
+                ActionDefault = new MudColor("#2196F3"),
+                ActionDisabled = new MudColor("#BDBDBD"),
                 ActionDisabledBackground = new MudColor("#E0E0E0")
             },
             PaletteDark = new PaletteDark()
             {
-                Primary = new MudColor("#2196F3"), 
-                
+                Primary = new MudColor("#2196F3"),
+
 
             },
         };
+
+    
 
 }
 

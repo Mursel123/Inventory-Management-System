@@ -34,6 +34,7 @@ namespace InventoryManagementSystem.Pages.Analytics
         {
             options.InterpolationOption = InterpolationOption.Straight;
             options.YAxisFormat = "c2";
+            options.YAxisTicks = 50;
             options.ChartPalette = new string[2]{ "#ff574d", "#84fa84"};
             await ReadChartSeries();
         }

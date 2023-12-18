@@ -123,6 +123,12 @@ namespace InventoryManagementSystem.Infrastructure
                 Type = OrderType.Purchased 
             };
 
+            var settings = new Settings()
+            {
+                Id = Guid.NewGuid(),
+                AtLeastIngredientMLTotal = 10,
+                AtLeastProductAmount = 1
+            };
 
             #endregion
 
@@ -168,6 +174,11 @@ namespace InventoryManagementSystem.Infrastructure
                 await _context.SaveChangesAsync();
             }
 
+            if (!_context.Settings.Any())
+            {
+                await _context.Settings.AddAsync(settings);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

@@ -20,7 +20,7 @@ namespace InventoryManagementSystem.Infrastructure
         public DbSet<Product>? Product { get; set; }
         public DbSet<ProductType>? ProductType { get; set; }
         public DbSet<Supplier>? Supplier { get; set; }
-
+        public DbSet<Settings>? Settings { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(typeof(DocumentConfiguration).Assembly);
