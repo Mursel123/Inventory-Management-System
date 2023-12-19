@@ -1,4 +1,5 @@
-﻿using InventoryManagementSystem.Application.DTOs.ProductType;
+﻿using InventoryManagementSystem.Application.DTOs.Ingredient;
+using InventoryManagementSystem.Application.DTOs.ProductType;
 using InventoryManagementSystem.Domain.Entities;
 using InventoryManagementSystem.Domain.Enums;
 using System;
@@ -15,7 +16,8 @@ namespace InventoryManagementSystem.Application.DTOs.Product
         public int Amount { get; set; } 
         public decimal Price { get; set; } 
         public string Name { get; set; } = string.Empty;
-        public List<ProductTypeDTO> ProductTypes { get; set; } = new();
+        public virtual List<ProductTypeDTO> ProductTypes { get; set; } = new();
+        public virtual List<IngredientListDTO> Ingredients { get; set; } = new();
         public string ProductTypesString { get { return ProductTypeToString(ProductTypes); } }
         private string ProductTypeToString(List<ProductTypeDTO> ProductTypes)
         {

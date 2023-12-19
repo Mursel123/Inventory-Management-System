@@ -1,4 +1,6 @@
-﻿namespace InventoryManagementSystem.Domain.Entities
+﻿using InventoryManagementSystem.Domain.Enums;
+
+namespace InventoryManagementSystem.Domain.Entities
 {
     public class OrderLine : BaseEntity
     {
@@ -6,34 +8,42 @@
         public virtual Product? Product { get; set; }
         public virtual Ingredient? Ingredient { get; set; }
 
-        private int quantity;
-
-        public int Quantity
-        {
-            get { return quantity; }
-            set
-            {
-                quantity = value;
-                CalculateTotal();
-            }
-        }
+        public int Quantity { get; set; }
 
         public decimal Total { get; private set; }
 
 
 
-        private void CalculateTotal()
+        internal void CalculateAmountAndTotal(OrderType type)
         {
             if (Product != null)
             {
                 Total = Quantity * Product.Price;
-                Product.Amount -= Quantity;
+
+                if (type == OrderType.Purchased)
+                    Product.Amount += Quantity;
+
+                if (type == OrderType.Sales)
+                {
+                    Product.Amount -= Quantity;
+
+                    if (Product.Ingredients.Any())
+                    {
+                        foreach (var ingredient in Product.Ingredients)
+                        {
+                            ingredient.MlTotal -= Quantity * ingredient.MlUsage;
+                        }
+                        
+                    }
+                }
+                    
             }
             else if (Ingredient != null)
             {
                 
                 Total = Quantity * Ingredient.Prices.FirstOrDefault().IngredientPrice;
-                Ingredient.MlTotal -= Quantity * Ingredient.Prices.FirstOrDefault().Ml;
+                
+                    Ingredient.MlTotal -= Quantity * Ingredient.Prices.FirstOrDefault().Ml;
             }
         }
     }

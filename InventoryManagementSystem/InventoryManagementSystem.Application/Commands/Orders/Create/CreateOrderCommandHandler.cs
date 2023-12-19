@@ -33,7 +33,7 @@ namespace InventoryManagementSystem.Application.Commands.Orders.Create
                 {
                     if (order.Type == OrderType.Purchased || order.Type == OrderType.Sales)
                     {
-                        var product = await _context.Set<Product>().AsTracking().SingleAsync(x => x.Id == orderline.Product.Id);
+                        var product = await _context.Set<Product>().AsTracking().Include(x => x.Ingredients).SingleAsync(x => x.Id == orderline.Product.Id);
 
                         var productUpdated = await UpdateProductAmountAsync(product, orderline, cancellationToken);
 
@@ -90,10 +90,25 @@ namespace InventoryManagementSystem.Application.Commands.Orders.Create
             return ingredient;
         }
 
+        private async Task<Ingredient> UpdateIngredientMlInProductAsync(Ingredient ingredient, OrderLine orderline, CancellationToken ct)
+        {
+            var ingredientUpdated = orderline.Product.Ingredients.Where(x => x.Id == ingredient.Id).Single();
+            ingredient.MlTotal = ingredientUpdated.MlTotal;
+
+            _context.Set<Ingredient>().Update(ingredient);
+            await _context.SaveChangesAsync(ct);
+
+            return ingredient;
+        }
+
         private async Task<Product> UpdateProductAmountAsync(Product product, OrderLine orderline, CancellationToken ct)
         {
-            product.Amount = orderline.Product.Amount;
+            foreach (var ingredient in product.Ingredients)
+            {
+                await UpdateIngredientMlInProductAsync(ingredient, orderline, ct);
+            }
 
+            product.Amount = orderline.Product.Amount;
             _context.Set<Product>().Update(product);
             await _context.SaveChangesAsync(ct);
 

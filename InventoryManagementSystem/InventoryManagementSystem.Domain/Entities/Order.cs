@@ -24,6 +24,10 @@ namespace InventoryManagementSystem.Domain.Entities
             set
             {
                 orderLines = value;
+                foreach (var line in orderLines)
+                {
+                    line.CalculateAmountAndTotal(Type);
+                }
                 CalculateTotal();
             }
         }
@@ -32,7 +36,10 @@ namespace InventoryManagementSystem.Domain.Entities
 
         private void CalculateTotal()
         {
-            TotalCost = OrderLines.Sum(x => x.Total);
+            
+            TotalCost = orderLines.Sum(x => x.Total);
         }
+
+        
     }
 }
