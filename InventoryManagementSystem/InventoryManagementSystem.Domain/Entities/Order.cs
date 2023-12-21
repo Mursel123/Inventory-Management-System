@@ -26,7 +26,7 @@ namespace InventoryManagementSystem.Domain.Entities
                 orderLines = value;
                 foreach (var line in orderLines)
                 {
-                    line.CalculateAmountAndTotal(Type);
+                    line.CalculateAmountAndTotal();
                 }
                 CalculateTotal();
             }

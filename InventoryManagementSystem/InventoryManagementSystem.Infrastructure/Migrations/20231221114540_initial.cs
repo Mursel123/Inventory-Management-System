@@ -54,6 +54,20 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Settings",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AtLeastProductAmount = table.Column<int>(type: "int", nullable: false),
+                    AtLeastIngredientMLTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Settings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Supplier",
                 columns: table => new
                 {
@@ -196,6 +210,29 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductProduct",
+                columns: table => new
+                {
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductProduct", x => new { x.ProductId, x.ProductsId });
+                    table.ForeignKey(
+                        name: "FK_ProductProduct_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductProduct_Product_ProductsId",
+                        column: x => x.ProductsId,
+                        principalTable: "Product",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductProductType",
                 columns: table => new
                 {
@@ -264,6 +301,11 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 column: "SupplierId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductProduct_ProductsId",
+                table: "ProductProduct",
+                column: "ProductsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductProductType_ProductsId",
                 table: "ProductProductType",
                 column: "ProductsId");
@@ -282,7 +324,13 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 name: "Price");
 
             migrationBuilder.DropTable(
+                name: "ProductProduct");
+
+            migrationBuilder.DropTable(
                 name: "ProductProductType");
+
+            migrationBuilder.DropTable(
+                name: "Settings");
 
             migrationBuilder.DropTable(
                 name: "Order");

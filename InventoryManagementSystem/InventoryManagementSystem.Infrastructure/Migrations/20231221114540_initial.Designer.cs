@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryManagementSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231212195337_initial")]
+    [Migration("20231221114540_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -241,6 +241,26 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                     b.ToTable("ProductType");
                 });
 
+            modelBuilder.Entity("InventoryManagementSystem.Domain.Entities.Settings", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("AtLeastIngredientMLTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("AtLeastProductAmount")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Settings");
+                });
+
             modelBuilder.Entity("InventoryManagementSystem.Domain.Entities.Supplier", b =>
                 {
                     b.Property<Guid>("Id")
@@ -265,6 +285,21 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Supplier");
+                });
+
+            modelBuilder.Entity("ProductProduct", b =>
+                {
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ProductId", "ProductsId");
+
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("ProductProduct");
                 });
 
             modelBuilder.Entity("ProductProductType", b =>
@@ -349,6 +384,21 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                     b.Navigation("Document");
 
                     b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("ProductProduct", b =>
+                {
+                    b.HasOne("InventoryManagementSystem.Domain.Entities.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InventoryManagementSystem.Domain.Entities.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ProductProductType", b =>

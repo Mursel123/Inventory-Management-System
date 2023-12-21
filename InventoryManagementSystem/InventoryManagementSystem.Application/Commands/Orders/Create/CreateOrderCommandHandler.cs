@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using InventoryManagementSystem.Application.Commands.Ingredients.UpdateMl;
+using InventoryManagementSystem.Application.Commands.Products.UpdateAmount;
 using InventoryManagementSystem.Domain.Contracts;
 using InventoryManagementSystem.Domain.Entities;
 using InventoryManagementSystem.Domain.Enums;
@@ -17,42 +19,44 @@ namespace InventoryManagementSystem.Application.Commands.Orders.Create
     {
         private readonly IDbContext _context;
         private readonly IMapper _mapper;
-        public CreateOrderCommandHandler(IDbContext context, IMapper mapper)
+        private readonly IMediator _mediator;
+        public CreateOrderCommandHandler(IDbContext context, IMapper mapper, IMediator mediator)
         {
             _context = context;
             _mapper = mapper;
+            _mediator = mediator;
         }
         public async Task<Guid> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
             var order = _mapper.Map<Order>(request);
             order.OrderNumber = GenerateRandomOrderNumber();
 
-            if (order.OrderLines.Any())
+            foreach (var orderline in order.OrderLines)
             {
-                foreach (var orderline in order.OrderLines)
+                if (order.Type == OrderType.Purchased || order.Type == OrderType.Sales)
                 {
-                    if (order.Type == OrderType.Purchased || order.Type == OrderType.Sales)
-                    {
-                        var product = await _context.Set<Product>().AsTracking().Include(x => x.Ingredients).SingleAsync(x => x.Id == orderline.Product.Id);
+                    var product = await _context.Set<Product>()
+                        .AsTracking()
+                        .Include(x => x.Products)
+                        .Include(x => x.Ingredients)
+                        .SingleAsync(x => x.Id == orderline.Product.Id);
 
-                        var productUpdated = await UpdateProductAmountAsync(product, orderline, cancellationToken);
+                    ProcessProduct(product, orderline, request.Type);
 
-                        orderline.Product = productUpdated;
-                    }
-                    else if (order.Type == OrderType.Ingredient)
-                    {
-                        var ingredient = await _context.Set<Ingredient>().AsTracking().SingleAsync(x => x.Id == orderline.Ingredient.Id);
-
-                        var ingredientUpdated = await UpdateIngredientMlAsync(ingredient, orderline, cancellationToken);
-
-                        orderline.Ingredient = ingredientUpdated;
-
-                    }
-                    
                 }
+                else if (order.Type == OrderType.Ingredient)
+                {
+                    var ingredient = await _context.Set<Ingredient>()
+                        .AsTracking()
+                        .SingleAsync(x => x.Id == orderline.Ingredient.Id);
+
+                    UpdateIngredientMlTotal(ingredient, orderline, true);
+
+                }
+
             }
 
-            _context.Set<Order>().Add(order);
+            await _context.Set<Order>().AddAsync(order, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
             return order.Id;
         }
@@ -80,39 +84,52 @@ namespace InventoryManagementSystem.Application.Commands.Orders.Create
             return !_context.Set<Order>().Where(x => x.OrderNumber == number).Any();
         }
 
-        private async Task<Ingredient> UpdateIngredientMlAsync(Ingredient ingredient, OrderLine orderline, CancellationToken ct)
+        private void UpdateIngredientMlTotal(Ingredient ingredient, OrderLine orderline, bool isIncrement)
         {
-            ingredient.MlTotal = orderline.Ingredient.MlTotal;
-
-            _context.Set<Ingredient>().Update(ingredient);
-            await _context.SaveChangesAsync(ct);
-
-            return ingredient;
-        }
-
-        private async Task<Ingredient> UpdateIngredientMlInProductAsync(Ingredient ingredient, OrderLine orderline, CancellationToken ct)
-        {
-            var ingredientUpdated = orderline.Product.Ingredients.Where(x => x.Id == ingredient.Id).Single();
-            ingredient.MlTotal = ingredientUpdated.MlTotal;
-
-            _context.Set<Ingredient>().Update(ingredient);
-            await _context.SaveChangesAsync(ct);
-
-            return ingredient;
-        }
-
-        private async Task<Product> UpdateProductAmountAsync(Product product, OrderLine orderline, CancellationToken ct)
-        {
-            foreach (var ingredient in product.Ingredients)
+            if (isIncrement)
             {
-                await UpdateIngredientMlInProductAsync(ingredient, orderline, ct);
+                ingredient.MlTotal += orderline.Quantity * orderline.Ingredient.Prices.Single().Ml;
+            }
+            else
+            {
+                ingredient.MlTotal -= orderline.Quantity * orderline.Product.Ingredients.Where(x => x.Id == ingredient.Id).Select(x => x.MlUsage).Single();
             }
 
-            product.Amount = orderline.Product.Amount;
-            _context.Set<Product>().Update(product);
-            await _context.SaveChangesAsync(ct);
+            orderline.Ingredient = ingredient;
+        }
 
-            return product;
+
+
+        private void UpdateProductAmount(Product product, OrderLine orderline, bool isIncrement)
+        {
+            if (isIncrement)
+            {
+                product.Amount += orderline.Quantity;
+            }
+            else
+            {
+                product.Amount -= orderline.Quantity;
+            }
+
+            orderline.Product = product;
+
+        }
+        private void ProcessProduct(Product product, OrderLine orderline, OrderType? type)
+        {
+            //Decreasing the ingredients ml for making the actual product to sell
+            foreach (var ingredient in product.Ingredients)
+            {
+                UpdateIngredientMlTotal(ingredient, orderline, false);
+            }
+
+            //Decreasing the products amount for making the actual product to sell
+            foreach (var productItem in product.Products)
+            {
+                UpdateProductAmount(productItem, orderline, false);
+            }
+
+            //When purchasing products (main product amount)
+            UpdateProductAmount(product, orderline, type == OrderType.Purchased);
         }
     }
 }

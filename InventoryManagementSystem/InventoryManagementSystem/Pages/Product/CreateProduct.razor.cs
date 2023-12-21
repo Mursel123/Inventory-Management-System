@@ -5,8 +5,10 @@ using InventoryManagementSystem.Application.DTOs.ProductType;
 using InventoryManagementSystem.Application.DTOs.Supplier;
 using InventoryManagementSystem.Application.Queries.Ingredients.ReadIngredientList;
 using InventoryManagementSystem.Application.Queries.ProductTypeList;
+using InventoryManagementSystem.Application.Queries.ReadProductList;
 using InventoryManagementSystem.Application.Queries.Suppliers.ReadSupplierSelectList;
 using InventoryManagementSystem.Domain.Enums;
+using InventoryManagementSystem.Domain.StaticData;
 using MediatR;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -23,7 +25,8 @@ namespace InventoryManagementSystem.Pages.Product
         private ICollection<SupplierDTO> Suppliers { get; set; }
         private ICollection<IngredientListDTO> Ingredients { get; set; }
         private ICollection<ProductTypeDTO> ProductTypes { get; set; }
-       
+
+        private ICollection<ProductListDTO> Products { get; set; }
         private ProductDTO Product { get; set; } = new();
 
         private IList<IBrowserFile> files = new List<IBrowserFile>();
@@ -67,11 +70,32 @@ namespace InventoryManagementSystem.Pages.Product
             }
         }
 
+
+        private ProductListDTO? selectedProduct;
+
+        public ProductListDTO? SelectedProduct
+        {
+            get { return selectedProduct; }
+            set
+            {
+                if (value != null)
+                {
+                    ChangedType(value);
+                }
+                else
+                {
+                    selectedProduct = value;
+                }
+
+            }
+        }
+
         protected override async Task OnInitializedAsync()
         {
             ProductTypes = await _mediator.Send(new ReadProductTypeListQuery());
             Suppliers = await _mediator.Send(new ReadSupplierListQuery());
             Ingredients = await _mediator.Send(new ReadIngredientListQuery());
+            Products = await _mediator.Send(new ReadProductListQuery() { ProductType = ProductTypeData.PurchasedInventory });
             
 
         }
@@ -88,7 +112,8 @@ namespace InventoryManagementSystem.Pages.Product
                     Product.Document,
                     Product.Ingredients,
                     Product.Supplier,
-                    Product.ProductTypes);
+                    Product.ProductTypes,
+                    Product.Products);
 
                 await _mediator.Send(command);
 
@@ -138,6 +163,12 @@ namespace InventoryManagementSystem.Pages.Product
                     Ingredients.Add(SelectedIngredient);
 
                 }
+                else if (value is ProductListDTO selectedProduct)
+                {
+                    Product.Products.Remove(selectedProduct);
+                    Products.Add(selectedProduct);
+
+                }
 
             }
         }
@@ -156,6 +187,12 @@ namespace InventoryManagementSystem.Pages.Product
                     Product.Ingredients.Add(SelectedIngredient);
                     Ingredients.Remove(SelectedIngredient);
                     Ingredient = null;
+                }
+                else if (value is ProductListDTO selectedProduct)
+                {
+                    Product.Products.Add(selectedProduct);
+                    Products.Remove(selectedProduct);
+                    SelectedProduct = null;
                 }
 
             }

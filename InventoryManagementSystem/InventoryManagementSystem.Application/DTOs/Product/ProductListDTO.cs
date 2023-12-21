@@ -16,6 +16,7 @@ namespace InventoryManagementSystem.Application.DTOs.Product
         public int Amount { get; set; } 
         public decimal Price { get; set; } 
         public string Name { get; set; } = string.Empty;
+        public bool IsDeleted { get; set; }
         public virtual List<ProductTypeDTO> ProductTypes { get; set; } = new();
         public virtual List<IngredientListDTO> Ingredients { get; set; } = new();
         public string ProductTypesString { get { return ProductTypeToString(ProductTypes); } }

@@ -88,7 +88,6 @@ namespace InventoryManagementSystem.Pages.Order
             try
             {
                 var command = new CreateOrderCommand(
-                    Order.OrderNumber,
                     Order.Document,
                     Order.OrderLines,
                     SelectedOrderType);

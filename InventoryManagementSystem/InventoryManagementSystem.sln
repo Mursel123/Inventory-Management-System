@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagementSystem.I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagementSystem.Application", "InventoryManagementSystem.Application\InventoryManagementSystem.Application.csproj", "{C4F50CA3-06F1-4711-BCBF-07043C5822A9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{37547915-C62A-4B6E-886A-CFB4344235E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryManagementSystem.Handler.Tests", "InventoryManagementSystem.Handler.Tests\InventoryManagementSystem.Handler.Tests.csproj", "{42AD1579-6B76-430E-9EE3-93B2A6D9DD4F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +37,16 @@ Global
 		{C4F50CA3-06F1-4711-BCBF-07043C5822A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4F50CA3-06F1-4711-BCBF-07043C5822A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4F50CA3-06F1-4711-BCBF-07043C5822A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42AD1579-6B76-430E-9EE3-93B2A6D9DD4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42AD1579-6B76-430E-9EE3-93B2A6D9DD4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42AD1579-6B76-430E-9EE3-93B2A6D9DD4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42AD1579-6B76-430E-9EE3-93B2A6D9DD4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{42AD1579-6B76-430E-9EE3-93B2A6D9DD4F} = {37547915-C62A-4B6E-886A-CFB4344235E7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA0826EC-69AB-4F93-BC4C-ADD9E9DB8063}

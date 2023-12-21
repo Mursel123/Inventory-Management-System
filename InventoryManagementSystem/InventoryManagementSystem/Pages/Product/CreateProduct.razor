@@ -1,6 +1,7 @@
 ﻿@page "/products/create"
 @using Blazored.FluentValidation
 @using InventoryManagementSystem.Application.DTOs.Ingredient;
+@using InventoryManagementSystem.Application.DTOs.Product;
 @using InventoryManagementSystem.Application.DTOs.ProductType;
 @using InventoryManagementSystem.Application.DTOs.Supplier;
 @using InventoryManagementSystem.Domain.StaticData;
@@ -133,6 +134,42 @@
                                 </MudPaper>
                             }
                         </MudStack>
+
+                        <MudText Typo="Typo.h6" Class="mt-5 mb-md-5">Uitlities</MudText>
+                        @if (Products.Count != 0)
+                        {
+                            <MudSelect T="ProductListDTO"
+                                       Class="mb-5"
+                                       Label="Utilities"
+                                       Variant="Variant.Outlined"
+                                       @bind-Value="SelectedProduct">
+
+                                @foreach (var product in Products)
+                                {
+                                    <MudSelectItem T="ProductListDTO" Value="@product">@product.Name</MudSelectItem>
+                                }
+                            </MudSelect>
+                        }
+
+
+                        <MudStack>
+                            @foreach (var product in Product.Products)
+                            {
+                                <MudPaper Class="pa-3">
+                                    <MudGrid>
+                                        <MudItem xs="12" md="10">
+                                            <MudText>
+                                                @product.Name
+                                            </MudText>
+                                        </MudItem>
+                                        <MudItem xs="12" md="2" Class="text-right">
+                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" Size="Size.Medium" @onclick="(() => Remove(ingredient))" />
+                                        </MudItem>
+                                    </MudGrid>
+                                </MudPaper>
+                            }
+                        </MudStack>
+
 
                         <MudFileUpload Class="mt-5" Context="fileInput" T="IBrowserFile" Accept=".png, .jpg" FilesChanged="UploadFileAsync" AppendMultipleFiles="false">
                             <ButtonTemplate>

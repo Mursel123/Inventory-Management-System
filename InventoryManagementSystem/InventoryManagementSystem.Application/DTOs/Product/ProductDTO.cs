@@ -18,5 +18,6 @@ namespace InventoryManagementSystem.Application.DTOs.Product
         public virtual List<IngredientListDTO> Ingredients { get; set; } = new();
         public virtual List<ProductTypeDTO> ProductTypes { get; set; } = new();
         public virtual List<ProductOrderLineDTO> OrderLines { get; set; } = new();
+        public virtual List<ProductListDTO> Products { get; set; } = new();
     }
 }

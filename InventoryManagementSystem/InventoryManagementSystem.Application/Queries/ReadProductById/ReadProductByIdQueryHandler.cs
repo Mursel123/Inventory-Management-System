@@ -27,26 +27,12 @@ namespace InventoryManagementSystem.Application.Queries.ReadProductById
 
         public async Task<ProductDTO> Handle(ReadProductByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Set<Product>().AsNoTracking()
+            var test = await _context.Set<Product>().AsNoTracking()
                  .Where(x => !x.IsDeleted)
                  .Where(x => x.Id == request.Id)
                  .ProjectTo<ProductDTO>(_mapper.ConfigurationProvider)
-                 .Select(productDto => new ProductDTO
-                 {
-                     Id = productDto.Id,
-                     Amount = productDto.Amount,
-                     Price = productDto.Price,
-                     Name = productDto.Name,
-                     Description = productDto.Description,
-                     IsDeleted = productDto.IsDeleted,
-                     Supplier = productDto.Supplier,
-                     Document = productDto.Document,
-                     ProductTypes = productDto.ProductTypes,
-                     OrderLines = productDto.OrderLines,
-                     Ingredients = productDto.Ingredients.Where(ingredient => !ingredient.IsDeleted).ToList()
-                 })
-                 .SingleAsync(cancellationToken);
-
+                 .SingleOrDefaultAsync(cancellationToken);
+            return test;
 
 
         }

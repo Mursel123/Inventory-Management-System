@@ -1,11 +1,4 @@
-﻿using InventoryManagementSystem.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace InventoryManagementSystem.Domain.Entities
+﻿namespace InventoryManagementSystem.Domain.Entities
 {
     public class Product : BaseEntity
     {
@@ -18,8 +11,7 @@ namespace InventoryManagementSystem.Domain.Entities
         public virtual List<Ingredient> Ingredients { get; set; } = new();
         public virtual List<ProductType> ProductTypes { get; set; } = new();
         public virtual List<OrderLine> OrderLines { get; set; } = new();
-
-
+        public virtual List<Product> Products { get; set; } = new();
 
     }
 }

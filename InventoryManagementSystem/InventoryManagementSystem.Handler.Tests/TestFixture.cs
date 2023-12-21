@@ -1,31 +1,78 @@
-﻿using InventoryManagementSystem.Domain.Entities;
+﻿using AutoMapper;
+using InventoryManagementSystem.Domain.Contracts;
+using InventoryManagementSystem.Domain.Entities;
 using InventoryManagementSystem.Domain.Enums;
 using InventoryManagementSystem.Domain.StaticData;
-using Microsoft.AspNetCore.Builder;
+using InventoryManagementSystem.Infrastructure;
+using MediatR;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace InventoryManagementSystem.Infrastructure
+namespace InventoryManagementSystem.Handler.Tests
 {
-    public class SeedData
+    public class TestFixture
     {
-        private static AppDbContext _context;
-        public async static Task EnsurePopulatedAsync(IApplicationBuilder app)
+        private readonly DbContextOptions<AppDbContext> _options;
+        private readonly DbConnection _connection;
+        public AppDbContext _context { get; private set; }
+        public IMapper _mapper { get; private set; }
+        public IMediator _mediator { get; private set; }
+        public TestFixture()
         {
-            using var scope = app.ApplicationServices.CreateScope();
-            _context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            _connection = new SqliteConnection($"DataSource=:memory:");
+            _connection.Open();
 
-            #region Data
+            _options = new DbContextOptionsBuilder<AppDbContext>()
+                .UseSqlite(_connection)
+                .Options;
+
+            _context = new AppDbContext(_options);
+
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                var profiles = AppDomain.CurrentDomain.GetAssemblies()
+                    .SelectMany(a => a.GetTypes()
+                    .Where(t => typeof(Profile).IsAssignableFrom(t)));
+                cfg.AddMaps(profiles);
+            });
+
+            _mapper = configuration.CreateMapper();
+
+            var services = new ServiceCollection();
+            services.AddMediatR(Assembly.Load("InventoryManagementSystem.Application")); // Replace with your assembly
+            services.AddSingleton(_options);
+            services.AddScoped<IDbContext, AppDbContext>();
+            var serviceProvider = services.BuildServiceProvider();
+            _mediator = serviceProvider.GetRequiredService<IMediator>();
+
+            _context.Database.EnsureCreated();
+            _ = CreateSamples();
+        }
+
+
+        internal async Task CreateSamples()
+        {
+
+            #region SeedData
             var documentPdf = new Document
             {
                 Id = Guid.NewGuid(),
-                Type = DocumentType.Pdf, 
+                Type = DocumentType.Pdf,
                 FileData = Convert.FromBase64String("JVBERi0xLjMKJcfs")
             };
 
             var image = new Document
             {
                 Id = Guid.NewGuid(),
-                Type = DocumentType.Image, 
+                Type = DocumentType.Image,
                 FileData = Convert.FromBase64String("JVBERi0xLjMKJcfs")
             };
 
@@ -39,11 +86,11 @@ namespace InventoryManagementSystem.Infrastructure
 
             var ingredient = new Ingredient
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("FBD1843E-AA5A-4425-8DC3-135A3AB5727E"),
                 Name = "Castor Oil",
                 MlUsage = 0.3m,
                 MlTotal = 100,
-                Prices = new() { price}
+                Prices = new() { price }
             };
 
             var productTypePurchased = new ProductType
@@ -70,8 +117,8 @@ namespace InventoryManagementSystem.Infrastructure
 
             var productExtra = new Product
             {
-                Id = Guid.NewGuid(),
-                Amount = 5, 
+                Id = Guid.Parse("FF9EFB3F-D98A-4073-9B5C-ADF0C1264C51"),
+                Amount = 5,
                 Price = 4.05m,
                 Supplier = supplier,
                 Name = "Bottle 100ml",
@@ -80,8 +127,8 @@ namespace InventoryManagementSystem.Infrastructure
 
             var productSell = new Product
             {
-                Id = Guid.NewGuid(),
-                Amount = 1,
+                Id = Guid.Parse("9A522691-0E95-4CB7-ACFF-CDB22FBAC06D"),
+                Amount = 2,
                 Price = 10.05m,
                 Document = image,
                 Name = "Beard Oil Smooth 100ml",
@@ -93,7 +140,7 @@ namespace InventoryManagementSystem.Infrastructure
 
             var productSell2 = new Product
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("6362AC0B-F357-482D-9A9E-281D2845A472"),
                 Amount = 3,
                 Price = 9.05m,
                 Document = image,
@@ -108,7 +155,7 @@ namespace InventoryManagementSystem.Infrastructure
             {
                 Ingredient = ingredient,
                 Quantity = 1
-                
+
             };
 
             var orderlinesExtra = new OrderLine
@@ -132,8 +179,8 @@ namespace InventoryManagementSystem.Infrastructure
                 Type = OrderType.Ingredient
             };
 
-            var orderSell = new Order() 
-            { 
+            var orderSell = new Order()
+            {
                 Id = Guid.NewGuid(),
                 OrderNumber = "9563967319",
                 Document = documentPdf,
@@ -141,13 +188,13 @@ namespace InventoryManagementSystem.Infrastructure
                 Type = OrderType.Sales
             };
 
-            var orderExtra = new Order() 
-            { 
+            var orderExtra = new Order()
+            {
                 Id = Guid.NewGuid(),
                 OrderNumber = "9672487992",
-                Document = documentPdf, 
-                OrderLines = new() { orderlinesExtra }, 
-                Type = OrderType.Purchased 
+                Document = documentPdf,
+                OrderLines = new() { orderlinesExtra },
+                Type = OrderType.Purchased
             };
 
             var settings = new Settings()
@@ -158,9 +205,11 @@ namespace InventoryManagementSystem.Infrastructure
             };
 
             #endregion
+            await ClearTablesAsync();
 
             if (!_context.Document.Any())
             {
+               
                 await _context.Document.AddRangeAsync(documentPdf, image);
                 await _context.SaveChangesAsync();
             }
@@ -210,6 +259,29 @@ namespace InventoryManagementSystem.Infrastructure
             if (!_context.Settings.Any())
             {
                 await _context.Settings.AddAsync(settings);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        private async Task ClearTablesAsync()
+        {
+            await ClearTableAsync<Document>();
+            await ClearTableAsync<Price>();
+            await ClearTableAsync<Ingredient>();
+            await ClearTableAsync<Supplier>();
+            await ClearTableAsync<ProductType>();
+            await ClearTableAsync<Product>();
+            await ClearTableAsync<OrderLine>();
+            await ClearTableAsync<Order>();
+            await ClearTableAsync<Settings>();
+        }
+
+        private async Task ClearTableAsync<T>() where T : class
+        {
+            var table = _context.Set<T>();
+            if (table.Any())
+            {
+                table.RemoveRange(table);
                 await _context.SaveChangesAsync();
             }
         }

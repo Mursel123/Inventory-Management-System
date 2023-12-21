@@ -20,9 +20,12 @@ namespace InventoryManagementSystem.Application.Commands.Ingredients.Delete
 
         public async Task<Guid> Handle(DeleteIngredientCommand request, CancellationToken cancellationToken)
         {
-            var ingredient = await _context.Set<Ingredient>().SingleAsync(x => x.Id == request.Id, cancellationToken);
+            var ingredient = await _context.Set<Ingredient>().AsTracking().Include(x => x.Products).SingleAsync(x => x.Id == request.Id, cancellationToken);
 
             ingredient.IsDeleted = true;
+
+            //Deatch products foreign key
+            ingredient.Products = new();
 
             _context.Set<Ingredient>().Update(ingredient);
             await _context.SaveChangesAsync(cancellationToken);

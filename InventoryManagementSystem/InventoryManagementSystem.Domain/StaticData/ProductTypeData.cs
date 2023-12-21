@@ -8,7 +8,7 @@ namespace InventoryManagementSystem.Domain.StaticData
 {
     public static class ProductTypeData
     {
-        public static readonly string PurchasedInventory = "Purchased Inventory";
-        public static readonly string SalesInventory = "Sales Inventory";
+        public const string  PurchasedInventory = "Purchased Inventory";
+        public const string SalesInventory = "Sales Inventory";
     }
 }

@@ -1,5 +1,6 @@
 ﻿using InventoryManagementSystem.Application.DTOs.Document;
 using InventoryManagementSystem.Application.DTOs.Ingredient;
+using InventoryManagementSystem.Application.DTOs.Product;
 using InventoryManagementSystem.Application.DTOs.ProductType;
 using InventoryManagementSystem.Application.DTOs.Supplier;
 using MediatR;
@@ -19,8 +20,8 @@ namespace InventoryManagementSystem.Application.Commands.Products.CreateProduct
         public SupplierDTO? Supplier { get; set; }
 
         public List<ProductTypeDTO> ProductTypes { get; set; }
-
-        public CreateProductCommand(int amount, decimal price, string name, string description, DocumentDTO? document, List<IngredientListDTO> ingredients, SupplierDTO? supplier, List<ProductTypeDTO> productTypes)
+        public List<ProductListDTO> Products { get; set; }
+        public CreateProductCommand(int amount, decimal price, string name, string description, DocumentDTO? document, List<IngredientListDTO> ingredients, SupplierDTO? supplier, List<ProductTypeDTO> productTypes, List<ProductListDTO> productList)
         {
             Amount = amount;
             Price = price;
@@ -30,6 +31,7 @@ namespace InventoryManagementSystem.Application.Commands.Products.CreateProduct
             Ingredients = ingredients;
             Supplier = supplier;
             ProductTypes = productTypes;
+            Products = productList;
         }
     }
 }

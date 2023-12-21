@@ -37,19 +37,23 @@ namespace InventoryManagementSystem.Application.Commands.Products.CreateProduct
                 .Where(s => request.ProductTypes.Select(rs => rs.Id).Contains(s.Id))
                 .ToListAsync(cancellationToken);
 
-            Supplier? supplier = null;
-            if (request.Supplier != null)
-            {
-                supplier = await _context.Set<Supplier>()
+            var products = await _context.Set<Product>()
+                .AsTracking()
+                .Where(s => request.Products.Select(rs => rs.Id).Contains(s.Id))
+                .ToListAsync(cancellationToken);
+
+
+            var supplier = await _context.Set<Supplier>()
                                 .AsTracking()
                                 .Where(s => s.Id == request.Supplier.Id)
                                 .SingleOrDefaultAsync(cancellationToken);
-            }
-            
+
+
 
             product.Ingredients = ingredients;
-            product.Supplier = supplier;
             product.ProductTypes = types;
+            product.Supplier = supplier;
+            product.Products = products;
             
             await _context.Set<Product>().AddAsync(product, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);

@@ -28,6 +28,7 @@ namespace InventoryManagementSystem.Application.Profiles
             CreateMap<Supplier, SupplierDTO>();
             CreateMap<OrderLine, ProductOrderLineDTO>();
             CreateMap<Product, Product>();
+            CreateMap<Product, ProductProductDTO>();
             CreateMap<CreateProductCommand, Product>();
             CreateMap<UpdateProductCommand, Product>()
                 .ForPath(dest => dest.Document, opt => opt.MapFrom(src => src.Document))
