@@ -54,7 +54,7 @@
 
                                     @foreach (var product in Products)
                                     {
-                                        <MudSelectItem T="ProductListDTO" Value="@product">@product.Name</MudSelectItem>
+                                        <MudSelectItem T="ProductListDTO" Disabled="@product.OutOfStock" Value="@product">@product.Name</MudSelectItem>
                                     }
                                 </MudSelect>
 

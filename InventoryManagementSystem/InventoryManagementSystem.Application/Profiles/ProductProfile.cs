@@ -28,6 +28,7 @@ namespace InventoryManagementSystem.Application.Profiles
             CreateMap<Supplier, SupplierDTO>();
             CreateMap<OrderLine, ProductOrderLineDTO>();
             CreateMap<Product, Product>();
+            CreateMap<ProductProductDTO, Product>();
             CreateMap<Product, ProductProductDTO>();
             CreateMap<CreateProductCommand, Product>();
             CreateMap<UpdateProductCommand, Product>()

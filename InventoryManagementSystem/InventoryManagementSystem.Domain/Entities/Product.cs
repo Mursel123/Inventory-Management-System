@@ -1,8 +1,10 @@
-﻿namespace InventoryManagementSystem.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace InventoryManagementSystem.Domain.Entities
 {
     public class Product : BaseEntity
     {
-        public int Amount { get; set; } 
+        public int Amount { get; set; }
         public decimal Price { get; set; } 
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;

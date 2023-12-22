@@ -52,7 +52,18 @@ namespace InventoryManagementSystem.Pages.Order
 
 
         //For OrderLine
-        private int SelectedQuantity { get; set; } = 0;
+        private int selectedQuantity = 1;
+
+        public int SelectedQuantity
+        {
+            get { return selectedQuantity; }
+            set 
+            {
+                CheckForOutOfStock(value, Products, selectedOrderType);
+                selectedQuantity = value; 
+            }
+        }
+
         private ProductListDTO? SelectedProduct { get; set; } = null;
 
         private IngredientListDTO? selectedIngredient = null;
@@ -62,7 +73,6 @@ namespace InventoryManagementSystem.Pages.Order
             get { return selectedIngredient; }
             set 
             {
-                
                 _ = ReadPriceForIngredientAsync(value);
                 selectedIngredient = value;
             }
@@ -190,7 +200,12 @@ namespace InventoryManagementSystem.Pages.Order
                     type = ProductTypeData.SalesInventory;
 
 
-                Products = await _mediator.Send(new ReadProductListQuery() { ProductType = type });
+                 Products = await _mediator.Send(new ReadProductListQuery() { ProductType = type });
+                if (value == OrderType.Sales)
+                {
+                    CheckForOutOfStock(SelectedQuantity, Products, value);
+                }
+
 
             }
         }
@@ -203,6 +218,39 @@ namespace InventoryManagementSystem.Pages.Order
                 StateHasChanged();
             }
             
+        }
+
+        private void CheckForOutOfStock(int amount, ICollection<ProductListDTO> products, OrderType? type)
+        {
+            if (type == OrderType.Sales)
+            {
+                foreach (var product in products)
+                {
+                    product.OutOfStock = false;
+
+                    bool IsOutOfStock = false;
+
+                    if (product.Amount <= 0 || (product.Amount - amount) < 0)
+                    {
+                        IsOutOfStock = true;
+                    }
+
+                    if (product.Products.Exists(x => x.Amount <= 0) ||
+                        product.Products.Exists(x => (x.Amount - amount) < 0))
+                    {
+                        IsOutOfStock = true;
+                    }
+
+                    if (product.Ingredients.Exists(x => (x.MlUsage - x.MlTotal) < 0) ||
+                        product.Ingredients.Exists(x => (x.MlUsage * amount) - x.MlTotal < 0))
+                    {
+                        IsOutOfStock = true;
+                    }
+
+                    product.OutOfStock = IsOutOfStock;
+                }
+                StateHasChanged();
+            }
         }
     }
 }
