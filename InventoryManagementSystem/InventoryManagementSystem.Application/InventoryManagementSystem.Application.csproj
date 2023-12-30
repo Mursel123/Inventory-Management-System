@@ -15,8 +15,12 @@
 	</ItemGroup>
 
   <ItemGroup>
-	  <InternalsVisibleTo Include="InventoryManagementSystem.Handler.Tests"/>
+	  <InternalsVisibleTo Include="InventoryManagementSystem.Handler.Tests" />
     <ProjectReference Include="..\InventoryManagementSystem.Domain\InventoryManagementSystem.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Queries\NewFolder\" />
   </ItemGroup>
 
 </Project>

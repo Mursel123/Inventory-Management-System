@@ -28,6 +28,13 @@
     "seed": {
       "commandName": "Project",
       "commandLineArgs": "/seed"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "publishAllPorts": true,
+      "useSSL": true
     }
   },
   "iisSettings": {

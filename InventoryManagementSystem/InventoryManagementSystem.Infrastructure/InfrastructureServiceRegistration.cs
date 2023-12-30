@@ -18,9 +18,9 @@ namespace InventoryManagementSystem.Infrastructure
                 options.ConfigureWarnings(warningAction =>
                 {
                     warningAction.Log(
-                            CoreEventId.FirstWithoutOrderByAndFilterWarning,
-                            CoreEventId.RowLimitingOperationWithoutOrderByWarning
-                        );
+                        CoreEventId.FirstWithoutOrderByAndFilterWarning,
+                        CoreEventId.RowLimitingOperationWithoutOrderByWarning
+                    );
                 });
 
                 options.UseSqlServer(configuration.GetValue<string>("ConnectionStrings:ConnectionString"), options =>
@@ -31,6 +31,13 @@ namespace InventoryManagementSystem.Infrastructure
             }, ServiceLifetime.Transient);
 
             services.AddTransient<IDbContext>(provider => provider.GetService<AppDbContext>());
+
+            // Database initialization logic
+            using (var serviceProvider = services.BuildServiceProvider())
+            {
+                var dbContext = serviceProvider.GetRequiredService<AppDbContext>();
+                dbContext.Database.EnsureCreated();
+            }
 
             return services;
         }

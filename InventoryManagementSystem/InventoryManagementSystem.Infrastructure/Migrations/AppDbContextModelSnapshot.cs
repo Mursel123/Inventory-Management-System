@@ -236,6 +236,20 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductType");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("83cce0bd-c746-4487-b656-1973223ac15d"),
+                            IsDeleted = false,
+                            Type = "Purchased Inventory"
+                        },
+                        new
+                        {
+                            Id = new Guid("106f7f81-39cd-4cdd-9078-669ad217b8dd"),
+                            IsDeleted = false,
+                            Type = "Sales Inventory"
+                        });
                 });
 
             modelBuilder.Entity("InventoryManagementSystem.Domain.Entities.Settings", b =>
@@ -256,6 +270,15 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Settings");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("975ab6ac-12b9-47d2-bfeb-669877792d32"),
+                            AtLeastIngredientMLTotal = 0m,
+                            AtLeastProductAmount = 0,
+                            IsDeleted = false
+                        });
                 });
 
             modelBuilder.Entity("InventoryManagementSystem.Domain.Entities.Supplier", b =>

@@ -42,11 +42,15 @@ namespace InventoryManagementSystem.Application.Commands.Products.CreateProduct
                 .Where(s => request.Products.Select(rs => rs.Id).Contains(s.Id))
                 .ToListAsync(cancellationToken);
 
-
-            var supplier = await _context.Set<Supplier>()
+            Supplier supplier = null;
+            if (request.Supplier != null)
+            {
+                supplier = await _context.Set<Supplier>()
                                 .AsTracking()
                                 .Where(s => s.Id == request.Supplier.Id)
                                 .SingleOrDefaultAsync(cancellationToken);
+            }
+            
 
 
 

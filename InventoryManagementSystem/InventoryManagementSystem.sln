@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagementSystem.A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{37547915-C62A-4B6E-886A-CFB4344235E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryManagementSystem.Handler.Tests", "InventoryManagementSystem.Handler.Tests\InventoryManagementSystem.Handler.Tests.csproj", "{42AD1579-6B76-430E-9EE3-93B2A6D9DD4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagementSystem.Handler.Tests", "InventoryManagementSystem.Handler.Tests\InventoryManagementSystem.Handler.Tests.csproj", "{42AD1579-6B76-430E-9EE3-93B2A6D9DD4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

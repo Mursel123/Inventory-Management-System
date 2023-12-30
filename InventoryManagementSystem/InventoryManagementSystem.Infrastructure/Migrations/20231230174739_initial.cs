@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace InventoryManagementSystem.Infrastructure.Migrations
 {
     /// <inheritdoc />
@@ -255,6 +257,20 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "ProductType",
+                columns: new[] { "Id", "IsDeleted", "Type" },
+                values: new object[,]
+                {
+                    { new Guid("106f7f81-39cd-4cdd-9078-669ad217b8dd"), false, "Sales Inventory" },
+                    { new Guid("83cce0bd-c746-4487-b656-1973223ac15d"), false, "Purchased Inventory" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Settings",
+                columns: new[] { "Id", "AtLeastIngredientMLTotal", "AtLeastProductAmount", "IsDeleted" },
+                values: new object[] { new Guid("975ab6ac-12b9-47d2-bfeb-669877792d32"), 0m, 0, false });
 
             migrationBuilder.CreateIndex(
                 name: "IX_IngredientProduct_ProductsId",

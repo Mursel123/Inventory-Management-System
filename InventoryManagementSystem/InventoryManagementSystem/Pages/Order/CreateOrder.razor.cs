@@ -241,8 +241,7 @@ namespace InventoryManagementSystem.Pages.Order
                         IsOutOfStock = true;
                     }
 
-                    if (product.Ingredients.Exists(x => (x.MlUsage - x.MlTotal) < 0) ||
-                        product.Ingredients.Exists(x => (x.MlUsage * amount) - x.MlTotal < 0))
+                    if (product.Ingredients.Exists(x => x.MlTotal - (x.MlUsage * amount) < 0))
                     {
                         IsOutOfStock = true;
                     }

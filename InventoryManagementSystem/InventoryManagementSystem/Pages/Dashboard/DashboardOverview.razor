@@ -1,0 +1,37 @@
+﻿@page "/dashboard"
+
+@if (Products.Count == 0 && Ingredients.Count == 0)
+{
+    <MudText Typo="Typo.h6">No Notifications</MudText>
+}
+@if (Products.Count > 0)
+{
+    <MudText Class="my-5" Typo="Typo.h6">Products</MudText>
+    @foreach (var product in Products)
+    {
+        @if (product.Amount == 0)
+        {
+            <MudAlert Class="mb-2 w-50" Severity="Severity.Error" Variant="Variant.Filled">@product.Name is out of stock</MudAlert>
+        }else
+        {
+            <MudAlert Class="mb-2 w-50" Severity="Severity.Warning" Variant="Variant.Filled">@product.Name only has @product.Amount in stock</MudAlert>
+        }
+    }
+}
+
+@if (Ingredients.Count > 0)
+{
+    <MudText Class="my-5" Typo="Typo.h6">Ingredients</MudText>
+    @foreach (var ingredient in Ingredients)
+    {
+        @if (ingredient.MlTotal == 0)
+        {
+            <MudAlert Class="mb-2 w-50" Severity="Severity.Error" Variant="Variant.Filled">@ingredient.Name is out of stock</MudAlert>
+        }
+        else
+        {
+            <MudAlert Class="mb-2 w-50" Severity="Severity.Warning" Variant="Variant.Filled">@ingredient.Name only has @ingredient.MlTotal in stock</MudAlert>
+        }
+    }
+}
+

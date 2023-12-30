@@ -9,7 +9,7 @@ namespace InventoryManagementSystem.Infrastructure
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            
+             Database.EnsureCreated();
         }
 
         public DbSet<Document>? Document { get; set; }
@@ -26,6 +26,8 @@ namespace InventoryManagementSystem.Infrastructure
             builder.ApplyConfigurationsFromAssembly(typeof(DocumentConfiguration).Assembly);
             base.OnModelCreating(builder);
         }
+
+        
 
         async Task IDbContext.SaveChangesAsync(CancellationToken cancellationToken)
         {
