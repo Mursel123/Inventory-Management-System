@@ -1,4 +1,6 @@
-﻿namespace InventoryManagementSystem.Domain.Entities
+﻿using InventoryManagementSystem.Domain.Entities.Base;
+
+namespace InventoryManagementSystem.Domain.Entities
 {
     public class Price : BaseEntity
     {

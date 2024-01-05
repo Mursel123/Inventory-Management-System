@@ -1,4 +1,5 @@
 using InventoryManagementSystem.UI;
+using InventoryManagementSystem.UI.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
@@ -22,6 +23,8 @@ builder.Services.AddMudServices(config =>
 });
 builder.Services.AddMudBlazorDialog();
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddScoped<IClient, Client>();
+
+builder.Services.AddHttpClient<IClient, Client>(client => client.BaseAddress = new Uri($"{builder.Configuration.GetValue<string>("Api")}"));
 
 await builder.Build().RunAsync();

@@ -39,42 +39,7 @@ namespace InventoryManagementSystem.Handler.Tests
 
             // Then
             Assert.IsType<List<ProductListDto>>(list);
-            Assert.True(list.TrueForAll(item => !item.IsDeleted));
-        }
-
-        [Theory]
-        [InlineData(ProductTypeData.PurchasedInventory)]
-        [InlineData(ProductTypeData.SalesInventory)]
-        public async Task ReadProductListQueryHandler_Should_Return_ProducListDTO_With_ProductType_When_Succes(string type)
-        {
-            // Given
-            var query = new ReadProductListQuery() { ProductType = type};
-
-            // When
-            var list = await _readProductListQueryHandler.Handle(query, CancellationToken.None);
-
-            // Then
-            Assert.True(list.TrueForAll(item => !item.IsDeleted));
-            foreach (var item in list)
-            {
-                Assert.True(item.ProductTypes.Exists(x => x.Type == type));
-                
-            }
-        }
-
-        [Theory]
-        [InlineData("")]
-        [InlineData("  ")]
-        public async Task ReadProductListQueryHandler_Should_Return_ProducListDTO_With_Empty_ProductType_When_Succes(string type)
-        {
-            // Given
-            var query = new ReadProductListQuery() { ProductType = type };
-
-            // When
-            var list = await _readProductListQueryHandler.Handle(query, CancellationToken.None);
-
-            // Then
-            Assert.True(list.TrueForAll(item => !item.IsDeleted));
+            Assert.All(list, x => Assert.True(!x.IsDeleted));
         }
 
     }

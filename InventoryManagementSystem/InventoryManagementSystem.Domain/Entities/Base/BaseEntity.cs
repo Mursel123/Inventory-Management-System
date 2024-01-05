@@ -1,4 +1,4 @@
-﻿namespace InventoryManagementSystem.Domain.Entities
+﻿namespace InventoryManagementSystem.Domain.Entities.Base
 {
     public abstract class BaseEntity
     {

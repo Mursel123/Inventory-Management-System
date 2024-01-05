@@ -1,20 +1,15 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using InventoryManagementSystem.Application.DTOs.Product;
-using InventoryManagementSystem.Application.Queries.Products.ReadProductList;
+using InventoryManagementSystem.Application.Exceptions;
 using InventoryManagementSystem.Domain.Contracts;
 using InventoryManagementSystem.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InventoryManagementSystem.Application.Queries.Products.ReadProductById
 {
-    public class ReadProductByIdQueryHandler : IRequestHandler<ReadProductByIdQuery, ProductDTO>
+    internal sealed class ReadProductByIdQueryHandler : IRequestHandler<ReadProductByIdQuery, ProductDTO>
     {
         private readonly IMapper _mapper;
         private readonly IDbContext _context;
@@ -27,12 +22,15 @@ namespace InventoryManagementSystem.Application.Queries.Products.ReadProductById
 
         public async Task<ProductDTO> Handle(ReadProductByIdQuery request, CancellationToken cancellationToken)
         {
-            var test = await _context.Set<Product>().AsNoTracking()
+            var product =  await _context.Set<Product>()
                  .Where(x => !x.IsDeleted)
-                 .Where(x => x.Id == request.Id)
                  .ProjectTo<ProductDTO>(_mapper.ConfigurationProvider)
-                 .SingleOrDefaultAsync(cancellationToken);
-            return test;
+                 .SingleOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+
+            if (product is null)
+                throw new NotFoundException($"{nameof(Product)} {request.Id} is not found.");
+
+            return product;
 
 
         }

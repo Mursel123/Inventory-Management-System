@@ -11,5 +11,9 @@ namespace InventoryManagementSystem.Application.Queries.Products.ReadProductById
     public class ReadProductByIdQuery : IRequest<ProductDTO>
     {
         public Guid Id { get; set; }
+        public ReadProductByIdQuery(Guid id)
+        {
+            Id = id;
+        }
     }
 }

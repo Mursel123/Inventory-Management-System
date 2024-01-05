@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace InventoryManagementSystem.Application.Queries.Products.ReadProductList
 {
-    public class ReadProductListQueryHandler : IRequestHandler<ReadProductListQuery, List<ProductListDto>>
+    public class ReadProductListQueryHandler : IRequestHandler<ReadProductListQuery, IReadOnlyList<ProductListDto>>
     {
         private readonly IMapper _mapper;
         private readonly IDbContext _context;
@@ -23,9 +23,8 @@ namespace InventoryManagementSystem.Application.Queries.Products.ReadProductList
             _mapper = mapper;
             _context = context;
         }
-        public async Task<List<ProductListDto>> Handle(ReadProductListQuery request, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<ProductListDto>> Handle(ReadProductListQuery request, CancellationToken cancellationToken)
         {
-
             return await _context.Set<Product>()
             .Where(x => !x.IsDeleted)
             .ProjectTo<ProductListDto>(_mapper.ConfigurationProvider)

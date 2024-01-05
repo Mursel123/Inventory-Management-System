@@ -1,4 +1,5 @@
-﻿using InventoryManagementSystem.Domain.Enums;
+﻿using InventoryManagementSystem.Domain.Entities.Base;
+using InventoryManagementSystem.Domain.Enums;
 
 namespace InventoryManagementSystem.Domain.Entities
 {

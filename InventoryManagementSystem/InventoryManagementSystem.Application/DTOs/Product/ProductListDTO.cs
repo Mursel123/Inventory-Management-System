@@ -9,5 +9,14 @@ namespace InventoryManagementSystem.Application.DTOs.Product
         public decimal Price { get; set; } 
         public string Name { get; set; } = string.Empty;
         public virtual List<ProductTypeDTO> ProductTypes { get; set; } = new();
+        public string ProductTypesString 
+        { 
+            get 
+            { 
+                return string.Join(", ", ProductTypes.Select(pt => pt.Type)); 
+            } 
+        }
+
+
     }
 }

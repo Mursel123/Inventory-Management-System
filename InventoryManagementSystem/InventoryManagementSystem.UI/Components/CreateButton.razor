@@ -1,0 +1,26 @@
+﻿<MudButton StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Variant="Variant.Filled" Class="mb-2" OnClick="NavigateToCreatePage">
+    New
+</MudButton>
+
+@code {
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+    [Parameter]
+    public string Value { get; set; }
+    private void NavigateToCreatePage()
+    {
+        if (Value=="ingredient")
+        {
+            NavigationManager.NavigateTo("/ingredients/create");
+        }
+        else if (Value == "product")
+        {
+            NavigationManager.NavigateTo("/products/create");
+        }
+        else if (Value == "order")
+        {
+            NavigationManager.NavigateTo("/orders/create");
+        }
+         
+    }
+}
