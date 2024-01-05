@@ -32,6 +32,7 @@ var app = builder.Build();
 
 if (args.Contains("/seed"))
 {
+    
     await SeedData.EnsurePopulatedAsync(app);
     return;
 }

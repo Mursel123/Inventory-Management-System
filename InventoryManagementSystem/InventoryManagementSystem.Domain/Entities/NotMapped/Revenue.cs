@@ -1,12 +1,7 @@
-﻿using InventoryManagementSystem.Domain.Contracts;
-using InventoryManagementSystem.Domain.Enums;
-using System;
-using System.Collections.Generic;
+﻿using InventoryManagementSystem.Domain.Enums;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace InventoryManagementSystem.Domain.Entities
+namespace InventoryManagementSystem.Domain.Entities.NotMapped
 {
     [NotMapped]
     public class Revenue
@@ -40,7 +35,7 @@ namespace InventoryManagementSystem.Domain.Entities
             get
             {
 
-                var product =  OrderLines
+                var product = OrderLines
                     .Where(ol => ol.Order.Type == OrderType.Sales)
                     .GroupBy(ol => ol.Product.Id)
                     .OrderBy(g => g.Count())

@@ -110,19 +110,18 @@ namespace InventoryManagementSystem.Handler.Tests
             var supplier = new Supplier
             {
                 Id = Guid.NewGuid(),
-                CompanyName = "Sample Supplier",
+                Name = "Sample Supplier",
                 Email = "supplier@example.com",
-                PhoneNumber = "123-456-7890"
+                Phone = "123-456-7890"
             };
 
-            var productExtra = new Product
+            var productExtra = new SubProduct
             {
                 Id = Guid.Parse("FF9EFB3F-D98A-4073-9B5C-ADF0C1264C51"),
                 Amount = 5,
                 Price = 4.05m,
                 Supplier = supplier,
-                Name = "Bottle 100ml",
-                ProductTypes = new() { productTypePurchased }
+                Name = "Bottle 100ml"
             };
 
             var productSell = new Product
@@ -134,7 +133,7 @@ namespace InventoryManagementSystem.Handler.Tests
                 Name = "Beard Oil Smooth 100ml",
                 Ingredients = new() { ingredient },
                 ProductTypes = new() { productTypeSales },
-                Products = new() { productExtra }
+                SubProducts = new() { productExtra }
 
             };
 
@@ -147,7 +146,7 @@ namespace InventoryManagementSystem.Handler.Tests
                 Name = "Oil Smooth 100",
                 Ingredients = new() { ingredient },
                 ProductTypes = new() { productTypeSales },
-                Products = new() { productExtra }
+                SubProducts = new() { productExtra }
 
             };
 
@@ -160,7 +159,7 @@ namespace InventoryManagementSystem.Handler.Tests
 
             var orderlinesExtra = new OrderLine
             {
-                Product = productExtra,
+                SubProduct = productExtra,
                 Quantity = 1
             };
 
@@ -237,10 +236,14 @@ namespace InventoryManagementSystem.Handler.Tests
                 await _context.ProductType.AddRangeAsync(productTypeSales, productTypePurchased);
                 await _context.SaveChangesAsync();
             }
-
+            if (!_context.SubProduct.Any())
+            {
+                await _context.SubProduct.AddAsync(productExtra);
+                await _context.SaveChangesAsync();
+            }
             if (!_context.Product.Any())
             {
-                await _context.Product.AddRangeAsync(productExtra, productSell, productSell2);
+                await _context.Product.AddRangeAsync(productSell, productSell2);
                 await _context.SaveChangesAsync();
             }
 

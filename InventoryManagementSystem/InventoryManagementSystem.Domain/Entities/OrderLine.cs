@@ -1,26 +1,29 @@
-﻿using InventoryManagementSystem.Domain.Enums;
-
-namespace InventoryManagementSystem.Domain.Entities
+﻿namespace InventoryManagementSystem.Domain.Entities
 {
     public class OrderLine : BaseEntity
     {
         public virtual Order? Order { get; set; }
         public virtual Product? Product { get; set; }
+        public virtual SubProduct? SubProduct { get; set; }
         public virtual Ingredient? Ingredient { get; set; }
         public int Quantity { get; set; }
-        public decimal Total { get; private set; }
+        public decimal TotalCost { get; private set; }
 
         internal void CalculateAmountAndTotal()
         {
             if (Product != null)
             {
-                Total = Quantity * Product.Price;
+                TotalCost = Quantity * Product.Price;
                     
             }
             else if (Ingredient != null)
             {
-                Total = Quantity * Ingredient.Prices.FirstOrDefault().IngredientPrice;
+                TotalCost = Quantity * Ingredient.Prices[0].IngredientPrice;
 
+            }
+            else if (SubProduct != null)
+            {
+                TotalCost = Quantity * SubProduct.Price;
             }
         }
     }

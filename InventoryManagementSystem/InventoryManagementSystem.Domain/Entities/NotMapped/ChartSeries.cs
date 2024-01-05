@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace InventoryManagementSystem.Domain.Entities.Chart
+namespace InventoryManagementSystem.Domain.Entities.NotMapped
 {
     //This entity is for the mudblazor component to visualize a chart
     [NotMapped]

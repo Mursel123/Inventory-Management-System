@@ -8,12 +8,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InventoryManagementSystem.Domain.Configurations
+namespace InventoryManagementSystem.Infrastructure.Configurations
 {
-    internal class ProductTypeConfiguration : IEntityTypeConfiguration<ProductType>
+    internal sealed class ProductTypeConfiguration : IEntityTypeConfiguration<ProductType>
     {
         public void Configure(EntityTypeBuilder<ProductType> builder)
         {
+            builder.HasKey(x => x.Id);
+            
+            builder
+                .Property(x => x.Type)
+                .HasMaxLength(50)
+                .IsRequired();
+
+            builder
+                .HasMany(x => x.Products)
+                .WithMany(x => x.ProductTypes);
+
             builder.HasData(
                  new ProductType
                  {

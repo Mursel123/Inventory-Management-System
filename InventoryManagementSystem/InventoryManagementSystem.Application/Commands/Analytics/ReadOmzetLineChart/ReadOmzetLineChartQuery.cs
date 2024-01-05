@@ -1,4 +1,4 @@
-﻿using InventoryManagementSystem.Domain.Entities.Chart;
+﻿using InventoryManagementSystem.Domain.Entities.NotMapped;
 using MediatR;
 using System;
 using System.Collections.Generic;

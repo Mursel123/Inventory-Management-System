@@ -30,7 +30,7 @@ namespace InventoryManagementSystem.Application.Commands.Orders.Create
                 {
                     var product = await _context.Set<Product>()
                         .AsTracking()
-                        .Include(x => x.Products)
+                        .Include(x => x.SubProducts)
                         .Include(x => x.Ingredients)
                         .SingleAsync(x => x.Id == orderline.Product.Id);
 
@@ -93,18 +93,37 @@ namespace InventoryManagementSystem.Application.Commands.Orders.Create
 
 
 
-        private void UpdateProductAmount(Product product, OrderLine orderline, bool isIncrement)
+        private void UpdateProductAmount(object productObject, OrderLine orderline, bool isIncrement)
         {
-            if (isIncrement)
+            if (productObject is Product product)
             {
-                product.Amount += orderline.Quantity;
-            }
-            else
-            {
-                product.Amount -= orderline.Quantity;
-            }
+                if (isIncrement)
+                {
+                    product.Amount += orderline.Quantity;
+                }
+                else
+                {
+                    product.Amount -= orderline.Quantity;
+                }
 
-            orderline.Product = product;
+                orderline.Product = product;
+            }
+            else if (productObject is SubProduct subProduct)
+            {
+                if (isIncrement)
+                {
+                    subProduct.Amount += orderline.Quantity;
+                }
+                else
+                {
+                    subProduct.Amount -= orderline.Quantity;
+                }
+
+                orderline.SubProduct = subProduct;
+            }
+            
+
+            
 
         }
         private void ProcessProduct(Product product, OrderLine orderline, OrderType? type)
@@ -116,7 +135,7 @@ namespace InventoryManagementSystem.Application.Commands.Orders.Create
             }
 
             //Decreasing the products amount for making the actual product to sell
-            foreach (var productItem in product.Products)
+            foreach (var productItem in product.SubProducts)
             {
                 UpdateProductAmount(productItem, orderline, false);
             }

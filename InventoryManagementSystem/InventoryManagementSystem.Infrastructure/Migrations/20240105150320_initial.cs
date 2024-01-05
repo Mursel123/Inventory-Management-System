@@ -32,9 +32,9 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MlUsage = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    MlTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    MlUsage = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    MlTotal = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -47,7 +47,7 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -61,7 +61,7 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AtLeastProductAmount = table.Column<int>(type: "int", nullable: false),
-                    AtLeastIngredientMLTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    AtLeastIngredientMLTotal = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -74,9 +74,9 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -89,9 +89,9 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OrderNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OrderNumber = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalCost = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     DocumentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Type = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -111,7 +111,7 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IngredientPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    IngredientPrice = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Ml = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     WebsiteLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IngredientId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -133,9 +133,9 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Amount = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     DocumentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -180,61 +180,6 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderLine",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IngredientId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderLine", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OrderLine_Ingredient_IngredientId",
-                        column: x => x.IngredientId,
-                        principalTable: "Ingredient",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_OrderLine_Order_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Order",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_OrderLine_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductProduct",
-                columns: table => new
-                {
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductProduct", x => new { x.ProductId, x.ProductsId });
-                    table.ForeignKey(
-                        name: "FK_ProductProduct_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductProduct_Product_ProductsId",
-                        column: x => x.ProductsId,
-                        principalTable: "Product",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ProductProductType",
                 columns: table => new
                 {
@@ -258,19 +203,91 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "SubProduct",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DocumentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubProduct", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SubProduct_Document_DocumentId",
+                        column: x => x.DocumentId,
+                        principalTable: "Document",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SubProduct_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SubProduct_Supplier_SupplierId",
+                        column: x => x.SupplierId,
+                        principalTable: "Supplier",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderLine",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    SubProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IngredientId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    TotalCost = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderLine", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderLine_Ingredient_IngredientId",
+                        column: x => x.IngredientId,
+                        principalTable: "Ingredient",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_OrderLine_Order_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Order",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_OrderLine_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_OrderLine_SubProduct_SubProductId",
+                        column: x => x.SubProductId,
+                        principalTable: "SubProduct",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.InsertData(
                 table: "ProductType",
                 columns: new[] { "Id", "IsDeleted", "Type" },
                 values: new object[,]
                 {
-                    { new Guid("106f7f81-39cd-4cdd-9078-669ad217b8dd"), false, "Sales Inventory" },
-                    { new Guid("83cce0bd-c746-4487-b656-1973223ac15d"), false, "Purchased Inventory" }
+                    { new Guid("39b06c15-15fd-4dbd-8b4c-1444cd17bad1"), false, "Purchased Inventory" },
+                    { new Guid("7beccbde-c644-4765-97f0-2e3ca5d2063e"), false, "Sales Inventory" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Settings",
                 columns: new[] { "Id", "AtLeastIngredientMLTotal", "AtLeastProductAmount", "IsDeleted" },
-                values: new object[] { new Guid("975ab6ac-12b9-47d2-bfeb-669877792d32"), 0m, 0, false });
+                values: new object[] { new Guid("80ebccfa-111b-4654-b313-622adae78646"), 0m, 0, false });
 
             migrationBuilder.CreateIndex(
                 name: "IX_IngredientProduct_ProductsId",
@@ -300,6 +317,11 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderLine_SubProductId",
+                table: "OrderLine",
+                column: "SubProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Price_IngredientId",
                 table: "Price",
                 column: "IngredientId");
@@ -317,14 +339,26 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 column: "SupplierId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductProduct_ProductsId",
-                table: "ProductProduct",
-                column: "ProductsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ProductProductType_ProductsId",
                 table: "ProductProductType",
                 column: "ProductsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubProduct_DocumentId",
+                table: "SubProduct",
+                column: "DocumentId",
+                unique: true,
+                filter: "[DocumentId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubProduct_ProductId",
+                table: "SubProduct",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubProduct_SupplierId",
+                table: "SubProduct",
+                column: "SupplierId");
         }
 
         /// <inheritdoc />
@@ -340,9 +374,6 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 name: "Price");
 
             migrationBuilder.DropTable(
-                name: "ProductProduct");
-
-            migrationBuilder.DropTable(
                 name: "ProductProductType");
 
             migrationBuilder.DropTable(
@@ -350,6 +381,9 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Order");
+
+            migrationBuilder.DropTable(
+                name: "SubProduct");
 
             migrationBuilder.DropTable(
                 name: "Ingredient");

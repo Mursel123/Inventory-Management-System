@@ -1,6 +1,7 @@
 ﻿using AutoMapper.QueryableExtensions;
 using InventoryManagementSystem.Domain.Contracts;
 using InventoryManagementSystem.Domain.Entities;
+using InventoryManagementSystem.Domain.Entities.NotMapped;
 using InventoryManagementSystem.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

@@ -32,7 +32,7 @@ namespace InventoryManagementSystem.Domain.Entities
         private void CalculateTotal()
         {
             
-            TotalCost = orderLines.Sum(x => x.Total);
+            TotalCost = orderLines.Sum(x => x.TotalCost);
         }
     }
 }

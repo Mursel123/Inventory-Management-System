@@ -1,5 +1,5 @@
 ﻿using InventoryManagementSystem.Application.Commands.Analytics.ReadOmzet;
-using InventoryManagementSystem.Domain.Entities;
+using InventoryManagementSystem.Domain.Entities.NotMapped;
 using MediatR;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
