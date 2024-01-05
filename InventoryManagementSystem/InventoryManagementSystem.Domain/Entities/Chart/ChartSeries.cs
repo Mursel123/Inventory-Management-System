@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InventoryManagementSystem.Domain.Entities.Chart
 {
+    //This entity is for the mudblazor component to visualize a chart
     [NotMapped]
     public class ChartSeries
     {

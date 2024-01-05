@@ -1,9 +1,4 @@
 ﻿using InventoryManagementSystem.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InventoryManagementSystem.Domain.Entities
 {
@@ -39,7 +34,5 @@ namespace InventoryManagementSystem.Domain.Entities
             
             TotalCost = orderLines.Sum(x => x.Total);
         }
-
-        
     }
 }

@@ -37,6 +37,13 @@
                         @bind-Value="Product.Price"
                         For="@(() => Product.Price)" />
 
+                     <MudTextField Label="Amount"
+                        Class="mt-5 mb-5"
+                        Variant="Variant.Outlined"
+                        InputType="InputType.Number"
+                        @bind-Value="Product.Amount"
+                        For="@(() => Product.Amount)" />
+
                     <!-- ProductType -->
                     @if (ProductTypes != null && ProductTypes.Count != 0)
                     {
@@ -92,12 +99,6 @@
 
                     @if (Product.ProductTypes.Any(x => x.Type == ProductTypeData.SalesInventory))
                     {
-                        <MudTextField Label="Amount"
-                        Class="mt-5 mb-5"
-                        Variant="Variant.Outlined"
-                        InputType="InputType.Number"
-                        @bind-Value="Product.Amount"
-                        For="@(() => Product.Amount)" />
 
                         <MudText Typo="Typo.h6" Class="mt-5 mb-md-5">Ingredients</MudText>
 

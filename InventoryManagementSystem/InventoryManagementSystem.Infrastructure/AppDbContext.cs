@@ -1,6 +1,7 @@
 ﻿using InventoryManagementSystem.Domain.Configurations;
 using InventoryManagementSystem.Domain.Contracts;
 using InventoryManagementSystem.Domain.Entities;
+using InventoryManagementSystem.Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace InventoryManagementSystem.Infrastructure
@@ -9,7 +10,7 @@ namespace InventoryManagementSystem.Infrastructure
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-             Database.EnsureCreated();
+
         }
 
         public DbSet<Document>? Document { get; set; }

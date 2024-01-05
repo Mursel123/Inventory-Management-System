@@ -24,12 +24,12 @@ namespace InventoryManagementSystem.Application.Queries.Dashboard.ReadIngredient
 
             var products = await _context.Set<Product>()
                 .ProjectTo<ProductListDTO>(_mapper.ConfigurationProvider)
-                .Where(x => x.Amount <= settings.AtLeastProductAmount)
+                .Where(x => x.Amount <= settings.AtLeastProductAmount && !x.IsDeleted)
                 .ToListAsync();
 
             var ingredients = await _context.Set<Ingredient>()
                 .ProjectTo<IngredientListDTO>(_mapper.ConfigurationProvider)
-                .Where(x => x.MlTotal <= settings.AtLeastIngredientMLTotal)
+                .Where(x => x.MlTotal <= settings.AtLeastIngredientMLTotal && !x.IsDeleted)
                 .ToListAsync();
 
             return (products, ingredients);
