@@ -47,7 +47,7 @@ namespace InventoryManagementSystem.Pages.Order
 
         private bool DisableOrderType { get; set; } = false;
 
-        private ICollection<ProductListDTO> Products { get; set; }
+        private ICollection<ProductListDto> Products { get; set; }
 
 
 
@@ -64,7 +64,7 @@ namespace InventoryManagementSystem.Pages.Order
             }
         }
 
-        private ProductListDTO? SelectedProduct { get; set; } = null;
+        private ProductListDto? SelectedProduct { get; set; } = null;
 
         private IngredientListDTO? selectedIngredient = null;
 
@@ -81,7 +81,7 @@ namespace InventoryManagementSystem.Pages.Order
         private PriceListDTO? SelectedPrice { get; set; } = null;
         private bool ShowLoading { get; set; } = false;
         private OrderDTO Order { get; set; } = new();
-        private Func<ProductListDTO, string> productConverter = p => p?.Name;
+        private Func<ProductListDto, string> productConverter = p => p?.Name;
         private Func<IngredientListDTO, string> ingredientConverter = p => p?.Name;
         private Func<PriceListDTO, string> priceConverter = p => $"Price: {p?.IngredientPrice} Ml: {p?.Ml}";
 
@@ -220,7 +220,7 @@ namespace InventoryManagementSystem.Pages.Order
             
         }
 
-        private void CheckForOutOfStock(int amount, ICollection<ProductListDTO> products, OrderType? type)
+        private void CheckForOutOfStock(int amount, ICollection<ProductListDto> products, OrderType? type)
         {
             if (type == OrderType.Sales)
             {

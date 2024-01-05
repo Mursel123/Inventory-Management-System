@@ -33,6 +33,10 @@ namespace InventoryManagementSystem.Infrastructure.Configurations
                 .WithMany(x => x.SubProducts);
 
             builder
+                .HasMany(x => x.Products)
+                .WithMany(x => x.SubProducts);
+
+            builder
                 .HasMany(x => x.OrderLines)
                 .WithOne(x => x.SubProduct);
         }

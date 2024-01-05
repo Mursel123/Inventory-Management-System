@@ -10,7 +10,7 @@ namespace InventoryManagementSystem.Pages.Dashboard
     {
         [Inject]
         private IMediator Mediator { get; set; }
-        public List<ProductListDTO> Products { get; set; } = new();
+        public List<ProductListDto> Products { get; set; } = new();
         public List<IngredientListDTO> Ingredients { get; set; } = new();
 
         protected override async Task OnInitializedAsync()

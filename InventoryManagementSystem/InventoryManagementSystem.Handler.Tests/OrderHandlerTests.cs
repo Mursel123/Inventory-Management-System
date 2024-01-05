@@ -36,7 +36,7 @@ namespace InventoryManagementSystem.Handler.Tests
             //Given
             var product = await _context.Product
                 .Where(x => x.Id == Guid.Parse("9A522691-0E95-4CB7-ACFF-CDB22FBAC06D"))
-                .ProjectTo<ProductListDTO>(_mapper.ConfigurationProvider)
+                .ProjectTo<ProductListDto>(_mapper.ConfigurationProvider)
                 .SingleAsync();
 
             var lines = new List<OrderLineDTO>()
@@ -71,7 +71,7 @@ namespace InventoryManagementSystem.Handler.Tests
             //Given
             var product = await _context.Product
                 .Where(x => x.Id == Guid.Parse("FF9EFB3F-D98A-4073-9B5C-ADF0C1264C51"))
-                .ProjectTo<ProductListDTO>(_mapper.ConfigurationProvider)
+                .ProjectTo<ProductListDto>(_mapper.ConfigurationProvider)
                 .SingleAsync();
 
             var lines = new List<OrderLineDTO>()

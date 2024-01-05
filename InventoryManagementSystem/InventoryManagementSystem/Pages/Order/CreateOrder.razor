@@ -44,7 +44,7 @@
                                           @bind-Value="SelectedQuantity" />
 
                             
-                                <MudSelect T="ProductListDTO"
+                                <MudSelect T="ProductListDto"
                                            Class="mb-5"
                                            Label="Products"
                                            Variant="Variant.Outlined"
@@ -54,7 +54,7 @@
 
                                     @foreach (var product in Products)
                                     {
-                                        <MudSelectItem T="ProductListDTO" Disabled="@product.OutOfStock" Value="@product">@product.Name</MudSelectItem>
+                                        <MudSelectItem T="ProductListDto" Disabled="@product.OutOfStock" Value="@product">@product.Name</MudSelectItem>
                                     }
                                 </MudSelect>
 

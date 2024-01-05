@@ -11,7 +11,7 @@ namespace InventoryManagementSystem.Application.DTOs.OrderLine
     public class OrderLineDTO
     {
         public Guid Id { get; set; }
-        public ProductListDTO? Product { get; set; }
+        public ProductListDto? Product { get; set; }
         public IngredientListDTO? Ingredient { get; set; }
         public int? Quantity { get; set; }
 

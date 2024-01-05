@@ -26,7 +26,7 @@ namespace InventoryManagementSystem.Pages.Product
         private ICollection<IngredientListDTO> Ingredients { get; set; }
         private ICollection<ProductTypeDTO> ProductTypes { get; set; }
 
-        private ICollection<ProductListDTO> Products { get; set; }
+        private ICollection<ProductListDto> Products { get; set; }
         private ProductDTO Product { get; set; } = new();
 
         private IList<IBrowserFile> files = new List<IBrowserFile>();
@@ -71,9 +71,9 @@ namespace InventoryManagementSystem.Pages.Product
         }
 
 
-        private ProductListDTO? selectedProduct;
+        private ProductListDto? selectedProduct;
 
-        public ProductListDTO? SelectedProduct
+        public ProductListDto? SelectedProduct
         {
             get { return selectedProduct; }
             set
@@ -163,7 +163,7 @@ namespace InventoryManagementSystem.Pages.Product
                     Ingredients.Add(SelectedIngredient);
 
                 }
-                else if (value is ProductListDTO selectedProduct)
+                else if (value is ProductListDto selectedProduct)
                 {
                     Product.Products.Remove(selectedProduct);
                     Products.Add(selectedProduct);
@@ -188,7 +188,7 @@ namespace InventoryManagementSystem.Pages.Product
                     Ingredients.Remove(SelectedIngredient);
                     Ingredient = null;
                 }
-                else if (value is ProductListDTO selectedProduct)
+                else if (value is ProductListDto selectedProduct)
                 {
                     Product.Products.Add(selectedProduct);
                     Products.Remove(selectedProduct);

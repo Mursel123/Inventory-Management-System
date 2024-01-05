@@ -19,7 +19,7 @@ namespace InventoryManagementSystem.Application.Profiles
     {
         public ProductProfile()
         {
-            CreateMap<Product, ProductListDTO>().ReverseMap();
+            CreateMap<Product, ProductListDto>().ReverseMap();
             CreateMap<Product, ProductDTO>();
             CreateMap<ProductType, ProductTypeDTO>();
             CreateMap<Ingredient, ProductIngredientDTO>();

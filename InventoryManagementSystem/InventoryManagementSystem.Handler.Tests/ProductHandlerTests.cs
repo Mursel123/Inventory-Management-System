@@ -1,7 +1,7 @@
 ﻿using InventoryManagementSystem.Application.Commands.Products.CreateProduct;
 using InventoryManagementSystem.Application.DTOs.Product;
-using InventoryManagementSystem.Application.Queries.ReadProductById;
-using InventoryManagementSystem.Application.Queries.ReadProductList;
+using InventoryManagementSystem.Application.Queries.Products.ReadProductById;
+using InventoryManagementSystem.Application.Queries.Products.ReadProductList;
 using InventoryManagementSystem.Domain.Entities;
 using InventoryManagementSystem.Domain.StaticData;
 using Microsoft.Extensions.Options;
@@ -38,7 +38,7 @@ namespace InventoryManagementSystem.Handler.Tests
             var list = await _readProductListQueryHandler.Handle(query, CancellationToken.None);
 
             // Then
-            Assert.IsType<List<ProductListDTO>>(list);
+            Assert.IsType<List<ProductListDto>>(list);
             Assert.True(list.TrueForAll(item => !item.IsDeleted));
         }
 

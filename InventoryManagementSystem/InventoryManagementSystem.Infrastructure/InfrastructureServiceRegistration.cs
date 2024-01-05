@@ -32,13 +32,6 @@ namespace InventoryManagementSystem.Infrastructure
 
             services.AddScoped<IDbContext, AppDbContext>();
 
-            // Database initialization logic
-            /*using (var serviceProvider = services.BuildServiceProvider())
-            {
-                var dbContext = serviceProvider.GetRequiredService<AppDbContext>();
-                dbContext.Database.EnsureCreated();
-            }*/
-
             return services;
         }
     }

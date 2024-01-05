@@ -15,9 +15,9 @@ namespace InventoryManagementSystem.Pages.Product
 
         [Inject]
         private NavigationManager NavigationManager { get; set; }
-        private ICollection<ProductListDTO> Products { get; set; }
+        private ICollection<ProductListDto> Products { get; set; }
 
-        private ProductListDTO? selectedProduct = null;
+        private ProductListDto? selectedProduct = null;
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         protected override async Task OnInitializedAsync()
@@ -32,9 +32,9 @@ namespace InventoryManagementSystem.Pages.Product
         }
 
 
-        private EventCallback<MudBlazor.DataGridRowClickEventArgs<ProductListDTO>> RowClick()
+        private EventCallback<MudBlazor.DataGridRowClickEventArgs<ProductListDto>> RowClick()
         {
-            return EventCallback.Factory.Create(this, async (MudBlazor.DataGridRowClickEventArgs<ProductListDTO> args) =>
+            return EventCallback.Factory.Create(this, async (MudBlazor.DataGridRowClickEventArgs<ProductListDto> args) =>
             {
                 string productId = args.Item.Id.ToString();
 

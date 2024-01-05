@@ -20,8 +20,8 @@ namespace InventoryManagementSystem.Application.Commands.Products.CreateProduct
         public SupplierDTO? Supplier { get; set; }
 
         public List<ProductTypeDTO> ProductTypes { get; set; }
-        public List<ProductListDTO> Products { get; set; }
-        public CreateProductCommand(int amount, decimal price, string name, string description, DocumentDTO? document, List<IngredientListDTO> ingredients, SupplierDTO? supplier, List<ProductTypeDTO> productTypes, List<ProductListDTO> productList)
+        public List<ProductListDto> Products { get; set; }
+        public CreateProductCommand(int amount, decimal price, string name, string description, DocumentDTO? document, List<IngredientListDTO> ingredients, SupplierDTO? supplier, List<ProductTypeDTO> productTypes, List<ProductListDto> productList)
         {
             Amount = amount;
             Price = price;

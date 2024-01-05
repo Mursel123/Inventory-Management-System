@@ -156,6 +156,34 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SubProduct",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DocumentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubProduct", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SubProduct_Document_DocumentId",
+                        column: x => x.DocumentId,
+                        principalTable: "Document",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SubProduct_Supplier_SupplierId",
+                        column: x => x.SupplierId,
+                        principalTable: "Supplier",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "IngredientProduct",
                 columns: table => new
                 {
@@ -204,40 +232,6 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubProduct",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DocumentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SubProduct", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SubProduct_Document_DocumentId",
-                        column: x => x.DocumentId,
-                        principalTable: "Document",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_SubProduct_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_SubProduct_Supplier_SupplierId",
-                        column: x => x.SupplierId,
-                        principalTable: "Supplier",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "OrderLine",
                 columns: table => new
                 {
@@ -275,19 +269,43 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ProductSubProduct",
+                columns: table => new
+                {
+                    ProductsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SubProductsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductSubProduct", x => new { x.ProductsId, x.SubProductsId });
+                    table.ForeignKey(
+                        name: "FK_ProductSubProduct_Product_ProductsId",
+                        column: x => x.ProductsId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductSubProduct_SubProduct_SubProductsId",
+                        column: x => x.SubProductsId,
+                        principalTable: "SubProduct",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "ProductType",
                 columns: new[] { "Id", "IsDeleted", "Type" },
                 values: new object[,]
                 {
-                    { new Guid("39b06c15-15fd-4dbd-8b4c-1444cd17bad1"), false, "Purchased Inventory" },
-                    { new Guid("7beccbde-c644-4765-97f0-2e3ca5d2063e"), false, "Sales Inventory" }
+                    { new Guid("8c0a31f9-fc31-4340-9dea-ea47bfe36cea"), false, "Purchased Inventory" },
+                    { new Guid("bc98af94-2501-42ec-a232-d7d08f38676f"), false, "Sales Inventory" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Settings",
                 columns: new[] { "Id", "AtLeastIngredientMLTotal", "AtLeastProductAmount", "IsDeleted" },
-                values: new object[] { new Guid("80ebccfa-111b-4654-b313-622adae78646"), 0m, 0, false });
+                values: new object[] { new Guid("20f3e671-1e7d-424a-91d8-b5706bb8e269"), 0m, 0, false });
 
             migrationBuilder.CreateIndex(
                 name: "IX_IngredientProduct_ProductsId",
@@ -344,16 +362,16 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 column: "ProductsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductSubProduct_SubProductsId",
+                table: "ProductSubProduct",
+                column: "SubProductsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SubProduct_DocumentId",
                 table: "SubProduct",
                 column: "DocumentId",
                 unique: true,
                 filter: "[DocumentId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SubProduct_ProductId",
-                table: "SubProduct",
-                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SubProduct_SupplierId",
@@ -377,13 +395,13 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                 name: "ProductProductType");
 
             migrationBuilder.DropTable(
+                name: "ProductSubProduct");
+
+            migrationBuilder.DropTable(
                 name: "Settings");
 
             migrationBuilder.DropTable(
                 name: "Order");
-
-            migrationBuilder.DropTable(
-                name: "SubProduct");
 
             migrationBuilder.DropTable(
                 name: "Ingredient");
@@ -393,6 +411,9 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Product");
+
+            migrationBuilder.DropTable(
+                name: "SubProduct");
 
             migrationBuilder.DropTable(
                 name: "Document");

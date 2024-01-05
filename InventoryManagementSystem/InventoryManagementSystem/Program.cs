@@ -1,6 +1,5 @@
 using InventoryManagementSystem.Application;
 using InventoryManagementSystem.Infrastructure;
-
 using MudBlazor;
 using MudBlazor.Services;
 
@@ -29,13 +28,6 @@ builder.Services.AddMudServices(config =>
 builder.Services.AddMudBlazorDialog();
 
 var app = builder.Build();
-
-if (args.Contains("/seed"))
-{
-    
-    await SeedData.EnsurePopulatedAsync(app);
-    return;
-}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

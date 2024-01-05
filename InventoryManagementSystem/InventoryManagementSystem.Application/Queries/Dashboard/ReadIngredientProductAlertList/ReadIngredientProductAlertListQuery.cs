@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace InventoryManagementSystem.Application.Queries.Dashboard.ReadIngredientProductAlertList
 {
-    public class ReadIngredientProductAlertListQuery : IRequest<(List<ProductListDTO>, List<IngredientListDTO>)>
+    public class ReadIngredientProductAlertListQuery : IRequest<(List<ProductListDto>, List<IngredientListDTO>)>
     {
     }
 }

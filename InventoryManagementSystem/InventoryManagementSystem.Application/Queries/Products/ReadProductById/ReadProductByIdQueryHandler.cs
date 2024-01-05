@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using InventoryManagementSystem.Application.DTOs.Product;
-using InventoryManagementSystem.Application.Queries.ReadProductList;
+using InventoryManagementSystem.Application.Queries.Products.ReadProductList;
 using InventoryManagementSystem.Domain.Contracts;
 using InventoryManagementSystem.Domain.Entities;
 using MediatR;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InventoryManagementSystem.Application.Queries.ReadProductById
+namespace InventoryManagementSystem.Application.Queries.Products.ReadProductById
 {
     public class ReadProductByIdQueryHandler : IRequestHandler<ReadProductByIdQuery, ProductDTO>
     {

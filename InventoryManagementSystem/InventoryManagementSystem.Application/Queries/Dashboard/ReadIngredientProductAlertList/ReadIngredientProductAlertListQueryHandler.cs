@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InventoryManagementSystem.Application.Queries.Dashboard.ReadIngredientProductAlertList
 {
-    internal class ReadIngredientProductAlertListQueryHandler : IRequestHandler<ReadIngredientProductAlertListQuery, (List<ProductListDTO>, List<IngredientListDTO>)>
+    internal class ReadIngredientProductAlertListQueryHandler : IRequestHandler<ReadIngredientProductAlertListQuery, (List<ProductListDto>, List<IngredientListDTO>)>
     {
         private readonly IDbContext _context;
         private readonly IMapper _mapper;
@@ -18,13 +18,14 @@ namespace InventoryManagementSystem.Application.Queries.Dashboard.ReadIngredient
             _context = context;
             _mapper = mapper;
         }
-        public async Task<(List<ProductListDTO>, List<IngredientListDTO>)> Handle(ReadIngredientProductAlertListQuery request, CancellationToken cancellationToken)
+        public async Task<(List<ProductListDto>, List<IngredientListDTO>)> Handle(ReadIngredientProductAlertListQuery request, CancellationToken cancellationToken)
         {
             var settings = await _context.Set<Domain.Entities.Settings>().SingleAsync();
 
             var products = await _context.Set<Product>()
-                .ProjectTo<ProductListDTO>(_mapper.ConfigurationProvider)
                 .Where(x => x.Amount <= settings.AtLeastProductAmount && !x.IsDeleted)
+                .ProjectTo<ProductListDto>(_mapper.ConfigurationProvider)
+                
                 .ToListAsync();
 
             var ingredients = await _context.Set<Ingredient>()

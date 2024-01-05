@@ -37,9 +37,9 @@ namespace InventoryManagementSystem.Infrastructure.Configurations
                 .HasMany(x => x.Ingredients)
                 .WithMany(x => x.Products);
 
-                builder
-            .HasMany(p => p.SubProducts)
-            .WithOne(p => p.Product);
+            builder
+                .HasMany(p => p.SubProducts)
+                .WithMany(p => p.Products);
 
             builder
                 .HasMany(x => x.ProductTypes)

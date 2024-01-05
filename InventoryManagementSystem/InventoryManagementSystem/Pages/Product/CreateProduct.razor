@@ -139,7 +139,7 @@
                         <MudText Typo="Typo.h6" Class="mt-5 mb-md-5">Uitlities</MudText>
                         @if (Products.Count != 0)
                         {
-                            <MudSelect T="ProductListDTO"
+                            <MudSelect T="ProductListDto"
                                        Class="mb-5"
                                        Label="Utilities"
                                        Variant="Variant.Outlined"
@@ -147,7 +147,7 @@
 
                                 @foreach (var product in Products)
                                 {
-                                    <MudSelectItem T="ProductListDTO" Value="@product">@product.Name</MudSelectItem>
+                                    <MudSelectItem T="ProductListDto" Value="@product">@product.Name</MudSelectItem>
                                 }
                             </MudSelect>
                         }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryManagementSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240105150320_initial")]
+    [Migration("20240105174939_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -259,13 +259,13 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("39b06c15-15fd-4dbd-8b4c-1444cd17bad1"),
+                            Id = new Guid("8c0a31f9-fc31-4340-9dea-ea47bfe36cea"),
                             IsDeleted = false,
                             Type = "Purchased Inventory"
                         },
                         new
                         {
-                            Id = new Guid("7beccbde-c644-4765-97f0-2e3ca5d2063e"),
+                            Id = new Guid("bc98af94-2501-42ec-a232-d7d08f38676f"),
                             IsDeleted = false,
                             Type = "Sales Inventory"
                         });
@@ -294,7 +294,7 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("80ebccfa-111b-4654-b313-622adae78646"),
+                            Id = new Guid("20f3e671-1e7d-424a-91d8-b5706bb8e269"),
                             AtLeastIngredientMLTotal = 0m,
                             AtLeastProductAmount = 0,
                             IsDeleted = false
@@ -330,9 +330,6 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid?>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid?>("SupplierId")
                         .HasColumnType("uniqueidentifier");
 
@@ -341,8 +338,6 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                     b.HasIndex("DocumentId")
                         .IsUnique()
                         .HasFilter("[DocumentId] IS NOT NULL");
-
-                    b.HasIndex("ProductId");
 
                     b.HasIndex("SupplierId");
 
@@ -391,6 +386,21 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                     b.HasIndex("ProductsId");
 
                     b.ToTable("ProductProductType");
+                });
+
+            modelBuilder.Entity("ProductSubProduct", b =>
+                {
+                    b.Property<Guid>("ProductsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SubProductsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ProductsId", "SubProductsId");
+
+                    b.HasIndex("SubProductsId");
+
+                    b.ToTable("ProductSubProduct");
                 });
 
             modelBuilder.Entity("IngredientProduct", b =>
@@ -474,17 +484,11 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                         .WithOne("SubProduct")
                         .HasForeignKey("InventoryManagementSystem.Domain.Entities.SubProduct", "DocumentId");
 
-                    b.HasOne("InventoryManagementSystem.Domain.Entities.Product", "Product")
-                        .WithMany("SubProducts")
-                        .HasForeignKey("ProductId");
-
                     b.HasOne("InventoryManagementSystem.Domain.Entities.Supplier", "Supplier")
                         .WithMany("SubProducts")
                         .HasForeignKey("SupplierId");
 
                     b.Navigation("Document");
-
-                    b.Navigation("Product");
 
                     b.Navigation("Supplier");
                 });
@@ -500,6 +504,21 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
                     b.HasOne("InventoryManagementSystem.Domain.Entities.Product", null)
                         .WithMany()
                         .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProductSubProduct", b =>
+                {
+                    b.HasOne("InventoryManagementSystem.Domain.Entities.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InventoryManagementSystem.Domain.Entities.SubProduct", null)
+                        .WithMany()
+                        .HasForeignKey("SubProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -528,8 +547,6 @@ namespace InventoryManagementSystem.Infrastructure.Migrations
             modelBuilder.Entity("InventoryManagementSystem.Domain.Entities.Product", b =>
                 {
                     b.Navigation("OrderLines");
-
-                    b.Navigation("SubProducts");
                 });
 
             modelBuilder.Entity("InventoryManagementSystem.Domain.Entities.SubProduct", b =>
