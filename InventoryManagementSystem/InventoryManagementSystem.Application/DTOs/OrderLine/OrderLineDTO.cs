@@ -12,7 +12,7 @@ namespace InventoryManagementSystem.Application.DTOs.OrderLine
     {
         public Guid Id { get; set; }
         public ProductListDto? Product { get; set; }
-        public IngredientListDTO? Ingredient { get; set; }
+        public IngredientListDto? Ingredient { get; set; }
         public int? Quantity { get; set; }
 
     }

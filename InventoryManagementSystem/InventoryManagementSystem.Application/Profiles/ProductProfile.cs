@@ -19,17 +19,20 @@ namespace InventoryManagementSystem.Application.Profiles
     {
         public ProductProfile()
         {
+            CreateMap<Ingredient, ProductIngredientListDto>();
+            CreateMap<Product, ProductProductListDto>();
+
+
             CreateMap<Product, ProductListDto>().ReverseMap();
-            CreateMap<Product, ProductDTO>();
-            CreateMap<ProductType, ProductTypeDTO>();
-            CreateMap<Ingredient, ProductIngredientDTO>();
+            CreateMap<Product, ProductDto>();
+            CreateMap<ProductType, ProductTypeDto>();
             CreateMap<Price, IngredientPriceDTO>();
-            CreateMap<Document, DocumentDTO>();
-            CreateMap<Supplier, SupplierDTO>();
-            CreateMap<OrderLine, ProductOrderLineDTO>();
+            CreateMap<Document, DocumentDto>();
+            CreateMap<Supplier, SupplierDto>();
+            
             CreateMap<Product, Product>();
-            CreateMap<ProductProductDTO, Product>();
-            CreateMap<Product, ProductProductDTO>();
+            
+            
             CreateMap<CreateProductCommand, Product>();
             CreateMap<UpdateProductCommand, Product>()
                 .ForPath(dest => dest.Document, opt => opt.MapFrom(src => src.Document))
@@ -37,7 +40,7 @@ namespace InventoryManagementSystem.Application.Profiles
                 .ReverseMap();
 
 
-            CreateMap<ProductDTO, UpdateProductCommand>();
+            CreateMap<ProductDto, UpdateProductCommand>();
         }
     }
 }

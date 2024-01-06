@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace InventoryManagementSystem.Application.Commands.Products.CreateProduct
 {
-    public class CreateProductCommandValidator : AbstractValidator<ProductDTO>
+    public class CreateProductCommandValidator : AbstractValidator<ProductDto>
     {
         public CreateProductCommandValidator()
         {

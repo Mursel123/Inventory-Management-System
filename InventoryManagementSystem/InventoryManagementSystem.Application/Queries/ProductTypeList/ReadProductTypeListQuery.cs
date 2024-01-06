@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace InventoryManagementSystem.Application.Queries.ProductTypeList
 {
-    public class ReadProductTypeListQuery : IRequest<List<ProductTypeDTO>>
+    public class ReadProductTypeListQuery : IRequest<List<ProductTypeDto>>
     {
     }
 }

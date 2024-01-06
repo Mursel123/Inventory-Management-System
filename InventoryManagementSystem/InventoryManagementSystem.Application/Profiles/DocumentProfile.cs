@@ -13,7 +13,7 @@ namespace InventoryManagementSystem.Application.Profiles
     {
         public DocumentProfile()
         {
-            CreateMap<Document, DocumentDTO>().ReverseMap();
+            CreateMap<Document, DocumentDto>().ReverseMap();
         }
     }
 }

@@ -11,27 +11,15 @@ namespace InventoryManagementSystem.Application.Commands.Products.CreateProduct
     {
         public int Amount { get; set; }
         public decimal Price { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
 
-        public DocumentDTO? Document { get; set; }
-        public List<IngredientListDTO> Ingredients { get; set; }
+        public DocumentDto? Document { get; set; }
+        public Guid? SupplierId { get; set; }
 
-        public SupplierDTO? Supplier { get; set; }
+        public List<Guid> Ingredients { get; set; } = new();
+        public List<Guid> ProductTypes { get; set; } = new();
+        public List<Guid> SubProducts { get; set; } = new();
 
-        public List<ProductTypeDTO> ProductTypes { get; set; }
-        public List<ProductListDto> Products { get; set; }
-        public CreateProductCommand(int amount, decimal price, string name, string description, DocumentDTO? document, List<IngredientListDTO> ingredients, SupplierDTO? supplier, List<ProductTypeDTO> productTypes, List<ProductListDto> productList)
-        {
-            Amount = amount;
-            Price = price;
-            Name = name;
-            Description = description;
-            Document = document;
-            Ingredients = ingredients;
-            Supplier = supplier;
-            ProductTypes = productTypes;
-            Products = productList;
-        }
     }
 }

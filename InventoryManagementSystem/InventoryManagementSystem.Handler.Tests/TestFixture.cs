@@ -115,7 +115,7 @@ namespace InventoryManagementSystem.Handler.Tests
                 Phone = "123-456-7890"
             };
 
-            var productExtra = new SubProduct
+            var productExtra = new Product
             {
                 Id = Guid.Parse("FF9EFB3F-D98A-4073-9B5C-ADF0C1264C51"),
                 Amount = 5,
@@ -159,7 +159,7 @@ namespace InventoryManagementSystem.Handler.Tests
 
             var orderlinesExtra = new OrderLine
             {
-                SubProduct = productExtra,
+                Product = productExtra,
                 Quantity = 1
             };
 
@@ -236,14 +236,10 @@ namespace InventoryManagementSystem.Handler.Tests
                 await _context.ProductType.AddRangeAsync(productTypeSales, productTypePurchased);
                 await _context.SaveChangesAsync();
             }
-            if (!_context.SubProduct.Any())
-            {
-                await _context.SubProduct.AddAsync(productExtra);
-                await _context.SaveChangesAsync();
-            }
+
             if (!_context.Product.Any())
             {
-                await _context.Product.AddRangeAsync(productSell, productSell2);
+                await _context.Product.AddRangeAsync(productExtra, productSell, productSell2);
                 await _context.SaveChangesAsync();
             }
 

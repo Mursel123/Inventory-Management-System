@@ -1,14 +1,9 @@
 ﻿using InventoryManagementSystem.Application.DTOs.Supplier;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace InventoryManagementSystem.Application.Queries.Suppliers.ReadSupplierSelectList
+namespace InventoryManagementSystem.Application.Queries.Suppliers.ReadSupplierList
 {
-    public class ReadSupplierListQuery : IRequest<List<SupplierDTO>>
+    public class ReadSupplierListQuery : IRequest<List<SupplierDto>>
     {
     }
 }

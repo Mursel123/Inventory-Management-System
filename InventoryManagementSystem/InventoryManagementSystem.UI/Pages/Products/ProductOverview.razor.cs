@@ -21,7 +21,7 @@ namespace InventoryManagementSystem.UI.Pages.Products
             {
                 string productId = args.Item.Id.ToString();
 
-                NavigationManager.NavigateTo($"/product/{productId}");
+                NavigationManager.NavigateTo($"/products/{productId}");
             });
         }
     }

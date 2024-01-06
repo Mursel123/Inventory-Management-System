@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InventoryManagementSystem.Application.Queries.Products.ReadProductById
 {
-    internal sealed class ReadProductByIdQueryHandler : IRequestHandler<ReadProductByIdQuery, ProductDTO>
+    internal sealed class ReadProductByIdQueryHandler : IRequestHandler<ReadProductByIdQuery, ProductDto>
     {
         private readonly IMapper _mapper;
         private readonly IDbContext _context;
@@ -20,11 +20,11 @@ namespace InventoryManagementSystem.Application.Queries.Products.ReadProductById
         }
 
 
-        public async Task<ProductDTO> Handle(ReadProductByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ProductDto> Handle(ReadProductByIdQuery request, CancellationToken cancellationToken)
         {
             var product =  await _context.Set<Product>()
                  .Where(x => !x.IsDeleted)
-                 .ProjectTo<ProductDTO>(_mapper.ConfigurationProvider)
+                 .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
                  .SingleOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
             if (product is null)

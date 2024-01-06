@@ -9,11 +9,11 @@ namespace InventoryManagementSystem.Application.Commands.Orders.Create
     public class CreateOrderCommand : IRequest<Guid>
     {
         public DateTime Date { get; set; } = DateTime.Now;
-        public DocumentDTO? Document { get; set; }
+        public DocumentDto? Document { get; set; }
         public List<OrderLineDTO> OrderLines { get; set; }
         public OrderType? Type { get; set; }
 
-        public CreateOrderCommand(DocumentDTO? document, List<OrderLineDTO> orderLines, OrderType? type)
+        public CreateOrderCommand(DocumentDto? document, List<OrderLineDTO> orderLines, OrderType? type)
         {
             Document = document;
             OrderLines = orderLines;

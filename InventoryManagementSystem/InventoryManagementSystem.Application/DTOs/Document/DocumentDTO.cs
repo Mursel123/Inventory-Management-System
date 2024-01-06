@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace InventoryManagementSystem.Application.DTOs.Document
 {
-    public class DocumentDTO
+    public class DocumentDto : BaseDto
     {
-        public Guid Id { get; set; }
         public DocumentType Type { get; set; }
         public byte[] FileData { get; set; }
     }

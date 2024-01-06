@@ -31,9 +31,6 @@ namespace InventoryManagementSystem.Infrastructure.Configurations
                 .HasOne(x => x.Product)
                 .WithMany(x => x.OrderLines);
 
-            builder
-                .HasOne(x => x.SubProduct)
-                .WithMany(x => x.OrderLines);
         }
     }
 }

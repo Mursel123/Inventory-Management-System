@@ -35,7 +35,10 @@ namespace InventoryManagementSystem.Api
             builder.Services.AddApplicationServices();
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.UseAllOfToExtendReferenceSchemas();
+            });
             builder.Services.AddScoped<ExceptionHandlerMiddleware>();
             
             return builder.Build();

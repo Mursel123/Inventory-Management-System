@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace InventoryManagementSystem.Application.DTOs.Supplier
 {
-    public class SupplierDTO
+    public class SupplierDto : BaseDto
     {
-        public Guid Id { get; set; }
-        public string CompanyName { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string PhoneNumber { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
 
     }
 }

@@ -21,14 +21,14 @@ namespace InventoryManagementSystem.Application.Commands.Products.UpdateProduct
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public DocumentDTO? Document { get; set; }
-        public List<IngredientListDTO> Ingredients { get; set; }
+        public DocumentDto? Document { get; set; }
+        public List<IngredientListDto> Ingredients { get; set; }
 
-        public SupplierDTO? Supplier { get; set; }
+        public SupplierDto? Supplier { get; set; }
 
-        public List<ProductTypeDTO> ProductTypes { get; set; }
+        public List<ProductTypeDto> ProductTypes { get; set; }
 
-        public UpdateProductCommand(Guid id, int amount, decimal price, string name, string description, DocumentDTO? document, List<IngredientListDTO> ingredients, SupplierDTO? supplier, List<ProductTypeDTO> productTypes)
+        public UpdateProductCommand(Guid id, int amount, decimal price, string name, string description, DocumentDto? document, List<IngredientListDto> ingredients, SupplierDto? supplier, List<ProductTypeDto> productTypes)
         {
             Id = id;
             Amount = amount;

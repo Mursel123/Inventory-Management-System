@@ -8,7 +8,7 @@ namespace InventoryManagementSystem.Application.DTOs.Order
     {
         public string OrderNumber { get; set; } = string.Empty;
         public DateTime Date { get; set; } = DateTime.Now;
-        public DocumentDTO? Document { get; set; }
+        public DocumentDto? Document { get; set; }
         public List<OrderLineDTO> OrderLines { get; set; } = new();
         public OrderType? Type { get; set; }
     }

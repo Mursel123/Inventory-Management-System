@@ -6,7 +6,6 @@ namespace InventoryManagementSystem.Domain.Entities
     {
         public virtual Order? Order { get; set; }
         public virtual Product? Product { get; set; }
-        public virtual SubProduct? SubProduct { get; set; }
         public virtual Ingredient? Ingredient { get; set; }
         public int Quantity { get; set; }
         public decimal TotalCost { get; private set; }
@@ -22,10 +21,6 @@ namespace InventoryManagementSystem.Domain.Entities
             {
                 TotalCost = Quantity * Ingredient.Prices[0].IngredientPrice;
 
-            }
-            else if (SubProduct != null)
-            {
-                TotalCost = Quantity * SubProduct.Price;
             }
         }
     }

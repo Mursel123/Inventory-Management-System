@@ -98,7 +98,7 @@ namespace InventoryManagementSystem.Handler.Tests
             //Given
             var ingredient = await _context.Ingredient
                 .Where(x => x.Id == Guid.Parse("FBD1843E-AA5A-4425-8DC3-135A3AB5727E"))
-                .ProjectTo<IngredientListDTO>(_mapper.ConfigurationProvider)
+                .ProjectTo<IngredientListDto>(_mapper.ConfigurationProvider)
                 .SingleAsync();
 
             var lines = new List<OrderLineDTO>()

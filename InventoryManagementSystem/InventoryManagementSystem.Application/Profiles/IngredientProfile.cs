@@ -15,8 +15,8 @@ namespace InventoryManagementSystem.Application.Profiles
     {
         public IngredientProfile()
         {
-            CreateMap<Ingredient, IngredientSelectListDTO>();
-            CreateMap<Ingredient, IngredientListDTO>().ReverseMap();
+            CreateMap<Ingredient, IngredientSelectListDto>();
+            CreateMap<Ingredient, IngredientListDto>().ReverseMap();
             CreateMap<Ingredient, IngredientDTO>();
             CreateMap<CreateIngredientCommand, Ingredient>();
             CreateMap<UpdateIngredientCommand, Ingredient>();

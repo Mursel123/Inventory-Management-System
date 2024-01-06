@@ -5,15 +5,11 @@ using InventoryManagementSystem.Domain.Contracts;
 using InventoryManagementSystem.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace InventoryManagementSystem.Application.Queries.ProductTypeList
 {
-    public class ReadProductTypeListQueryHandler : IRequestHandler<ReadProductTypeListQuery, List<ProductTypeDTO>>
+    public class ReadProductTypeListQueryHandler : IRequestHandler<ReadProductTypeListQuery, List<ProductTypeDto>>
     {
         private readonly IDbContext _context;
         private readonly IMapper _mapper;
@@ -22,12 +18,11 @@ namespace InventoryManagementSystem.Application.Queries.ProductTypeList
             _context = context;
             _mapper = mapper;
         }
-        public async Task<List<ProductTypeDTO>> Handle(ReadProductTypeListQuery request, CancellationToken cancellationToken)
+        public async Task<List<ProductTypeDto>> Handle(ReadProductTypeListQuery request, CancellationToken cancellationToken)
         {
             return await _context.Set<ProductType>()
                             .Where(x => !x.IsDeleted)
-                            .ProjectTo<ProductTypeDTO>(_mapper.ConfigurationProvider)
-                            .OrderBy(x => x.Id)
+                            .ProjectTo<ProductTypeDto>(_mapper.ConfigurationProvider)
                             .ToListAsync(cancellationToken);
 
 

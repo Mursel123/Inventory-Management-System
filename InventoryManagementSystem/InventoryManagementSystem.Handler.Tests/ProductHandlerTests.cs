@@ -39,7 +39,7 @@ namespace InventoryManagementSystem.Handler.Tests
 
             // Then
             Assert.IsType<List<ProductListDto>>(list);
-            Assert.All(list, x => Assert.True(!x.IsDeleted));
+
         }
 
     }

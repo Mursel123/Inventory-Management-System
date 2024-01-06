@@ -10,7 +10,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace InventoryManagementSystem.Application.Commands.Products.UpdateProduct
 {
-    public class UpdateProductCommandValidator : AbstractValidator<ProductDTO>
+    public class UpdateProductCommandValidator : AbstractValidator<ProductDto>
     {
         public UpdateProductCommandValidator()
         {

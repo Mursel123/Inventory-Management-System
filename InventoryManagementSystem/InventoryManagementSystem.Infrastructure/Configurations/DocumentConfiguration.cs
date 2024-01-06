@@ -20,9 +20,6 @@ namespace InventoryManagementSystem.Infrastructure.Configurations
                 .WithOne(x => x.Document)
                 .HasForeignKey<Product>("DocumentId");
 
-            builder.HasOne(x => x.SubProduct)
-                .WithOne(x => x.Document)
-                .HasForeignKey<SubProduct>("DocumentId");
         }
     }
 }

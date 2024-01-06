@@ -8,7 +8,7 @@ namespace InventoryManagementSystem.Application.DTOs.Product
         public int Amount { get; set; }
         public decimal Price { get; set; } 
         public string Name { get; set; } = string.Empty;
-        public virtual List<ProductTypeDTO> ProductTypes { get; set; } = new();
+        public virtual List<ProductTypeDto> ProductTypes { get; set; } = new();
         public string ProductTypesString 
         { 
             get 

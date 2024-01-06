@@ -39,7 +39,7 @@ namespace InventoryManagementSystem.Infrastructure.Configurations
 
             builder
                 .HasMany(p => p.SubProducts)
-                .WithMany(p => p.Products);
+                .WithMany();
 
             builder
                 .HasMany(x => x.ProductTypes)

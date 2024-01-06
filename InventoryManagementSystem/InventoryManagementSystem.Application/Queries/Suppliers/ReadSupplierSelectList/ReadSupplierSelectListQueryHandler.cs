@@ -6,23 +6,23 @@ using InventoryManagementSystem.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace InventoryManagementSystem.Application.Queries.Suppliers.ReadSupplierList
+namespace InventoryManagementSystem.Application.Queries.Suppliers.ReadSupplierSelectList
 {
-    public class ReadSupplierListQueryHandler : IRequestHandler<ReadSupplierListQuery, List<SupplierDto>>
+    public class ReadSupplierSelectListQueryHandler : IRequestHandler<ReadSupplierSelectListQuery, List<SupplierSelectListDto>>
     {
         private readonly IDbContext _context;
         private readonly IMapper _mapper;
 
-        public ReadSupplierListQueryHandler(IMapper mapper, IDbContext context)
+        public ReadSupplierSelectListQueryHandler(IMapper mapper, IDbContext context)
         {
             _mapper = mapper;
             _context = context;
         }
 
-        public async Task<List<SupplierDto>> Handle(ReadSupplierListQuery request, CancellationToken cancellationToken)
+        public async Task<List<SupplierSelectListDto>> Handle(ReadSupplierSelectListQuery request, CancellationToken cancellationToken)
         {
             return await _context.Set<Supplier>()
-                    .ProjectTo<SupplierDto>(_mapper.ConfigurationProvider)
+                    .ProjectTo<SupplierSelectListDto>(_mapper.ConfigurationProvider)
                     .OrderBy(x => x.Id)
                     .ToListAsync(cancellationToken);
         }

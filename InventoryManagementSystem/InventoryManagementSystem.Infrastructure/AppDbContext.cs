@@ -18,7 +18,6 @@ namespace InventoryManagementSystem.Infrastructure
         public DbSet<OrderLine>? OrderLine { get; set; }
         public DbSet<Price>? Price { get; set; }
         public DbSet<Product>? Product { get; set; }
-        public DbSet<SubProduct>? SubProduct { get; set; }
         public DbSet<ProductType>? ProductType { get; set; }
         public DbSet<Supplier>? Supplier { get; set; }
         public DbSet<Settings>? Settings { get; set; }

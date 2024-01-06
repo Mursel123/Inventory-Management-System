@@ -68,12 +68,13 @@ namespace InventoryManagementSystem.Infrastructure
                 Phone = "123-456-7890"
             };
 
-            var productExtra = new SubProduct
+            var productExtra = new Product
             {
                 Id = Guid.NewGuid(),
                 Amount = 5, 
                 Price = 4.05m,
                 Supplier = supplier,
+                ProductTypes = new() { productTypePurchased },
                 Name = "Bottle 100ml"
             };
 
@@ -112,7 +113,7 @@ namespace InventoryManagementSystem.Infrastructure
 
             var orderlinesExtra = new OrderLine
             {
-                SubProduct = productExtra,
+                Product = productExtra,
                 Quantity = 1
             };
 
@@ -188,14 +189,9 @@ namespace InventoryManagementSystem.Infrastructure
                 await _context.SaveChangesAsync();
             }
 
-            if (!_context.SubProduct.Any())
-            {
-                await _context.SubProduct.AddAsync(productExtra);
-                await _context.SaveChangesAsync();
-            }
             if (!_context.Product.Any())
             {
-                await _context.Product.AddRangeAsync(productSell, productSell2);
+                await _context.Product.AddRangeAsync(productExtra, productSell, productSell2);
                 await _context.SaveChangesAsync();
             }
 

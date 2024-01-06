@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagementSystem", "InventoryManagementSystem\InventoryManagementSystem.csproj", "{72DE7CEC-AFEC-4F41-90F7-D5EAB2FADD6E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagementSystem.Domain", "InventoryManagementSystem.Domain\InventoryManagementSystem.Domain.csproj", "{58801F37-A303-40F3-8F71-BCB16B4C21C6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagementSystem.Infrastructure", "InventoryManagementSystem.Infrastructure\InventoryManagementSystem.Infrastructure.csproj", "{66AD8B6E-3663-4428-9AB4-3B041BADDDDB}"
@@ -37,10 +35,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{72DE7CEC-AFEC-4F41-90F7-D5EAB2FADD6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{72DE7CEC-AFEC-4F41-90F7-D5EAB2FADD6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{72DE7CEC-AFEC-4F41-90F7-D5EAB2FADD6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{72DE7CEC-AFEC-4F41-90F7-D5EAB2FADD6E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{58801F37-A303-40F3-8F71-BCB16B4C21C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{58801F37-A303-40F3-8F71-BCB16B4C21C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58801F37-A303-40F3-8F71-BCB16B4C21C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -70,7 +64,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{72DE7CEC-AFEC-4F41-90F7-D5EAB2FADD6E} = {464B8C9C-1B49-42D0-ADE1-E268D6CCFCDD}
 		{58801F37-A303-40F3-8F71-BCB16B4C21C6} = {7F84B144-E746-4A0A-BC5E-9D5153CC1E95}
 		{66AD8B6E-3663-4428-9AB4-3B041BADDDDB} = {8882FEEF-1D65-4778-B96A-03B39483FDD9}
 		{C4F50CA3-06F1-4711-BCBF-07043C5822A9} = {6C3427AD-A323-4203-A5D2-21197056F80C}

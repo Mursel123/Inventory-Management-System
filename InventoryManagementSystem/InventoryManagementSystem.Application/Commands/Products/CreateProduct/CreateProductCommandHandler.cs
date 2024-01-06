@@ -1,14 +1,8 @@
 ﻿using AutoMapper;
 using InventoryManagementSystem.Domain.Contracts;
 using InventoryManagementSystem.Domain.Entities;
-using InventoryManagementSystem.Domain.StaticData;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InventoryManagementSystem.Application.Commands.Products.CreateProduct
 {
@@ -29,28 +23,24 @@ namespace InventoryManagementSystem.Application.Commands.Products.CreateProduct
 
             var ingredients = await _context.Set<Ingredient>()
                 .AsTracking()
-                .Where(s => request.Ingredients.Select(rs => rs.Id).Contains(s.Id))
+                .Where(s => request.Ingredients.Contains(s.Id))
                 .ToListAsync(cancellationToken);
 
             var types = await _context.Set<ProductType>()
                 .AsTracking()
-                .Where(s => request.ProductTypes.Select(rs => rs.Id).Contains(s.Id))
+                .Where(s => request.ProductTypes.Contains(s.Id))
                 .ToListAsync(cancellationToken);
 
-            var subProducts = await _context.Set<SubProduct>()
+            var subProducts = await _context.Set<Product>()
                 .AsTracking()
-                .Where(s => request.Products.Select(rs => rs.Id).Contains(s.Id))
+                .Where(s => request.SubProducts.Contains(s.Id))
                 .ToListAsync(cancellationToken);
 
-            Supplier supplier = null;
-            if (request.Supplier != null)
-            {
-                supplier = await _context.Set<Supplier>()
-                                .AsTracking()
-                                .Where(s => s.Id == request.Supplier.Id)
-                                .SingleOrDefaultAsync(cancellationToken);
-            }
-            
+            var supplier = await _context.Set<Supplier>()
+                .AsTracking()
+                .Where(s => s.Id == request.SupplierId)
+                .SingleOrDefaultAsync(cancellationToken);
+
 
 
 
