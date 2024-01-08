@@ -30,7 +30,7 @@ namespace InventoryManagementSystem.UI.Pages.Products
         private FluentValidationValidator FluentValidationValidator = new();
         private CreateProductCommand Product { get; set; } = new();
         
-        private IList<IBrowserFile> files = new List<IBrowserFile>();
+        private IBrowserFile file = null;
 
 
         protected override async Task OnInitializedAsync()
@@ -53,31 +53,34 @@ namespace InventoryManagementSystem.UI.Pages.Products
                 if (await FluentValidationValidator!.ValidateAsync())
                 {
                     await Client.CreateProductAsync(Product);
-                    Snackbar.Add("The product is added succesfully", Severity.Success);
+                    Snackbar.Add("The product has been successfully added.", Severity.Success);
                 }
                     
             }
             catch (Exception)
             {
-                Snackbar.Add("The product could not be added", Severity.Error);
+                Snackbar.Add("Failed to add the product. Please try again later.", Severity.Error);
             }
 
         }
         private async Task UploadFileAsync(IBrowserFile file)
         {
-            if (files.Count >= 1)
+            if (file.ContentType.StartsWith("image"))
             {
-                files.Clear();
+                this.file = file;
+                using var stream = new MemoryStream();
+                await file.OpenReadStream().CopyToAsync(stream);
+                Product.Document = new()
+                {
+                    FileData = stream.ToArray(),
+                    Type = DocumentType._0
+                };
+            }
+            else
+            {
+                Snackbar.Add("Failed to load the file. Please make sure to select a valid image file.", Severity.Error);
             }
 
-            files.Add(file);
-            using var stream = new MemoryStream();
-            await file.OpenReadStream().CopyToAsync(stream);
-            Product.Document = new()
-            {
-                FileData = stream.ToArray(),
-                Type = DocumentType._0
-            };
 
         }
 

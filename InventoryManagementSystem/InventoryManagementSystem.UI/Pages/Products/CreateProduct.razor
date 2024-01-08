@@ -137,21 +137,17 @@ else
                                        Color="Color.Primary"
                                        StartIcon="@Icons.Material.Filled.CloudUpload"
                                        for="@fileInput">
-                                Only image files
+                                Select Image
                             </MudButton>
                         </ButtonTemplate>
                         </MudFileUpload>
-                        @if (files != null)
-                        {
-                            <MudList>
-                                @foreach (var file in files)
-                                {
-                                    <MudListItem Icon="@Icons.Material.Filled.AttachFile">
-                                        @file.Name <code>@file.Size bytes</code>
-                                    </MudListItem>
-                                }
-                            </MudList>
-                        }
+
+                            @if (file is not null)
+                            {
+                                <MudItem Icon="@Icons.Material.Filled.AttachFile">
+                                    @file.Name <code>@file.Size bytes</code>
+                                </MudItem>
+                            }
                     }
 
                 </MudCardContent>
