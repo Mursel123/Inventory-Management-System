@@ -10,8 +10,8 @@
 else
 {
     
-<EditForm Model="@Product" OnValidSubmit="OnValidSubmit" class="m-4">
-    <FluentValidationValidator />
+<EditForm Model="@Product" OnSubmit="OnSubmit" class="m-4">
+        <FluentValidationValidator @ref="FluentValidationValidator" />
     <MudGrid>
         <MudItem xs="12" sm="7">
             <MudCard>
@@ -50,40 +50,23 @@ else
                         For="@(() => Product.Amount)" />
 
                     <!-- ProductType -->
-                    @if (ProductTypes != null && ProductTypes.Count != 0)
-                    {
                         <MudSelect T="ProductTypeDto"
-                               Variant="Variant.Outlined"
-                               Label="Product Types"
-                               Placeholder="Please Select"
-                               @bind-Value="SelectedProductType">
+                                   MultiSelection="true"
+                                   Variant="Variant.Outlined"
+                                   Label="Product Types"
+                        @bind-SelectedValues="SelectedProductTypes"
+                                   Placeholder="Select Product Types"
+                                   ToStringFunc="(type => type.Type)">
                             @foreach (ProductTypeDto type in ProductTypes)
                             {
                                 <MudSelectItem T="ProductTypeDto" Value="@type">@type.Type</MudSelectItem>
                             }
                         </MudSelect>
-                    }
-                    <MudStack>
-                        @foreach (var type in Product.ProductTypes)
-                        {
-                            <MudPaper Class="pa-3">
-                                <MudGrid>
-                                    <MudItem xs="12" md="10">
-                                        <MudText>
-                                            @type.Type
-                                        </MudText>
-                                    </MudItem>
-                                    <MudItem xs="12" md="2" Class="text-right">
-                                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" Size="Size.Medium" @onclick="(() => Remove(type))" />
-                                    </MudItem>
-                                </MudGrid>
-                            </MudPaper>
-                        }
-                    </MudStack>
+                    
                     <!-- End ProductType -->
 
                     <!-- Supplier -->
-                    @if (Product.ProductTypes.Any(x => x.Type == ProductTypeData.PurchasedInventory))
+                    @if (SelectedProductTypes.Any(x => x.Type == ProductTypeData.PurchasedInventory))
                     {
                         <MudText Typo="Typo.h6" Class="mt-5 mb-md-5">Supplier</MudText>
 
@@ -102,7 +85,7 @@ else
                     }
                     <!-- End Supplier -->
 
-                    @if (Product.ProductTypes.Any(x => x.Type == ProductTypeData.SalesInventory))
+                    @if (SelectedProductTypes.Any(x => x.Type == ProductTypeData.SalesInventory))
                     {
 
                         <MudText Typo="Typo.h6" Class="mt-5 mb-md-5">Ingredients</MudText>
@@ -113,7 +96,10 @@ else
                                        Class="mb-5"
                                        Label="Ingredients"
                                        Variant="Variant.Outlined"
-                                       @bind-Value="SelectedIngredient">
+                                       Placeholder="Select Ingredients"
+                                       MultiSelection="true"
+                                       @bind-SelectedValues="SelectedIngredients"
+                                       ToStringFunc="(type => type.Name)">
 
                                 @foreach (var ingredient in Ingredients)
                                 {
@@ -123,32 +109,18 @@ else
                         }
                         
 
-                        <MudStack>
-                            @foreach (var ingredient in Product.Ingredients)
-                            {
-                                <MudPaper Class="pa-3">
-                                    <MudGrid>
-                                        <MudItem xs="12" md="10">
-                                            <MudText >
-                                                @ingredient.Name (Usage: @ingredient.MlUsage ml)
-                                            </MudText>
-                                        </MudItem>
-                                        <MudItem xs="12" md="2" Class="text-right">
-                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" Size="Size.Medium" @onclick="(() => Remove(ingredient))" />
-                                        </MudItem>
-                                    </MudGrid>
-                                </MudPaper>
-                            }
-                        </MudStack>
+                        
 
-                        <MudText Typo="Typo.h6" Class="mt-5 mb-md-5">Uitlities</MudText>
+                        <MudText Typo="Typo.h6" Class="mt-5 mb-md-5">Utilities</MudText>
                         @if (Products.Count != 0)
                         {
                             <MudSelect T="ProductSelectListDto"
                                        Class="mb-5"
                                        Label="Utilities"
                                        Variant="Variant.Outlined"
-                                       @bind-Value="SelectedProduct">
+                                       MultiSelection="true"
+                                       @bind-SelectedValues="SelectedSubProducts"
+                                       ToStringFunc="(type => type.Name)">
 
                                 @foreach (var product in Products)
                                 {
@@ -156,25 +128,6 @@ else
                                 }
                             </MudSelect>
                         }
-
-
-                        <MudStack>
-                            @foreach (var product in Product.SubProducts)
-                            {
-                                <MudPaper Class="pa-3">
-                                    <MudGrid>
-                                        <MudItem xs="12" md="10">
-                                            <MudText>
-                                                @product.Name
-                                            </MudText>
-                                        </MudItem>
-                                        <MudItem xs="12" md="2" Class="text-right">
-                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" Size="Size.Medium" @onclick="(() => Remove(selectedIngredient))" />
-                                        </MudItem>
-                                    </MudGrid>
-                                </MudPaper>
-                            }
-                        </MudStack>
 
 
                         <MudFileUpload Class="mt-5" Context="fileInput" T="IBrowserFile" Accept=".png, .jpg" FilesChanged="UploadFileAsync" AppendMultipleFiles="false">

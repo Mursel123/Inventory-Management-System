@@ -21,7 +21,7 @@ namespace InventoryManagementSystem.Application.Commands.Products.CreateProduct
 
             RuleFor(x => x.Amount)
                 .NotNull().WithMessage("{PropertyName} is required.")
-                .GreaterThan(0).WithMessage("{PropertyName} can not be under 0.");
+                .GreaterThanOrEqualTo(0).WithMessage("{PropertyName} can not be under 0.");
 
             When(x => x.ProductTypes.Exists(x => x.Type == ProductTypeData.PurchasedInventory), () =>
             {

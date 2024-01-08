@@ -33,7 +33,7 @@ namespace InventoryManagementSystem.Application.Commands.Products.CreateProduct
 
             var ingredients = await _context.Set<Ingredient>()
                 .AsTracking()
-                .Where(s => request.Ingredients.Select(dto => dto.Id).Contains(s.Id))
+                .Where(s => request.Ingredients.Contains(s.Id))
                 .ToListAsync(cancellationToken);
 
             var types = await _context.Set<ProductType>()
@@ -43,7 +43,7 @@ namespace InventoryManagementSystem.Application.Commands.Products.CreateProduct
 
             var subProducts = await _context.Set<Product>()
                 .AsTracking()
-                .Where(s => request.SubProducts.Select(dto => dto.Id).Contains(s.Id))
+                .Where(s => request.SubProducts.Contains(s.Id))
                 .ToListAsync(cancellationToken);
 
             var supplier = await _context.Set<Supplier>()
@@ -68,6 +68,7 @@ namespace InventoryManagementSystem.Application.Commands.Products.CreateProduct
             if (!request.ProductTypes.Exists(x => x.Type == ProductTypeData.SalesInventory))
             {
                 request.Ingredients = new();
+                request.SubProducts = new();
                 request.Document = null;
 
             }

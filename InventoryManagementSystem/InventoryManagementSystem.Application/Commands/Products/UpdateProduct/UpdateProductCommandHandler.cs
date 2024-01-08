@@ -1,16 +1,10 @@
 ﻿using AutoMapper;
-using InventoryManagementSystem.Application.Commands.Products.CreateProduct;
+using FluentValidation;
 using InventoryManagementSystem.Application.Contracts;
 using InventoryManagementSystem.Domain.Entities;
 using InventoryManagementSystem.Domain.StaticData;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace InventoryManagementSystem.Application.Commands.Products.UpdateProduct
 {
@@ -18,23 +12,29 @@ namespace InventoryManagementSystem.Application.Commands.Products.UpdateProduct
     {
         private readonly IDbContext _context;
         private readonly IMapper _mapper;
-        private readonly IMediator _mediator;
-
-        public UpdateProductCommandHandler(IDbContext context, IMapper mapper, IMediator mediator)
+        private readonly IValidator<UpdateProductCommand> _validator;
+        public UpdateProductCommandHandler(IDbContext context, IMapper mapper, IValidator<UpdateProductCommand> validator)
         {
             _context = context;
             _mapper = mapper;
-            _mediator = mediator; 
+            _validator = validator;
         }
 
         public async Task<Guid> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
+            var result = await _validator.ValidateAsync(request, cancellationToken);
+
+            if (result.Errors.Any())
+                throw new Exceptions.ValidationException(result);
+
             var product = await _context.Set<Product>()
                 .AsTracking()
                 .Include(x => x.Supplier)
                 .Include(x => x.Ingredients)
                 .Include(x => x.ProductTypes)
                 .SingleAsync(x => x.Id == request.Id, cancellationToken);
+
+            CheckForProductType(request);
 
             _mapper.Map(request, product, typeof(UpdateProductCommand), typeof(Product));
 
@@ -48,19 +48,14 @@ namespace InventoryManagementSystem.Application.Commands.Products.UpdateProduct
                 .Where(s => request.ProductTypes.Select(rs => rs.Id).Contains(s.Id))
                 .ToListAsync(cancellationToken);
 
-            Supplier? supplier = product.Supplier;
-            if (supplier != null)
-            {
-                supplier = await _context.Set<Supplier>()
-                                .AsTracking()
-                                .Where(s => s.Id == request.Supplier.Id)
-                                .SingleOrDefaultAsync(cancellationToken);
-            }
+            var supplier = await _context.Set<Supplier>()
+                .AsTracking()
+                .Where(s => s.Id == request.SupplierId)
+                .SingleOrDefaultAsync(cancellationToken);
 
             product.Ingredients = ingredients;
             product.Supplier = supplier;
             product.ProductTypes = types;
-            CheckObjects(request, product);
 
             _context.Set<Product>().Update(product);
             await _context.SaveChangesAsync(cancellationToken);
@@ -68,17 +63,18 @@ namespace InventoryManagementSystem.Application.Commands.Products.UpdateProduct
             return product.Id;
         }
 
-        private void CheckObjects(UpdateProductCommand request, Product product)
+        private void CheckForProductType(UpdateProductCommand request)
         {
             if (!request.ProductTypes.Exists(x => x.Type == ProductTypeData.SalesInventory))
             {
-                product.Ingredients = new();
-                product.Document = null;
+                request.Ingredients = new();
+                request.SubProducts = new();
+                request.Document = null;
 
             }
             if (!request.ProductTypes.Exists(x => x.Type == ProductTypeData.PurchasedInventory))
             {
-                product.Supplier = null;
+                request.SupplierId = null;
             }
         }
 

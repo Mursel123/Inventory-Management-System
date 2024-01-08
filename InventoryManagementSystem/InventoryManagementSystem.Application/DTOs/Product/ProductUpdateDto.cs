@@ -1,21 +1,16 @@
 ﻿using InventoryManagementSystem.Application.DTOs.Document;
 using InventoryManagementSystem.Application.DTOs.Ingredient;
-using InventoryManagementSystem.Application.DTOs.Product;
 using InventoryManagementSystem.Application.DTOs.ProductType;
-using InventoryManagementSystem.Application.DTOs.Supplier;
-using InventoryManagementSystem.Domain.Entities;
-using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InventoryManagementSystem.Application.Commands.Products.UpdateProduct
+namespace InventoryManagementSystem.Application.DTOs.Product
 {
-    public class UpdateProductCommand : IRequest<Guid>
+    public class ProductUpdateDto : BaseDto
     {
-        public Guid Id { get; set; }
         public int Amount { get; set; }
         public decimal Price { get; set; }
         public string Name { get; set; } = string.Empty;

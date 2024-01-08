@@ -30,10 +30,12 @@ namespace InventoryManagementSystem.Application.Profiles
             CreateMap<Document, DocumentDto>();
             CreateMap<Supplier, SupplierDto>();
             
-            CreateMap<Product, Product>();
             
-            
-            CreateMap<CreateProductCommand, Product>();
+            CreateMap<CreateProductCommand, Product>()
+                .ForMember(dest => dest.ProductTypes, opt => opt.Ignore())
+                .ForMember(dest => dest.Ingredients, opt => opt.Ignore())
+                .ForMember(dest => dest.SubProducts, opt => opt.Ignore());
+
             CreateMap<UpdateProductCommand, Product>()
                 .ForPath(dest => dest.Document, opt => opt.MapFrom(src => src.Document))
                 .ForMember(dest => dest.ProductTypes, opt => opt.Ignore())

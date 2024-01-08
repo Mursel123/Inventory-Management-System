@@ -1,27 +1,33 @@
 ﻿using FluentValidation;
-using InventoryManagementSystem.Application.DTOs.Product;
 using InventoryManagementSystem.Domain.StaticData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace InventoryManagementSystem.Application.Commands.Products.UpdateProduct
 {
-    public class UpdateProductCommandValidator : AbstractValidator<ProductDto>
+    public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
     {
         public UpdateProductCommandValidator()
         {
-            RuleFor(command => command.Price).GreaterThan(0.01m);
-            RuleFor(command => command.Name).NotEmpty();
-            RuleFor(command => command.Description).NotEmpty();
+            RuleFor(x => x.Name)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull().WithMessage("{PropertyName} is required.")
+                .MaximumLength(50).WithMessage("{PropertyName} can not be longer then 50 characters.");
 
-            RuleFor(command => command.Supplier)
-                    .NotNull()
-                    .When(command => command.ProductTypes.Exists(x => x.Type == ProductTypeData.PurchasedInventory))
-                    .WithMessage("Supplier is required when the product type is for purchasing.");
+            RuleFor(x => x.Description)
+                .MaximumLength(50).WithMessage("{PropertyName} can not be longer then 50 characters.");
+
+            RuleFor(x => x.Price)
+                .NotNull().WithMessage("{PropertyName} is required.")
+                .GreaterThanOrEqualTo(0).WithMessage("{PropertyName} can not be under 0.");
+
+            RuleFor(x => x.Amount)
+                .NotNull().WithMessage("{PropertyName} is required.")
+                .GreaterThanOrEqualTo(0).WithMessage("{PropertyName} can not be under 0.");
+
+            When(x => x.ProductTypes.Exists(x => x.Type == ProductTypeData.PurchasedInventory), () =>
+            {
+                RuleFor(x => x.SupplierId)
+                .NotNull().WithMessage("When product type purchased is selected, supplier is required.");
+            });
         }
     }
 }
