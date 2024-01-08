@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using InventoryManagementSystem.Domain.Contracts;
+using InventoryManagementSystem.Application.Contracts;
 using InventoryManagementSystem.Domain.Entities;
 using InventoryManagementSystem.Domain.Enums;
 using InventoryManagementSystem.Domain.StaticData;

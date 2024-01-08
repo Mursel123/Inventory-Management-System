@@ -2,6 +2,7 @@
 using InventoryManagementSystem.Application.DTOs.Product;
 using InventoryManagementSystem.Application.Queries.Products.ReadProductById;
 using InventoryManagementSystem.Application.Queries.Products.ReadProductList;
+using InventoryManagementSystem.Application.Queries.Products.ReadProductSelectList;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,14 @@ namespace InventoryManagementSystem.Api.Controllers
         public async Task<ActionResult<IReadOnlyList<ProductListDto>>> ReadAllProductsAsync(CancellationToken ct)
         {
             var dto = await _mediator.Send(new ReadProductListQuery(), ct);
+            return Ok(dto);
+        }
+
+        [HttpGet("all/selectlist/{productType}", Name = "ReadAllProductsWithTypeSelectlistAsync")]
+        public async Task<ActionResult<List<ProductSelectListDto>>> ReadAllProductsWithTypeSelectlistAsync(
+            string productType, CancellationToken ct )
+        {
+            var dto = await _mediator.Send(new ReadProductSelectListQuery(productType), ct);
             return Ok(dto);
         }
 

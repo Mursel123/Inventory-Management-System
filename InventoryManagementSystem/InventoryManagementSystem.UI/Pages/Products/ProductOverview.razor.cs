@@ -9,10 +9,12 @@ namespace InventoryManagementSystem.UI.Pages.Products
         private IClient Client { get; set; }
         [Inject]
         private NavigationManager NavigationManager { get; set; }
-        private ICollection<ProductListDto> Products { get; set; }
+        private List<ProductListDto> Products { get; set; }
+        private bool IsLoading { get; set; } = true;
         protected async override Task OnInitializedAsync()
         {
             Products = await Client.ReadAllProductsAsync();
+            IsLoading = false;
         }
 
         private EventCallback<MudBlazor.DataGridRowClickEventArgs<ProductListDto>> RowClick()

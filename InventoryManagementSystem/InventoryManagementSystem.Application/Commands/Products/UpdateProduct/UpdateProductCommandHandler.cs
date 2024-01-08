@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using InventoryManagementSystem.Application.Commands.Products.CreateProduct;
-using InventoryManagementSystem.Domain.Contracts;
+using InventoryManagementSystem.Application.Contracts;
 using InventoryManagementSystem.Domain.Entities;
 using InventoryManagementSystem.Domain.StaticData;
 using MediatR;

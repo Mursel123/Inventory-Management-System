@@ -2,7 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using InventoryManagementSystem.Application.DTOs.Ingredient;
 using InventoryManagementSystem.Application.DTOs.Product;
-using InventoryManagementSystem.Domain.Contracts;
+using InventoryManagementSystem.Application.Contracts;
 using InventoryManagementSystem.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

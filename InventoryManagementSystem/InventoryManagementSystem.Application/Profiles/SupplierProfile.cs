@@ -14,6 +14,7 @@ namespace InventoryManagementSystem.Application.Profiles
         public SupplierProfile()
         {
             CreateMap<Supplier, SupplierDto>().ReverseMap();
+            CreateMap<Supplier, SupplierSelectListDto>();
         }
     }
 }

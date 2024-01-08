@@ -1,7 +1,8 @@
 ﻿using FluentValidation;
-using InventoryManagementSystem.Domain.StaticData;
+using InventoryManagementSystem.UI.Services;
+using InventoryManagementSystem.UI.StaticData;
 
-namespace InventoryManagementSystem.Application.Commands.Products.CreateProduct
+namespace InventoryManagementSystem.UI.Validators.Product
 {
     public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
     {

@@ -1,5 +1,5 @@
 ﻿using AutoMapper.QueryableExtensions;
-using InventoryManagementSystem.Domain.Contracts;
+using InventoryManagementSystem.Application.Contracts;
 using InventoryManagementSystem.Domain.Entities;
 using InventoryManagementSystem.Domain.Entities.NotMapped;
 using InventoryManagementSystem.Domain.Enums;

@@ -2,7 +2,6 @@
 using InventoryManagementSystem.Application.DTOs.Ingredient;
 using InventoryManagementSystem.Application.DTOs.Product;
 using InventoryManagementSystem.Application.DTOs.ProductType;
-using InventoryManagementSystem.Application.DTOs.Supplier;
 using MediatR;
 
 namespace InventoryManagementSystem.Application.Commands.Products.CreateProduct
@@ -17,9 +16,9 @@ namespace InventoryManagementSystem.Application.Commands.Products.CreateProduct
         public DocumentDto? Document { get; set; }
         public Guid? SupplierId { get; set; }
 
-        public List<Guid> Ingredients { get; set; } = new();
-        public List<Guid> ProductTypes { get; set; } = new();
-        public List<Guid> SubProducts { get; set; } = new();
+        public List<IngredientSelectListDto> Ingredients { get; set; } = new();
+        public List<ProductTypeDto> ProductTypes { get; set; } = new();
+        public List<ProductSelectListDto> SubProducts { get; set; } = new();
 
     }
 }

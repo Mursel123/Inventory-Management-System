@@ -1,4 +1,4 @@
-﻿using InventoryManagementSystem.Domain.Contracts;
+﻿using InventoryManagementSystem.Application.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
