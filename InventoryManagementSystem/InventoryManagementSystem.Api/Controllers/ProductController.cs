@@ -1,4 +1,5 @@
 ﻿using InventoryManagementSystem.Application.Commands.Products.CreateProduct;
+using InventoryManagementSystem.Application.Commands.Products.UpdateProduct;
 using InventoryManagementSystem.Application.DTOs.Product;
 using InventoryManagementSystem.Application.Queries.Products.ReadProductById;
 using InventoryManagementSystem.Application.Queries.Products.ReadProductList;
@@ -42,6 +43,15 @@ namespace InventoryManagementSystem.Api.Controllers
 
         [HttpPost(Name = "CreateProductAsync")]
         public async Task<ActionResult> CreateProductAsync([FromBody] CreateProductCommand command, CancellationToken ct)
+        {
+            var productId = await _mediator.Send(command, ct);
+
+            return Ok(productId);
+
+        }
+
+        [HttpPut(Name = "UpdateProductAsync")]
+        public async Task<ActionResult> UpdateProductAsync([FromBody] UpdateProductCommand command, CancellationToken ct)
         {
             var productId = await _mediator.Send(command, ct);
 

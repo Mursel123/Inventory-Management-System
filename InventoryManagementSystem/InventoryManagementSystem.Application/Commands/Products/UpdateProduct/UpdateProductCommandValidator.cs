@@ -13,7 +13,7 @@ namespace InventoryManagementSystem.Application.Commands.Products.UpdateProduct
                 .MaximumLength(50).WithMessage("{PropertyName} can not be longer then 50 characters.");
 
             RuleFor(x => x.Description)
-                .MaximumLength(50).WithMessage("{PropertyName} can not be longer then 50 characters.");
+                .MaximumLength(255).WithMessage("{PropertyName} can not be longer then 50 characters.");
 
             RuleFor(x => x.Price)
                 .NotNull().WithMessage("{PropertyName} is required.")

@@ -27,20 +27,21 @@ namespace InventoryManagementSystem.Application.Commands.Products.UpdateProduct
             if (result.Errors.Any())
                 throw new Exceptions.ValidationException(result);
 
+            CheckForProductType(request);
+
             var product = await _context.Set<Product>()
                 .AsTracking()
                 .Include(x => x.Supplier)
                 .Include(x => x.Ingredients)
                 .Include(x => x.ProductTypes)
+                .Include(x => x.SubProducts)
                 .SingleAsync(x => x.Id == request.Id, cancellationToken);
-
-            CheckForProductType(request);
 
             _mapper.Map(request, product, typeof(UpdateProductCommand), typeof(Product));
 
             var ingredients = await _context.Set<Ingredient>()
                 .AsTracking()
-                .Where(s => request.Ingredients.Select(rs => rs.Id).Contains(s.Id))
+                .Where(s => request.Ingredients.Contains(s.Id))
                 .ToListAsync(cancellationToken);
 
             var types = await _context.Set<ProductType>()
@@ -53,9 +54,15 @@ namespace InventoryManagementSystem.Application.Commands.Products.UpdateProduct
                 .Where(s => s.Id == request.SupplierId)
                 .SingleOrDefaultAsync(cancellationToken);
 
+            var subProducts = await _context.Set<Product>()
+                .AsTracking()
+                .Where(s => request.SubProducts.Contains(s.Id))
+                .ToListAsync(cancellationToken);
+
             product.Ingredients = ingredients;
             product.Supplier = supplier;
             product.ProductTypes = types;
+            product.SubProducts = subProducts;
 
             _context.Set<Product>().Update(product);
             await _context.SaveChangesAsync(cancellationToken);

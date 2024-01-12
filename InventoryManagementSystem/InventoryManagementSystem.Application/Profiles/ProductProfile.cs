@@ -37,9 +37,10 @@ namespace InventoryManagementSystem.Application.Profiles
                 .ForMember(dest => dest.SubProducts, opt => opt.Ignore());
 
             CreateMap<UpdateProductCommand, Product>()
-                .ForPath(dest => dest.Document, opt => opt.MapFrom(src => src.Document))
                 .ForMember(dest => dest.ProductTypes, opt => opt.Ignore())
-                .ReverseMap();
+                .ForMember(dest => dest.Ingredients, opt => opt.Ignore())
+                .ForMember(dest => dest.SubProducts, opt => opt.Ignore());
+
 
 
             CreateMap<ProductDto, UpdateProductCommand>();

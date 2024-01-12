@@ -1,5 +1,159 @@
-﻿<h3>UpdateProduct</h3>
+﻿@page "/products/update/{ProductId}"
+@using InventoryManagementSystem.UI.StaticData;
+@using InventoryManagementSystem.UI.Services;
+@using Blazored.FluentValidation
 
-@code {
-
+@if (IsLoading)
+{
+    <InventoryManagementSystem.UI.Components.Loading IsLoading="IsLoading" />
 }
+else
+{
+
+    <EditForm Model="@Product" OnSubmit="OnSubmitAsync" class="w-50">
+        <FluentValidationValidator @ref="FluentValidationValidator" />
+        <MudCard>
+            <MudCardContent>
+                <MudText Class="mb-md-5" Typo="Typo.h6">Update Product</MudText>
+
+                <MudTextField Label="Name"
+                @bind-Value="Product.Name"
+                              Variant="Variant.Outlined"
+                              For="@(() => Product.Name)" />
+
+
+                <div class="d-flex py-5">
+
+                    <MudTextField Label="Price"
+                                  Variant="Variant.Outlined"
+                                  Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Filled.Euro"
+                                  Culture="System.Globalization.CultureInfo.CurrentCulture"
+                                  IconSize="Size.Small"
+                                  Format="F2"
+                    @bind-Value="Product.Price"
+                                  For="@(() => Product.Price)" />
+
+                    <MudTextField Label="Amount"
+                                  Class="pl-5"
+                                  Variant="Variant.Outlined"
+                                  InputType="InputType.Number"
+                    @bind-Value="Product.Amount"
+                                  For="@(() => Product.Amount)" />
+                </div>
+
+                <MudTextField Label="Description"
+                              Variant="Variant.Outlined"
+                              Lines="3"
+                              Class="mb-5"
+                @bind-Value="Product.Description"
+                              For="@(() => Product.Description)" />
+                <!-- ProductType -->
+                <MudSelect T="ProductTypeDto"
+                           MultiSelection="true"
+                           Variant="Variant.Outlined"
+                           Class="mb-5"
+                           Label="Product Types"
+                @bind-SelectedValues="SelectedProductTypes"
+                           Placeholder="Select Product Types"
+                           ToStringFunc="(type => type.Type)">
+                    @foreach (ProductTypeDto type in ProductTypes)
+                    {
+                        <MudSelectItem T="ProductTypeDto" Value="@type">@type.Type</MudSelectItem>
+                    }
+                </MudSelect>
+
+                <!-- End ProductType -->
+                <!-- Supplier -->
+                @if (SelectedProductTypes.Any(x => x.Type == ProductTypeData.PurchasedInventory))
+                {
+                    <MudText Typo="Typo.h6" Class="mt-5 mb-md-5">Supplier</MudText>
+
+                    <MudSelect T="SupplierSelectListDto"
+                               Class="mb-5"
+                               Label="Supplier"
+                               Variant="Variant.Outlined"
+                               @bind-Value="SelectedSupplier">
+
+                        @foreach (var supplier in Suppliers)
+                        {
+                            <MudSelectItem T="SupplierSelectListDto" Value="null">None</MudSelectItem>
+                            <MudSelectItem T="SupplierSelectListDto" Value="@supplier">@supplier.Name</MudSelectItem>
+                        }
+                    </MudSelect>
+                }
+                <!-- End Supplier -->
+                @if (SelectedProductTypes.Any(x => x.Type == ProductTypeData.SalesInventory))
+                {
+
+                    <MudText Typo="Typo.h6" Class="mt-5 mb-md-5">Ingredients</MudText>
+
+                    @if (Ingredients.Count != 0)
+                    {
+                        <MudSelect T="IngredientSelectListDto"
+                                   Class="mb-5"
+                                   Label="Ingredients"
+                                   Variant="Variant.Outlined"
+                                   Placeholder="Select Ingredients"
+                                   MultiSelection="true"
+                        @bind-SelectedValues="SelectedIngredients"
+                                   ToStringFunc="(type => type.Name)">
+
+                            @foreach (var ingredient in Ingredients)
+                            {
+                                <MudSelectItem T="IngredientSelectListDto" Value="@ingredient">@ingredient.Name (Usage: @ingredient.MlUsage ml)</MudSelectItem>
+                            }
+                        </MudSelect>
+                    }
+
+
+
+
+                    <MudText Typo="Typo.h6" Class="mt-5 mb-md-5">Utilities</MudText>
+                    @if (Products.Count != 0)
+                    {
+                        <MudSelect T="ProductSelectListDto"
+                                   Class="mb-5"
+                                   Label="Utilities"
+                                   Variant="Variant.Outlined"
+                                   MultiSelection="true"
+                        @bind-SelectedValues="SelectedSubProducts"
+                                   ToStringFunc="(type => type.Name)">
+
+                            @foreach (var product in Products)
+                            {
+                                <MudSelectItem T="ProductSelectListDto" Value="@product">@product.Name</MudSelectItem>
+                            }
+                        </MudSelect>
+                    }
+
+
+                    <MudFileUpload Class="mt-5" Context="fileInput" T="IBrowserFile" Accept=".png, .jpg" FilesChanged="UploadFileAsync" AppendMultipleFiles="false">
+                        <ButtonTemplate>
+                            <MudButton HtmlTag="label"
+                                       Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       StartIcon="@Icons.Material.Filled.CloudUpload"
+                                       for="@fileInput">
+                                Select Image
+                            </MudButton>
+                        </ButtonTemplate>
+                    </MudFileUpload>
+
+                    @if (file is not null)
+                    {
+                        <MudItem Icon="@Icons.Material.Filled.AttachFile">
+                            @file.Name <code>@file.Size bytes</code>
+                        </MudItem>
+                    }
+                }
+
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Update</MudButton>
+            </MudCardActions>
+        </MudCard>
+
+    </EditForm>
+}
+

@@ -2,159 +2,133 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using InventoryManagementSystem.UI.Services;
+using Blazored.FluentValidation;
+using InventoryManagementSystem.UI.StaticData;
+
 
 namespace InventoryManagementSystem.UI.Pages.Products
 {
     public partial class UpdateProduct
     {
-        [Inject]
-        private ISnackbar Snackbar { get; set; }
-
         [Parameter]
         public string ProductId { get; set; }
-        private ICollection<SupplierSelectListDto> Suppliers { get; set; }
-        private ICollection<IngredientSelectListDto> Ingredients { get; set; }
-        private ICollection<ProductTypeDto> ProductTypes { get; set; }
-        private ProductDto Product { get; set; } = new();
+        [Inject]
+        private ISnackbar Snackbar { get; set; }
+        [Inject]
+        private IClient Client { get; set; }
+        public UpdateProductCommand Product { get; set; } = new();
 
-        private IList<IBrowserFile> files = new List<IBrowserFile>();
+        //SelectLists to choose from
+        private List<SupplierSelectListDto> Suppliers { get; set; } = new();
+        private List<IngredientSelectListDto> Ingredients { get; set; } = new();
+        private List<ProductTypeDto> ProductTypes { get; set; } = new();
+        private List<ProductSelectListDto> Products { get; set; } = new();
 
-        private Func<SupplierDto, string> supplierConverter = p => p?.Name;
+        //Selected items
+        public SupplierSelectListDto SelectedSupplier { get; set; } = new();
+        private IEnumerable<ProductTypeDto> SelectedProductTypes { get; set; } = new HashSet<ProductTypeDto>();
+        private IEnumerable<IngredientSelectListDto> SelectedIngredients { get; set; } = new HashSet<IngredientSelectListDto>();
+        private IEnumerable<ProductSelectListDto> SelectedSubProducts { get; set; } = new HashSet<ProductSelectListDto>();
 
-        private ProductTypeDto? productType;
 
-        public ProductTypeDto? ProductType
-        {
-            get { return productType; }
-            set
-            {
-                if (value != null)
-                {
-                    ChangedType(value);
-                }
-                else
-                {
-                    productType = value;
-                }
+        private bool IsLoading { get; set; } = true;
+        private FluentValidationValidator FluentValidationValidator = new();
 
-            }
-        }
+        private IBrowserFile file = null;
 
-        private ProductIngredientListDto? ingredient;
-
-        public ProductIngredientListDto? Ingredient
-        {
-            get { return ingredient; }
-            set
-            {
-                if (value != null)
-                {
-                    ChangedType(value);
-                }
-                else
-                {
-                    ingredient = value;
-                }
-
-            }
-        }
 
         protected override async Task OnInitializedAsync()
         {
-           /* Product = await _mediator.Send(new ReadProductByIdQuery(Guid.Parse(ProductId)));
+            var product = await Client.ReadProductByIdAsync(Guid.Parse(ProductId));
+            Product = new UpdateProductCommand()
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Amount = product.Amount,
+                Price = product.Price,
+            };
 
 
-            ProductTypes = await _mediator.Send(new ReadProductTypeListQuery());
-            ProductTypes = ProductTypes
-                .Where(y => !Product.ProductTypes.Exists(x => x.Id == y.Id))
-                .ToList();
+            if (product.Supplier != null)
+            {
+                SelectedSupplier = new SupplierSelectListDto()
+                {
+                    Id = product.Supplier.Id,
+                    Name = product.Supplier.Name,
+                };
+            }
+            
 
-            Suppliers = await _mediator.Send(new ReadSupplierListQuery());
+            SelectedProductTypes = product.ProductTypes.ToList();
 
-            Ingredients = await _mediator.Send(new ReadIngredientListQuery());
-            Ingredients = Ingredients
-                .Where(y => !Product.Ingredients.Exists(x => x.Id == y.Id))
-                .ToList();*/
+            SelectedIngredients = product.Ingredients.Select(x => new IngredientSelectListDto
+            {
+                Id = x.Id,
+                MlUsage = x.MlUsage,
+                Name = x.Name
+
+            }).ToList();
 
 
+            SelectedSubProducts = product.SubProducts.Select(x => new ProductSelectListDto
+            {
+                Id = x.Id,
+                Name = x.Name
+
+            }).ToList();
+
+            
+            ProductTypes = await Client.ReadAllProductTypesAsync();
+            Suppliers = await Client.ReadAllSupplierSelectListAsync();
+            Ingredients = await Client.ReadAllIngredientSelectListAsync();
+            Products = await Client.ReadAllProductsWithTypeSelectlistAsync(ProductTypeData.PurchasedInventory);
+
+            IsLoading = false;
         }
+
         private async Task UploadFileAsync(IBrowserFile file)
         {
-            if (files.Count >= 1)
+            if (file.ContentType.StartsWith("image"))
             {
-                files.Clear();
+                this.file = file;
+                using var stream = new MemoryStream();
+                await file.OpenReadStream().CopyToAsync(stream);
+                Product.Document = new()
+                {
+                    FileData = stream.ToArray(),
+                    Type = DocumentType._0
+                };
+            }
+            else
+            {
+                Snackbar.Add("Failed to load the file. Please make sure to select a valid image file.", Severity.Error);
             }
 
-            files.Add(file);
-            using var stream = new MemoryStream();
-            await file.OpenReadStream().CopyToAsync(stream);
-            Product.Document = new()
-            {
-                FileData = stream.ToArray(),
-                Type = DocumentType._0
-            };
         }
 
-        private void Remove(object? value)
-        {
-            if (value != null)
-            {
-                if (value is ProductTypeDto type)
-                {
-                    Product.ProductTypes.Remove(type);
-                    ProductTypes.Add(type);
 
-                }
-                else if (value is ProductIngredientListDto SelectedIngredient)
-                {
-                    Product.Ingredients.Remove(SelectedIngredient);
-                    //Ingredients.Add(SelectedIngredient);
 
-                }
 
-            }
-        }
-        private void ChangedType(object? value)
-        {
-            if (value != null)
-            {
-                if (value is ProductTypeDto type)
-                {
-                    Product.ProductTypes.Add(type);
-                    ProductTypes.Remove(type);
-                    ProductType = null;
-                }
-                else if (value is ProductIngredientListDto SelectedIngredient)
-                {
-                    Product.Ingredients.Add(SelectedIngredient);
-                    //Ingredients.Remove(SelectedIngredient);
-                    Ingredient = null;
-                }
-
-            }
-        }
-
-        private async Task OnValidSubmit(EditContext context)
+        private async Task OnSubmitAsync()
         {
             try
             {
-                /*var command = new UpdateProductCommand(
-                    Product.Id,
-                    Product.Amount,
-                    Product.Price,
-                    Product.Name,
-                    Product.Description,
-                    Product.Document,
-                    Product.Ingredients,
-                    Product.Supplier,
-                    Product.ProductTypes);
+                Product.SupplierId = SelectedSupplier.Id;
+                Product.Ingredients = SelectedIngredients.Select(x => x.Id).ToList();
+                Product.SubProducts = SelectedSubProducts.Select(x => x.Id).ToList();
+                Product.ProductTypes = SelectedProductTypes.ToList();
 
-                await _mediator.Send(command);*/
-                Snackbar.Add("The product is updated succesfully", Severity.Success);
+                if (await FluentValidationValidator!.ValidateAsync())
+                {
+                    await Client.UpdateProductAsync(Product);
+                    Snackbar.Add("The product has been successfully updated.", Severity.Success);
+                }
+
             }
             catch (Exception)
             {
-                Snackbar.Add("The product could not be updated", Severity.Error);
+                Snackbar.Add("Failed to update the product. Please try again later.", Severity.Error);
             }
 
         }

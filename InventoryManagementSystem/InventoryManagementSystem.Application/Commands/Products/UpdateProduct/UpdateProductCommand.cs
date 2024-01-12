@@ -23,9 +23,8 @@ namespace InventoryManagementSystem.Application.Commands.Products.UpdateProduct
 
         public DocumentDto? Document { get; set; }
         public Guid? SupplierId { get; set; }
-
-        public List<IngredientSelectListDto> Ingredients { get; set; } = new();
+        public List<Guid> Ingredients { get; set; } = new();
+        public List<Guid> SubProducts { get; set; } = new();
         public List<ProductTypeDto> ProductTypes { get; set; } = new();
-        public List<ProductSelectListDto> SubProducts { get; set; } = new();
     }
 }

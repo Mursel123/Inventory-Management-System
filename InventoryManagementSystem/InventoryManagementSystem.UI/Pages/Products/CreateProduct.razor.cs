@@ -42,7 +42,7 @@ namespace InventoryManagementSystem.UI.Pages.Products
             IsLoading = false;
         }
 
-        private async Task OnSubmit(EditContext context)
+        private async Task OnSubmitAsync()
         {
             try
             {
