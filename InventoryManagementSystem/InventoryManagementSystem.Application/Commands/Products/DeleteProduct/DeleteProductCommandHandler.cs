@@ -1,4 +1,5 @@
 ﻿using InventoryManagementSystem.Application.Contracts;
+using InventoryManagementSystem.Application.Exceptions;
 using InventoryManagementSystem.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,12 +17,13 @@ namespace InventoryManagementSystem.Application.Commands.Products.DeleteProduct
 
         public async Task<Guid> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await _context.Set<Product>().SingleAsync(x=> x.Id == request.Id, cancellationToken);
+            var deletedRows = await _context.Set<Product>()
+                .Where(x => x.Id == request.Id)
+                .ExecuteUpdateAsync(x => x
+                    .SetProperty(x => x.IsDeleted, true), cancellationToken);
 
-            product.IsDeleted = true;
-
-            _context.Set<Product>().Update(product);
-            await _context.SaveChangesAsync(cancellationToken);
+            if (deletedRows is not 1)
+                throw new NotFoundException($"{nameof(Product)} {request.Id} is not found.");
 
             return request.Id;
         }

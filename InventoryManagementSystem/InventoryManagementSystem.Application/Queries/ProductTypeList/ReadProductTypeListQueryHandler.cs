@@ -21,7 +21,6 @@ namespace InventoryManagementSystem.Application.Queries.ProductTypeList
         public async Task<List<ProductTypeDto>> Handle(ReadProductTypeListQuery request, CancellationToken cancellationToken)
         {
             return await _context.Set<ProductType>()
-                            .Where(x => !x.IsDeleted)
                             .ProjectTo<ProductTypeDto>(_mapper.ConfigurationProvider)
                             .ToListAsync(cancellationToken);
 

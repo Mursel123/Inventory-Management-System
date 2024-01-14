@@ -9,6 +9,8 @@ namespace InventoryManagementSystem.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
+            builder.HasQueryFilter(x => !x.IsDeleted);
+
             builder.HasKey(x => x.Id);
 
             builder

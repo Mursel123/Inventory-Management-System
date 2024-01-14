@@ -23,7 +23,6 @@ namespace InventoryManagementSystem.Application.Queries.Products.ReadProductById
         public async Task<ProductDto> Handle(ReadProductByIdQuery request, CancellationToken cancellationToken)
         {
             var product =  await _context.Set<Product>()
-                 .Where(x => !x.IsDeleted)
                  .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
                  .SingleOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 

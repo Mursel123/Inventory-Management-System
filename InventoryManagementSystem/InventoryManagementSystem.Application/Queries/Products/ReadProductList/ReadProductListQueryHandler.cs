@@ -26,7 +26,6 @@ namespace InventoryManagementSystem.Application.Queries.Products.ReadProductList
         public async Task<IReadOnlyList<ProductListDto>> Handle(ReadProductListQuery request, CancellationToken cancellationToken)
         {
             return await _context.Set<Product>()
-            .Where(x => !x.IsDeleted)
             .ProjectTo<ProductListDto>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
         }

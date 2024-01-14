@@ -20,7 +20,6 @@ namespace InventoryManagementSystem.Application.Queries.Ingredients.ReadIngredie
         public async Task<List<IngredientSelectListDto>> Handle(ReadIngredientSelectListQuery request, CancellationToken cancellationToken)
         {
             return await _context.Set<Ingredient>()
-                .Where(x => !x.IsDeleted)
                 .ProjectTo<IngredientSelectListDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
         }

@@ -26,7 +26,7 @@ namespace InventoryManagementSystem.Application.Queries.Products.ReadProductSele
         {
             return await _context.Set<Product>()
                     .Include(x => x.ProductTypes)
-                    .Where(x => !x.IsDeleted && x.ProductTypes.Any(pt => pt.Type == request.ProductType))
+                    .Where(x => x.ProductTypes.Any(pt => pt.Type == request.ProductType))
                     .ProjectTo<ProductSelectListDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
         }
