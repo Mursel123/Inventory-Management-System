@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace InventoryManagementSystem.Application.Queries.Prices.ReadPriceList
 {
-    public class ReadPriceListQuery : IRequest<List<PriceListDTO>>
+    public class ReadPriceListQuery : IRequest<List<PriceListDto>>
     {
         public Guid Id { get; set; }
     }

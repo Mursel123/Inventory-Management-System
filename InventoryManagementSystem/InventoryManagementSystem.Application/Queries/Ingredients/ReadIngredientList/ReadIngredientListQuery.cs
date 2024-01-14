@@ -3,7 +3,7 @@ using MediatR;
 
 namespace InventoryManagementSystem.Application.Queries.Ingredients.ReadIngredientList
 {
-    public class ReadIngredientListQuery : IRequest<List<IngredientListDto>>
+    public class ReadIngredientListQuery : IRequest<IReadOnlyList<IngredientListDto>>
     {
     }
 }

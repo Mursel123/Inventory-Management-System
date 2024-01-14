@@ -8,8 +8,12 @@ using System.Threading.Tasks;
 
 namespace InventoryManagementSystem.Application.Queries.Ingredients.ReadIngredientById
 {
-    public class ReadIngredientByIdQuery : IRequest<IngredientDTO>
+    public class ReadIngredientByIdQuery : IRequest<IngredientDto>
     {
         public Guid Id { get; set; }
+        public ReadIngredientByIdQuery(Guid id)
+        {
+            Id = id;
+        }
     }
 }

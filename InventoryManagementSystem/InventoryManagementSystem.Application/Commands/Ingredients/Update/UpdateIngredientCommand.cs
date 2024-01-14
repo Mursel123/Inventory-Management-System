@@ -14,9 +14,9 @@ namespace InventoryManagementSystem.Application.Commands.Ingredients.Update
         public string Name { get; set; }
         public decimal MlUsage { get; set; } //How much ml it is needed for a product.
         public decimal MlTotal { get; set; } //How much ml is in stock of this ingredient.
-        public virtual List<PriceListDTO> Prices { get; set; }
+        public virtual List<PriceListDto> Prices { get; set; }
 
-        public UpdateIngredientCommand(Guid id, string name, decimal mlUsage, decimal mlTotal, List<PriceListDTO> prices)
+        public UpdateIngredientCommand(Guid id, string name, decimal mlUsage, decimal mlTotal, List<PriceListDto> prices)
         {
             Id = id;
             Name = name;

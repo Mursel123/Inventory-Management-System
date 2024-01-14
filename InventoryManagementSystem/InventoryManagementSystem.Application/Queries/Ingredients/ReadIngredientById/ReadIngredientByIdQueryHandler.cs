@@ -5,10 +5,11 @@ using InventoryManagementSystem.Application.Contracts;
 using InventoryManagementSystem.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using InventoryManagementSystem.Application.Exceptions;
 
 namespace InventoryManagementSystem.Application.Queries.Ingredients.ReadIngredientById
 {
-    public class ReadIngredientByIdQueryHandler : IRequestHandler<ReadIngredientByIdQuery, IngredientDTO>
+    public class ReadIngredientByIdQueryHandler : IRequestHandler<ReadIngredientByIdQuery, IngredientDto>
     {
         private readonly IMapper _mapper;
         private readonly IDbContext _context;
@@ -17,12 +18,16 @@ namespace InventoryManagementSystem.Application.Queries.Ingredients.ReadIngredie
             _mapper = mapper;
             _context = context;
         }
-        public async Task<IngredientDTO> Handle(ReadIngredientByIdQuery request, CancellationToken cancellationToken)
+        public async Task<IngredientDto> Handle(ReadIngredientByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Set<Ingredient>()
-                 .AsNoTracking()
-                 .ProjectTo<IngredientDTO>(_mapper.ConfigurationProvider)
+            var ingredient =  await _context.Set<Ingredient>()
+                 .ProjectTo<IngredientDto>(_mapper.ConfigurationProvider)
                  .SingleAsync(x => x.Id == request.Id, cancellationToken);
+
+            if (ingredient is null)
+                throw new NotFoundException($"{nameof(Ingredient)} {request.Id} is not found.");
+
+            return ingredient;
         }
     }
 }

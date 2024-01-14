@@ -13,7 +13,7 @@ namespace InventoryManagementSystem.Application.DTOs.Ingredient
         public string Name { get; set; } = string.Empty;
         public decimal MlUsage { get; set; } 
         public decimal MlTotal { get; set; }
-        public List<PriceListDTO> Prices { get; set; } = new();
+        public List<PriceListDto> Prices { get; set; } = new();
 
     }
 }

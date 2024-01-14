@@ -13,7 +13,7 @@ namespace InventoryManagementSystem.Application.Profiles
     {
         public PriceProfile()
         {
-            CreateMap<PriceListDTO, Price>().ReverseMap();
+            CreateMap<PriceListDto, Price>().ReverseMap();
         }
     }
 }

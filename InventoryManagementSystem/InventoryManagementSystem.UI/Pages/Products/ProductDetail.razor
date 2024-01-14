@@ -1,6 +1,10 @@
 ﻿@page "/products/{ProductId}"
 
-@if(@Product != null)
+@if (IsLoading)
+{
+    <InventoryManagementSystem.UI.Components.Loading IsLoading="IsLoading" />
+}
+else
 {
     <MudContainer Class="my-5">
         <div class="d-flex gap-2">
@@ -64,7 +68,7 @@
                             </MudTable>
                         </div>
                     }
-                   
+
                 </MudItem>
                 <MudItem xs="12" md="6" lg="4">
                     @if (Product.Document != null)
@@ -75,6 +79,4 @@
             </MudGrid>
         </MudPaper>
     </MudContainer>
-
-
 }

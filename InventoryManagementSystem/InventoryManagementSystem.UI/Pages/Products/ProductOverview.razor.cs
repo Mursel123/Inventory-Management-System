@@ -9,7 +9,7 @@ namespace InventoryManagementSystem.UI.Pages.Products
         private IClient Client { get; set; }
         [Inject]
         private NavigationManager NavigationManager { get; set; }
-        private List<ProductListDto> Products { get; set; }
+        private List<ProductListDto> Products { get; set; } = new();
         private bool IsLoading { get; set; } = true;
         protected async override Task OnInitializedAsync()
         {

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InventoryManagementSystem.Application.Queries.Prices.ReadPriceList
 {
-    internal class ReadPriceListQueryHandler : IRequestHandler<ReadPriceListQuery, List<PriceListDTO>>
+    internal class ReadPriceListQueryHandler : IRequestHandler<ReadPriceListQuery, List<PriceListDto>>
     {
         private readonly IDbContext _context;
         private readonly IMapper _mapper;
@@ -18,11 +18,11 @@ namespace InventoryManagementSystem.Application.Queries.Prices.ReadPriceList
             _mapper = mapper;
             _context = context;
         }
-        public async Task<List<PriceListDTO>> Handle(ReadPriceListQuery request, CancellationToken cancellationToken)
+        public async Task<List<PriceListDto>> Handle(ReadPriceListQuery request, CancellationToken cancellationToken)
         {
             return await _context.Set<Price>()
                    .Where(x => x.Ingredient.Id == request.Id)
-                   .ProjectTo<PriceListDTO>(_mapper.ConfigurationProvider)
+                   .ProjectTo<PriceListDto>(_mapper.ConfigurationProvider)
                    .OrderBy(x => x.Id)
                    .ToListAsync(cancellationToken);
         }

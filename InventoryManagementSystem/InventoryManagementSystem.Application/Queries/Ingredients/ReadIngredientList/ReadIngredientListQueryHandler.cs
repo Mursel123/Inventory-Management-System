@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InventoryManagementSystem.Application.Queries.Ingredients.ReadIngredientList
 {
-    public class ReadIngredientSelectListQueryHandler : IRequestHandler<ReadIngredientListQuery, List<IngredientListDto>>
+    public class ReadIngredientSelectListQueryHandler : IRequestHandler<ReadIngredientListQuery, IReadOnlyList<IngredientListDto>>
     {
         private readonly IMapper _mapper;
         private readonly IDbContext _context;
@@ -17,12 +17,10 @@ namespace InventoryManagementSystem.Application.Queries.Ingredients.ReadIngredie
             _mapper = mapper;
             _context = context;
         }
-        public async Task<List<IngredientListDto>> Handle(ReadIngredientListQuery request, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<IngredientListDto>> Handle(ReadIngredientListQuery request, CancellationToken cancellationToken)
         {
             return await _context.Set<Ingredient>().AsNoTracking()
-                .Where(x => !x.IsDeleted)
                 .ProjectTo<IngredientListDto>(_mapper.ConfigurationProvider)
-                .OrderBy(x => x.Id)
                 .ToListAsync(cancellationToken);
         }
     }

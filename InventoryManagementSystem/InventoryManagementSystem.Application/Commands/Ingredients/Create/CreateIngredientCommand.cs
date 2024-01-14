@@ -14,9 +14,9 @@ namespace InventoryManagementSystem.Application.Commands.Ingredients.Create
         public string Name { get; set; }
         public decimal MlUsage { get; set; } //How much ml it is needed for a product.
         public decimal MlTotal { get; set; } //How much ml is in stock of this ingredient.
-        public virtual List<PriceListDTO> Prices { get; set; }
+        public virtual List<PriceListDto> Prices { get; set; }
 
-        public CreateIngredientCommand(string name, decimal mlUsage, decimal mlTotal, List<PriceListDTO> prices)
+        public CreateIngredientCommand(string name, decimal mlUsage, decimal mlTotal, List<PriceListDto> prices)
         {
             Name = name;
             MlUsage = mlUsage;
