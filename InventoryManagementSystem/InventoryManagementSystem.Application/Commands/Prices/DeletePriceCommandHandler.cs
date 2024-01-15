@@ -1,12 +1,8 @@
 ﻿using InventoryManagementSystem.Application.Contracts;
+using InventoryManagementSystem.Application.Exceptions;
 using InventoryManagementSystem.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InventoryManagementSystem.Application.Commands.Prices
 {
@@ -21,12 +17,13 @@ namespace InventoryManagementSystem.Application.Commands.Prices
 
         public async Task<Guid> Handle(DeletePriceCommand request, CancellationToken cancellationToken)
         {
-            var price = await _context.Set<Price>().SingleAsync(x => x.Id == request.Id, cancellationToken);
+            var deletedRows = await _context.Set<Price>()
+                .Where(x => x.Id == request.Id)
+                .ExecuteUpdateAsync(x => x
+                    .SetProperty(x => x.IsDeleted, true), cancellationToken);
 
-            price.IsDeleted = true;
-
-            _context.Set<Price>().Update(price);
-            await _context.SaveChangesAsync(cancellationToken);
+            if (deletedRows is not 1)
+                throw new NotFoundException($"{nameof(Price)} {request.Id} is not found.");
 
             return request.Id;
         }

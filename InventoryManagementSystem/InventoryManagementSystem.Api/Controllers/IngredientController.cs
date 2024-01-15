@@ -1,4 +1,5 @@
 ﻿using InventoryManagementSystem.Application.Commands.Ingredients.Create;
+using InventoryManagementSystem.Application.Commands.Ingredients.Update;
 using InventoryManagementSystem.Application.DTOs.Ingredient;
 using InventoryManagementSystem.Application.Queries.Ingredients.ReadIngredientById;
 using InventoryManagementSystem.Application.Queries.Ingredients.ReadIngredientList;
@@ -43,7 +44,14 @@ namespace InventoryManagementSystem.Api.Controllers
         public async Task<ActionResult> CreateIngredientAsync([FromBody] CreateIngredientCommand command, CancellationToken ct)
         {
             var id = await _mediator.Send(command, ct);
+            return Ok(id);
 
+        }
+
+        [HttpPut(Name = "UpdateIngredientAsync")]
+        public async Task<ActionResult> UpdateIngredientAsync([FromBody] UpdateIngredientCommand command, CancellationToken ct)
+        {
+            var id = await _mediator.Send(command, ct);
             return Ok(id);
 
         }
