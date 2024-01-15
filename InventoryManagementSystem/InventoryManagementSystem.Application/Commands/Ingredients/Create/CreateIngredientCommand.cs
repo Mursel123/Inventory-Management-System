@@ -1,27 +1,14 @@
 ﻿using InventoryManagementSystem.Application.DTOs.Price;
-using InventoryManagementSystem.Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InventoryManagementSystem.Application.Commands.Ingredients.Create
 {
     public class CreateIngredientCommand : IRequest<Guid>
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public decimal MlUsage { get; set; } //How much ml it is needed for a product.
         public decimal MlTotal { get; set; } //How much ml is in stock of this ingredient.
-        public virtual List<PriceListDto> Prices { get; set; }
+        public List<PriceListDto> Prices { get; set; } = new();
 
-        public CreateIngredientCommand(string name, decimal mlUsage, decimal mlTotal, List<PriceListDto> prices)
-        {
-            Name = name;
-            MlUsage = mlUsage;
-            MlTotal = mlTotal;
-            Prices = prices;
-        }
     }
 }

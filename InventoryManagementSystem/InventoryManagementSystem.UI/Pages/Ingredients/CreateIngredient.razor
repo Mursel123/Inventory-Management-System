@@ -1,0 +1,109 @@
+﻿@page "/ingredients/create"
+@using Blazored.FluentValidation
+
+<EditForm Context="ingredient" Model="@Ingredient" OnValidSubmit="OnSubmitAsync" class="w-50">
+    <FluentValidationValidator />
+    <MudCard>
+        <MudCardContent>
+            <MudText Class="mb-md-5" Typo="Typo.h6">New Ingredient</MudText>
+
+            <MudTextField Label="Name"
+            @bind-Value="Ingredient.Name"
+            Variant="Variant.Outlined"
+            For="@(() => Ingredient.Name)" />
+
+            <div class="d-flex py-5">
+                <MudTextField Label="Ml Usage"
+                              Variant="Variant.Outlined"
+                              Adornment="Adornment.Start"
+                              Culture="System.Globalization.CultureInfo.CurrentCulture"
+                              IconSize="Size.Small"
+                              Format="F2"
+                              @bind-Value="Ingredient.MlUsage"
+                              For="@(() => Ingredient.MlUsage)" />
+
+                <MudTextField Label="Ml Total"
+                              Class="pl-5"
+                              Variant="Variant.Outlined"
+                              Adornment="Adornment.Start"
+                              Culture="System.Globalization.CultureInfo.CurrentCulture"
+                              IconSize="Size.Small"
+                              Format="F2"
+                              @bind-Value="Ingredient.MlTotal"
+                              For="@(() => Ingredient.MlTotal)" />
+            </div>
+
+
+            <MudText Typo="Typo.h6" Class="mb-md-5">Prices</MudText>
+            <MudIconButton Class="mb-5" Icon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" @onclick="ShowLoadingForm" />
+            @if (ShowPriceForm)
+            {
+                <EditForm Context="price" Model="@Price">
+                    <FluentValidationValidator />
+                    <MudTextField Label="Price"
+                              Class="mb-5"
+                              Variant="Variant.Outlined"
+                              Adornment="Adornment.Start"
+                              Culture="System.Globalization.CultureInfo.CurrentCulture"
+                              AdornmentIcon="@Icons.Material.Filled.Euro"
+                              IconSize="Size.Small"
+                              Format="F2"
+                              For="@(() => Price.IngredientPrice)"
+                              @bind-Value="Price.IngredientPrice" />
+
+                    <MudTextField Label="Ml"
+                              Class="mb-5"
+                              Variant="Variant.Outlined"
+                              Adornment="Adornment.Start"
+                              Culture="System.Globalization.CultureInfo.CurrentCulture"
+                              IconSize="Size.Small"
+                              Format="F2"
+                              For="@(() => Price.Ml)"
+                              @bind-Value="Price.Ml" />
+
+                    <MudTextField Label="Website Link"
+                              Class="mb-5"
+                              Variant="Variant.Outlined"
+                              Adornment="Adornment.Start"
+                              Culture="System.Globalization.CultureInfo.CurrentCulture"
+                              IconSize="Size.Small"
+                              Required="true"
+                              InputType="InputType.Url"
+                              For="@(() => Price.WebsiteLink)"
+                              @bind-Value="Price.WebsiteLink" />
+
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mb-5" @onclick="AddPriceToList">Add Price</MudButton>
+
+                </EditForm>
+                
+            }
+
+
+            <MudStack>
+                @foreach (var type in Ingredient.Prices)
+                {
+                    <MudPaper Class="pa-3">
+                        <MudGrid>
+                            <MudItem xs="12" md="10">
+                                <MudText>
+                                    Price: @type.IngredientPrice Ml: @type.Ml Link: @type.WebsiteLink
+                                </MudText>
+                            </MudItem>
+                            <MudItem xs="12" md="2" Class="text-right">
+                                <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" Size="Size.Medium" @onclick="(() => Remove(type))" />
+                            </MudItem>
+                        </MudGrid>
+                    </MudPaper>
+                }
+            </MudStack>
+
+
+
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Create Ingredient</MudButton>
+        </MudCardActions>
+    </MudCard>
+</EditForm>
+
+

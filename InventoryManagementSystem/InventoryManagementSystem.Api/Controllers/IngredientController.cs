@@ -1,4 +1,5 @@
-﻿using InventoryManagementSystem.Application.DTOs.Ingredient;
+﻿using InventoryManagementSystem.Application.Commands.Ingredients.Create;
+using InventoryManagementSystem.Application.DTOs.Ingredient;
 using InventoryManagementSystem.Application.Queries.Ingredients.ReadIngredientById;
 using InventoryManagementSystem.Application.Queries.Ingredients.ReadIngredientList;
 using InventoryManagementSystem.Application.Queries.Ingredients.ReadIngredientSelectList;
@@ -36,6 +37,15 @@ namespace InventoryManagementSystem.Api.Controllers
         {
             var dto = await _mediator.Send(new ReadIngredientByIdQuery(id), ct);
             return Ok(dto);
+        }
+
+        [HttpPost(Name = "CreateIngredientAsync")]
+        public async Task<ActionResult> CreateIngredientAsync([FromBody] CreateIngredientCommand command, CancellationToken ct)
+        {
+            var id = await _mediator.Send(command, ct);
+
+            return Ok(id);
+
         }
     }
 }
