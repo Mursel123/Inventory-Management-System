@@ -34,7 +34,7 @@
             }
             else if (Type == "ingredient")
             {
-                //await Mediator.Send(new DeleteIngredientCommand() { Id = Guid.Parse(Id) });
+                await Client.DeleteIngredientAsync(new DeleteIngredientCommand() { Id = Guid.Parse(Id) });
             }
             
             await JSRuntime.InvokeVoidAsync("history.back");

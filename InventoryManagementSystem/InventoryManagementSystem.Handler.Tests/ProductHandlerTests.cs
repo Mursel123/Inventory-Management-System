@@ -22,7 +22,7 @@ namespace InventoryManagementSystem.Handler.Tests
         {
             var context = fixture._context;
             var mapper = fixture._mapper;
-            _createHandler = new(context, mapper);
+            //_createHandler = new(context, mapper);
             _readProductListQueryHandler = new(mapper, context);
             _readProductByIdQueryHandler = new(mapper, context);
             _ = fixture.CreateSamples();

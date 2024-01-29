@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using InventoryManagementSystem.UI.Services;
 using Blazored.FluentValidation;
+using Microsoft.JSInterop;
 
 namespace InventoryManagementSystem.UI.Pages.Ingredients
 {
@@ -12,7 +13,8 @@ namespace InventoryManagementSystem.UI.Pages.Ingredients
         private ISnackbar Snackbar { get; set; }
         [Inject]
         private IClient Client { get; set; }
-
+        [Inject]
+        private IJSRuntime JSRuntime { get; set; }
         [Parameter]
         public string IngredientId { get; set; } = string.Empty;
         private UpdateIngredientCommand Ingredient { get; set; } = new();
@@ -42,6 +44,7 @@ namespace InventoryManagementSystem.UI.Pages.Ingredients
             {
                 await Client.UpdateIngredientAsync(Ingredient);
                 Snackbar.Add("The ingredient has been successfully updated.", Severity.Success);
+                await JSRuntime.InvokeVoidAsync("history.back");
 
             }
             catch (Exception)
@@ -58,12 +61,11 @@ namespace InventoryManagementSystem.UI.Pages.Ingredients
             }
         }
 
-        private async Task Remove(PriceListDto? price)
+        private void Remove(PriceListDto? price)
         {
             if (price != null)
             {
                 Ingredient.Prices.Remove(price);
-                await Client.DeletePriceAsync(price.Id);
 
             }
         }
