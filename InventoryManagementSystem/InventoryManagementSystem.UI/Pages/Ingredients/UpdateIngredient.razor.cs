@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using InventoryManagementSystem.UI.Services;
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
-using InventoryManagementSystem.UI.Services;
-using Blazored.FluentValidation;
 using Microsoft.JSInterop;
+using MudBlazor;
 
 namespace InventoryManagementSystem.UI.Pages.Ingredients
 {

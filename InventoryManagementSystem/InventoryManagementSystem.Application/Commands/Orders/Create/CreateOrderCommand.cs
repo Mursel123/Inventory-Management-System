@@ -10,10 +10,10 @@ namespace InventoryManagementSystem.Application.Commands.Orders.Create
     {
         public DateTime Date { get; set; } = DateTime.Now;
         public DocumentDto? Document { get; set; }
-        public List<OrderLineDTO> OrderLines { get; set; }
+        public List<OrderLineDto> OrderLines { get; set; }
         public OrderType? Type { get; set; }
 
-        public CreateOrderCommand(DocumentDto? document, List<OrderLineDTO> orderLines, OrderType? type)
+        public CreateOrderCommand(DocumentDto? document, List<OrderLineDto> orderLines, OrderType? type)
         {
             Document = document;
             OrderLines = orderLines;

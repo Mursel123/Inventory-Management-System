@@ -82,7 +82,7 @@ namespace InventoryManagementSystem.UI.Pages.Products
             ProductTypes = await Client.ReadAllProductTypesAsync();
             Suppliers = await Client.ReadAllSupplierSelectListAsync();
             Ingredients = await Client.ReadAllIngredientSelectListAsync();
-            Products = await Client.ReadAllProductsWithTypeSelectlistAsync(ProductTypeData.PurchasedInventory);
+            Products = await Client.ReadProductListByTypeAsync(ProductTypeData.PurchasedInventory);
 
             IsLoading = false;
         }

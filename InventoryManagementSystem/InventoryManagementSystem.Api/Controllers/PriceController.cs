@@ -1,4 +1,6 @@
 ﻿using InventoryManagementSystem.Application.Commands.Prices;
+using InventoryManagementSystem.Application.DTOs.Price;
+using InventoryManagementSystem.Application.Queries.Prices.ReadPriceList;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +18,18 @@ namespace InventoryManagementSystem.Api.Controllers
         [HttpDelete("{id}", Name = "DeletePriceAsync")]
         public async Task<ActionResult> DeletePriceAsync(Guid id, CancellationToken ct)
         {
-            var PriceId = await _mediator.Send(new DeletePriceCommand(id), ct);
+            var priceId = await _mediator.Send(new DeletePriceCommand(id), ct);
 
-            return Ok(PriceId);
+            return Ok(priceId);
 
+        }
+
+        [HttpGet("{id}", Name = "ReadPriceListByIngredientId")]
+        public async Task<ActionResult<List<PriceListDto>>> ReadPriceListByIngredientId(Guid id, CancellationToken ct)
+        {
+            var prices = await _mediator.Send(new ReadPriceListByIngredientIdQuery(id), ct);
+
+            return Ok(prices);
         }
     }
 }

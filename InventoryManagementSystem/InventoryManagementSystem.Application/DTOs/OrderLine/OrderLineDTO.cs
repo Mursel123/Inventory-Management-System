@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace InventoryManagementSystem.Application.DTOs.OrderLine
 {
-    public class OrderLineDTO
+    public class OrderLineDto
     {
         public Guid Id { get; set; }
-        public ProductListDto? Product { get; set; }
+        public ProductSelectListDto? Product { get; set; }
         public IngredientListDto? Ingredient { get; set; }
         public int? Quantity { get; set; }
 

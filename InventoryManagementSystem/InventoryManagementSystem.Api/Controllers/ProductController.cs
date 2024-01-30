@@ -4,7 +4,7 @@ using InventoryManagementSystem.Application.Commands.Products.UpdateProduct;
 using InventoryManagementSystem.Application.DTOs.Product;
 using InventoryManagementSystem.Application.Queries.Products.ReadProductById;
 using InventoryManagementSystem.Application.Queries.Products.ReadProductList;
-using InventoryManagementSystem.Application.Queries.Products.ReadProductSelectList;
+using InventoryManagementSystem.Application.Queries.Products.ReadProductByType;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,16 +27,16 @@ namespace InventoryManagementSystem.Api.Controllers
             return Ok(dto);
         }
 
-        [HttpGet("all/selectlist/{productType}", Name = "ReadAllProductsWithTypeSelectlistAsync")]
-        public async Task<ActionResult<List<ProductSelectListDto>>> ReadAllProductsWithTypeSelectlistAsync(
+        [HttpGet("all/selectlist/{productType}", Name = "ReadProductListByTypeAsync")]
+        public async Task<ActionResult<List<ProductSelectListDto>>> ReadProductListByTypeAsync(
             string productType, CancellationToken ct )
         {
-            var dto = await _mediator.Send(new ReadProductSelectListQuery(productType), ct);
+            var dto = await _mediator.Send(new ReadProductListByTypeQuery(productType), ct);
             return Ok(dto);
         }
 
         [HttpGet("{id}", Name = "ReadProductByIdAsync")]
-        public async Task<ActionResult<ProductDto>> ReadPRoductByIdAsync(Guid id, CancellationToken ct)
+        public async Task<ActionResult<ProductDto>> ReadProductByIdAsync(Guid id, CancellationToken ct)
         {
             var dto = await _mediator.Send(new ReadProductByIdQuery(id), ct);
             return Ok(dto);

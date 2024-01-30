@@ -1,15 +1,15 @@
 ﻿using InventoryManagementSystem.Application.DTOs.Price;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InventoryManagementSystem.Application.Queries.Prices.ReadPriceList
 {
-    public class ReadPriceListQuery : IRequest<List<PriceListDto>>
+    public class ReadPriceListByIngredientIdQuery : IRequest<List<PriceListDto>>
     {
         public Guid Id { get; set; }
+
+        public ReadPriceListByIngredientIdQuery(Guid id)
+        {
+            Id = id;
+        }
     }
 }

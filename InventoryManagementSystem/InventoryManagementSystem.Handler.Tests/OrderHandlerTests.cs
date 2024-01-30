@@ -36,12 +36,12 @@ namespace InventoryManagementSystem.Handler.Tests
             //Given
             var product = await _context.Product
                 .Where(x => x.Id == Guid.Parse("9A522691-0E95-4CB7-ACFF-CDB22FBAC06D"))
-                .ProjectTo<ProductListDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<ProductSelectListDto>(_mapper.ConfigurationProvider)
                 .SingleAsync();
 
-            var lines = new List<OrderLineDTO>()
+            var lines = new List<OrderLineDto>()
             {
-                new OrderLineDTO(){ Product = product, Quantity = 2 },
+                new OrderLineDto(){ Product = product, Quantity = 2 },
 
             };
 
@@ -71,12 +71,12 @@ namespace InventoryManagementSystem.Handler.Tests
             //Given
             var product = await _context.Product
                 .Where(x => x.Id == Guid.Parse("FF9EFB3F-D98A-4073-9B5C-ADF0C1264C51"))
-                .ProjectTo<ProductListDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<ProductSelectListDto>(_mapper.ConfigurationProvider)
                 .SingleAsync();
 
-            var lines = new List<OrderLineDTO>()
+            var lines = new List<OrderLineDto>()
             {
-                new OrderLineDTO(){ Product = product, Quantity = 2 }
+                new OrderLineDto(){ Product = product, Quantity = 2 }
             };
 
             var command = new CreateOrderCommand(null, lines, OrderType.Purchased);
@@ -101,9 +101,9 @@ namespace InventoryManagementSystem.Handler.Tests
                 .ProjectTo<IngredientListDto>(_mapper.ConfigurationProvider)
                 .SingleAsync();
 
-            var lines = new List<OrderLineDTO>()
+            var lines = new List<OrderLineDto>()
             {
-                new OrderLineDTO(){ Ingredient = ingredient, Quantity = 2 }
+                new OrderLineDto(){ Ingredient = ingredient, Quantity = 2 }
             };
 
             var command = new CreateOrderCommand(null, lines, OrderType.Ingredient);

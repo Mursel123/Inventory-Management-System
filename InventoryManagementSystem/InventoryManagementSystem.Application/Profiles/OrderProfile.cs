@@ -21,7 +21,7 @@ namespace InventoryManagementSystem.Application.Profiles
                 .BeforeMap((src, dest) => dest.Type = src.Type ?? throw new ArgumentNullException(nameof(src.Type)));
                 //.ForMember(dest => dest.OrderLines, opt => opt.MapFrom(src => src.OrderLines));
 
-            CreateMap<OrderLineDTO, OrderLine>();
+            CreateMap<OrderLineDto, OrderLine>();
         }
     }
 }
