@@ -23,5 +23,6 @@ namespace InventoryManagementSystem.Domain.Entities
 
             }
         }
+
     }
 }

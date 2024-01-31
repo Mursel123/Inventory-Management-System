@@ -80,6 +80,7 @@ namespace InventoryManagementSystem.UI.Pages.Orders
 
         protected override async Task OnInitializedAsync()
         {
+            Order.Date = DateTime.Now;
             Order.OrderLines = new();
             Ingredients = await Client.ReadAllIngredientsAsync();
             IsLoading = false;

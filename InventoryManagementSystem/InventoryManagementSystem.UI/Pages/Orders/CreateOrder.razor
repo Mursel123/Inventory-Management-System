@@ -15,6 +15,14 @@ else
         <MudCardContent>
             <MudText Class="mt-5 mb-md-5" Typo="Typo.h6">New Order</MudText>
 
+            <MudDatePicker
+                Variant="Variant.Outlined"
+                Class="mt-5 mb-5"
+                Color="Color.Primary"
+                Label="Order Date"
+                @bind-Date="Order.Date"
+                DateFormat="dd-MM-yyyy">
+            </MudDatePicker>
 
             <MudSelect T="OrderType?"
                        Variant="Variant.Outlined"
