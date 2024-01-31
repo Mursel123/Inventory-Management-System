@@ -12,12 +12,10 @@ namespace InventoryManagementSystem.Application.Commands.Orders.Create
     {
         private readonly IDbContext _context;
         private readonly IMapper _mapper;
-        private readonly IMediator _mediator;
-        public CreateOrderCommandHandler(IDbContext context, IMapper mapper, IMediator mediator)
+        public CreateOrderCommandHandler(IDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
-            _mediator = mediator;
         }
         public async Task<Guid> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {

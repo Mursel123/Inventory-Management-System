@@ -2,6 +2,7 @@
 using InventoryManagementSystem.Application;
 using InventoryManagementSystem.Infrastructure;
 using Serilog;
+using System.Text.Json.Serialization;
 
 namespace InventoryManagementSystem.Api
 {
@@ -33,7 +34,14 @@ namespace InventoryManagementSystem.Api
             builder.Services.AddSingleton(Log.Logger);
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddApplicationServices();
-            builder.Services.AddControllers();
+
+            //Important so Nswag can generate the enums correctly to the UI.
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                });
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {

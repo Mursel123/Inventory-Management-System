@@ -1,4 +1,6 @@
 ﻿using InventoryManagementSystem.Application.Commands.Orders.Create;
+using InventoryManagementSystem.Application.DTOs.Order;
+using InventoryManagementSystem.Application.Queries.Orders.ReadOrderList;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +15,13 @@ namespace InventoryManagementSystem.Api.Controllers
         public OrderController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet("all", Name = "ReadOrdersAsync")]
+        public async Task<ActionResult<IReadOnlyList<OrderListDto>>> ReadOrdersAsync(CancellationToken ct)
+        {
+            var dto = await _mediator.Send(new ReadOrderListQuery(), ct);
+            return Ok(dto);
         }
 
         [HttpPost(Name = "CreateOrderAsync")]

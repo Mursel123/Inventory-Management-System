@@ -34,7 +34,7 @@ namespace InventoryManagementSystem.UI.Pages.Orders
             }
         }
 
-
+        private bool IsLoading { get; set; } = true;
         private bool DisableOrderType { get; set; } = false;
 
         private List<ProductSelectListDto> Products { get; set; } = new();
@@ -82,6 +82,7 @@ namespace InventoryManagementSystem.UI.Pages.Orders
         {
             Order.OrderLines = new();
             Ingredients = await Client.ReadAllIngredientsAsync();
+            IsLoading = false;
         }
 
         private async Task OnValidSubmit(EditContext context)
@@ -114,7 +115,7 @@ namespace InventoryManagementSystem.UI.Pages.Orders
                 Order.Document = new()
                 {
                     FileData = stream.ToArray(),
-                    Type = DocumentType._1
+                    Type = DocumentType.Pdf
                 };
 
 
@@ -182,14 +183,14 @@ namespace InventoryManagementSystem.UI.Pages.Orders
             if (value != null)
             {
                 string type = string.Empty;
-                if (value == Services.OrderType._0)
+                if (value == Services.OrderType.Purchased)
                     type = ProductTypeData.PurchasedInventory;
-                else if (value == Services.OrderType._1)
+                else if (value == Services.OrderType.Sales)
                     type = ProductTypeData.SalesInventory;
 
 
                 Products = await Client.ReadProductListByTypeAsync(type);
-                if (value == Services.OrderType._1)
+                if (value == Services.OrderType.Sales)
                 {
                     CheckForOutOfStock(SelectedQuantity, Products, value);
                 }
@@ -210,7 +211,7 @@ namespace InventoryManagementSystem.UI.Pages.Orders
 
         private void CheckForOutOfStock(int amount, List<ProductSelectListDto> products, Services.OrderType? type)
         {
-            if (type == Services.OrderType._1)
+            if (type == Services.OrderType.Sales)
             {
                 /*foreach (var product in products)
                 {

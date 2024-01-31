@@ -8,7 +8,7 @@ namespace InventoryManagementSystem.Application.Commands.Orders.Create
 {
     public class CreateOrderCommand : IRequest<Guid>
     {
-        public DateTime Date { get; set; } = DateTime.Now;
+        public DateTime Date { get; set; }
         public DocumentDto? Document { get; set; }
         public List<OrderLineDto> OrderLines { get; set; }
         public OrderType? Type { get; set; }

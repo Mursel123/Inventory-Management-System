@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InventoryManagementSystem.Application.Queries.Orders.ReadOrderList
 {
-    internal class ReadOrderListQueryHandler : IRequestHandler<ReadOrderListQuery, List<OrderListDTO>>
+    internal sealed class ReadOrderListQueryHandler : IRequestHandler<ReadOrderListQuery, IReadOnlyList<OrderListDto>>
     {
         private readonly IDbContext _context;
         private readonly IMapper _mapper;
@@ -19,10 +19,10 @@ namespace InventoryManagementSystem.Application.Queries.Orders.ReadOrderList
             _context = context;
         }
 
-        public async Task<List<OrderListDTO>> Handle(ReadOrderListQuery request, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<OrderListDto>> Handle(ReadOrderListQuery request, CancellationToken cancellationToken)
         {
             return await _context.Set<Order>()
-                    .ProjectTo<OrderListDTO>(_mapper.ConfigurationProvider)
+                    .ProjectTo<OrderListDto>(_mapper.ConfigurationProvider)
                     .OrderByDescending(x => x.Date)
                     .ToListAsync(cancellationToken);
         }

@@ -73,7 +73,7 @@ namespace InventoryManagementSystem.UI.Pages.Products
                 Product.Document = new()
                 {
                     FileData = stream.ToArray(),
-                    Type = DocumentType._0
+                    Type = DocumentType.Image
                 };
             }
             else

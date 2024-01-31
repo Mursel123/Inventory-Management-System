@@ -3,7 +3,7 @@ using InventoryManagementSystem.Domain.Enums;
 
 namespace InventoryManagementSystem.Application.DTOs.Order
 {
-    public class OrderListDTO
+    public class OrderListDto
     {
         public Guid Id { get; set; }
         public string OrderNumber { get; set; } = string.Empty;

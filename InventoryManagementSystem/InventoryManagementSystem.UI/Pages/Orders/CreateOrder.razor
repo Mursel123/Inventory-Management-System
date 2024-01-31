@@ -2,7 +2,14 @@
 @using Blazored.FluentValidation
 @using InventoryManagementSystem.UI.Services
 
-<EditForm Model="@Order" OnValidSubmit="OnValidSubmit">
+
+@if (IsLoading)
+{
+    <InventoryManagementSystem.UI.Components.Loading IsLoading="IsLoading"/>
+}
+else
+{
+<EditForm Model="@Order" OnValidSubmit="OnValidSubmit" class="w-50">
     <FluentValidationValidator @ref="FluentValidationValidator" />
     <MudCard>
         <MudCardContent>
@@ -22,7 +29,7 @@
                 }
             </MudSelect>
 
-            @if (SelectedOrderType == OrderType._0 || SelectedOrderType == OrderType._1)
+            @if (SelectedOrderType == OrderType.Purchased || SelectedOrderType == OrderType.Sales)
             {
                 <MudText Typo="Typo.h6" Class="mt-5 mb-md-5">Products</MudText>
                 <MudIconButton Class="mb-5" Icon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" @onclick="ShowLoadingForm" />
@@ -76,7 +83,7 @@
                 </MudStack>
             }
 
-            @if (SelectedOrderType == OrderType._2)
+            @if (SelectedOrderType == OrderType.Ingredient)
             {
                 <MudText Typo="Typo.h6" Class="mt-5 mb-md-5">Ingredients</MudText>
                 <MudIconButton Class="mb-5" Icon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" @onclick="ShowLoadingForm" />
@@ -205,4 +212,4 @@
         </MudCardActions>
     </MudCard>
 </EditForm>
-
+}

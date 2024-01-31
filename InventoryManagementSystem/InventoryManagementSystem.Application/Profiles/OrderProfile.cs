@@ -15,7 +15,7 @@ namespace InventoryManagementSystem.Application.Profiles
     {
         public OrderProfile()
         {
-            CreateMap<Order, OrderListDTO>();
+            CreateMap<Order, OrderListDto>();
 
             CreateMap<CreateOrderCommand, Order>()
                 .BeforeMap((src, dest) => dest.Type = src.Type ?? throw new ArgumentNullException(nameof(src.Type)));
